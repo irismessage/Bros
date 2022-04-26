@@ -16,7 +16,7 @@ game = {
 function _init()
 	print("loading font")
 	load_font()
-	print("hello world01234")
+	print("hello world")
 	stop("done")
 end
 
@@ -31,16 +31,16 @@ end
 function sprtochar(sprn)
 	--sprn is sprite number
 	char = {}
-	sprn -= 1
 	col = sprn % 16
 	row = flr(sprn / 16)
 	x = col * 8
 	y = row * 8
 	for i=0,7 do
-		char[i] = 0
+		a = i + 1
+		char[a] = 0
 		for j=0,7 do
 			if sget(x+j, y+i) == 0 then
-				char[i] = char[i] | 2^j 
+				char[a] = char[a] | 2^j 
 			end
 		end
 	end
@@ -51,7 +51,7 @@ function fblock(src, dest, len)
 	--font copy block
 	--src is sprite number
 	--dest is p8scii code
-	daddr = 0x5605 + dest * 8
+	daddr = 0x5600 + dest * 8
 	for i=1,len do
 		char = sprtochar(src)
 		poke(daddr, unpack(char))
@@ -65,14 +65,13 @@ function load_font()
 	-- sheet and activate it
 	
 	--letters then numbers
-	fblock(49, 65, 26)
+	fblock(49, 97, 26)
 	fblock(81, 48, 10)
 	
 	--switch and metadata
 	poke(0x5f58, 0x1 | 0x80)
-	--poke(0x5600, 3)
-	poke(0x5600, 8)
-	poke(0x5602, 7)
+	poke(0x5600, 4)
+	poke(0x5602, 8)
 end
 
 function draw_score()
