@@ -16,7 +16,7 @@ game = {
 function _init()
 	print("loading font")
 	load_font()
-	print("hello world")
+	print("hello world01234")
 	stop("done")
 end
 
@@ -25,31 +25,23 @@ function _update()
 end
 
 function _draw()
-	--w
+	draw_score()
 end
 
-function sprtochar(mem)
+function sprtochar(sprn)
+	--sprn is sprite number
 	char = {}
-	--for each row of the char
-	for i=1,8 do
+	sprn -= 1
+	col = sprn % 16
+	row = flr(sprn / 16)
+	x = col * 8
+	y = row * 8
+	for i=0,7 do
 		char[i] = 0
-		-- for each byte of the spr
-		for j=0,3 do
-			sbyte = peek(mem)
-			if (sbyte^^0xf0==0) then
-				char[i]=char[i]|(2^(2*j))
-				print(1)
-			else
-				print(0)
+		for j=0,7 do
+			if sget(x+j, y+i) == 0 then
+				char[i] = char[i] | 2^j 
 			end
-			if (sbyte^^0x0f==0) then
-				char[i]=char[i]|(2^(2*j+1))
-				print(1)
-			else
-				print(0)
-			end
-			print()
-			mem += 1
 		end
 	end
 	return char
@@ -59,12 +51,11 @@ function fblock(src, dest, len)
 	--font copy block
 	--src is sprite number
 	--dest is p8scii code
-	saddr = 0x0 + src * 32
 	daddr = 0x5605 + dest * 8
 	for i=1,len do
-		char = sprtochar(saddr)
+		char = sprtochar(src)
 		poke(daddr, unpack(char))
-		saddr += 32
+		src += 1
 		daddr += 8
 	end
 end
@@ -79,7 +70,8 @@ function load_font()
 	
 	--switch and metadata
 	poke(0x5f58, 0x1 | 0x80)
-	poke(0x5600, 3)
+	--poke(0x5600, 3)
+	poke(0x5600, 8)
 	poke(0x5602, 7)
 end
 
