@@ -2,15 +2,58 @@ pico-8 cartridge // http://www.pico-8.com
 version 36
 __lua__
 function _init()
-	yeah
+	print("loading font")
+	load_font()
+	print("hello world",2)
+	stop("done")
 end
 
 function _update()
-	hoho
+	--hoho
 end
 
 function _draw()
-	todo
+	--w
+end
+
+function sprtochar(mem)
+	char = {}
+	for i=0,7 do
+		char[i] = 0
+		for j=0,7 do
+			color = peek(mem)
+			if color == 0 then
+				char[i] = char[i] | j
+			end
+			mem += 1
+		end
+	end
+	return char
+end
+
+function load_font()
+	--load custom font from sprite
+	-- sheet, then activate it
+	
+	--switch and metadata
+	poke(0x5f58, 0x1 | 0x80)
+	poke(0x5600, 3)
+	poke(0x5602, 7)
+	
+	--first letters
+	ssize = 32
+	chstart = 49
+	source = ssize * chstart
+	dest = 0x5605 + (65 * 8)
+	len = 26 * 8
+	memcpy(source, dest, len)
+	
+	--then numbers
+	chstart = 81
+	source = ssize * chstart
+	dest = 0x5605 + (48 * 8)
+	len = 10 * 8
+	memcpy(source, dest, len)
 end
 
 __gfx__
