@@ -19,11 +19,14 @@ p = {
 	jump=0,
 }
 
+scoresn={}
+scoresc={}
+
 function _init()
 	cls(1)
 	load_font()
-	mainscreen()
-	--scorescreen()
+	--mainscreen()
+	scorescreen()
 end
 
 function _update()
@@ -35,6 +38,7 @@ function _draw()
 end
 
 function mainscreen()
+	cls(1)
 	map(0)
 	--❎🅾️
 	print("x:play",8,104)
@@ -43,7 +47,37 @@ function mainscreen()
 end
 
 function scorescreen()
-	print("h i g h s c o r e s :", 40, 24)	
+	cls(1)
+	print("h i g h s c o r e s :", 20, 24)	
+end
+
+function loadscores()
+	--data layout
+	--00 to 09 top scores
+	--10 to 29 names
+	--three nums per name
+	cartdata("bros_sorb")
+	for i=0,9 do
+		scoresn[i+1] = dget(i)
+	end
+	for i=10,29 do
+		n = dget(i)
+		if n == 0 then
+			n = 32
+			dset(i,n)
+		end
+		c = chr(n)
+		scoresc[i-9] = c
+	end
+end
+
+function rankscore(score)
+	for i=0,9 do
+		if score > scoresn[i] then
+			return i
+		end
+	end
+	return 10
 end
 
 function sprtochar(sprn)
