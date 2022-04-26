@@ -1,0 +1,276 @@
+TOBOT, PART (c) 1990 KE-SOFT
+
+I
+
+I
+
+Bedienung
+
+Sobald die Musik zu hören ist. ist der Ladevorgang beendet und das Spiel kann per START-Taste begonnen. werden. Mit SELECT wird die High scoreliste gezeigt, per OPTION-Tas te gelangt man zum Editor. Per Tas te "Q" verliert Tobot ein Leben, per ESCAPE-Taste wird das vorzeitig beendet. Spiel
+
+Unser Roboter Tobot war schon immer ein begeisterter Bastler. Nachdem er sich seinen Wunschtraum, nämlich mit eine Zeitmaschine zu basteln, end lich erfüllt hatte, landete er dieser prompt in einem alten ver fallenen Schloß. Da hatte er den Salat! Wie sollte er denn nun hier wieder herauskommen? Er hatte năm lich die Zeitmaschine leider vor der Tür des Schlosses stehen gelas sen
+
+Ladeanweisung
+
+Schalten Sie die Diskettenstation ein und Ihren Atari XL/XE aus. Le gen Sie nun die Tobot-Diskette mit der Vorderseite in Laufwerk eins ein und schalten Sie den XL/XE bei gehaltener OPTION-Taste ein. Das Programm wird nun automatisch gela den.
+
+Spielbeschreibung
+
+Aufgabe ist es, in jedem der 50 Räume des Schlosses zuerst alle Schlüssel zu sammeln und den Raum dann durch eine Tür zu verlassen. Eine Menge Gefahren, wie z. B. töd liche Spitzen, Felsbrocken, zerfal lende Böden, Löcher und Spinnen (die Tobot nur an den Beinen ver wunden können) erwarten Tobot. Mit dem Laser kann Tobot Felsbrocken beseitigen. Außerdem kann er Laser brücken bauen, die beim Darüber lau fen verschwinden. Schlüssel können nur gesammelt werden, wenn Tobot direkt unter ihnen steht und nach oben springt. Manche Böden dann können gesprengt werden. Zusätzlich hat Tobot die Möglichkeit, sich zu teleportieren. Dort, WO Tobot stand, wird dann ein Modell hinter lassen. Das Modell sollte auf kei nen Fall abgeschossen werden! Eben so sollte keine Schlüssel fressen! Spinne einen Jeder Schuß und jede Laserbrücke kosten Tobot Energie. Hat Tobot keine Energie mehr, so kann er der schießen noch we Brücken bauen. An Energieaufladern kann diese wie der erhöht werden.
+
+Steuerung
+
+Die Steuerung erfolgt per Joystick in Port eins. Sie können nach links und rechts oder runter laufen, Leitern hoch klettern, springen oder nach unten diagonal sprengen. Bei gedrücktem Feuerknopf kann To bot nach links und rechts schießen, diagonal nach linksunten/rechtsun ten eine unten die Laserbrucke bauen, nach Energie aufladen (wenn er vor einem Ladegerät steht) und nach oben springen um nach einem Schlüssel zu greifen. Per Tastatur (Space-Taste) wird Tobot telepor tiert. Per Taste "S" wird das To botmodell dorhin geholt, WO Tobot zur Zeit steht.
+
+Anzeigen
+
+Am oberen Bildschirmrand befinden sich folgende Anzeigen:
+
+• Ein Balken, der den Energiestand anzeigt. • Die Anzahl der übrigen Tobots (anfangs 7)
+
+Die Nummer des Raumes (1-50) Die Punktezahl
+
+Punktezählung
+
+• Stein zerstören ....... 10 Punkte
+
+. Schlüssel sammeln... 100 Punkte
+
+• Raum geschafft ... 550 Punkte
+
++ Energiebonus
+
+Alle Räume geschafft. ??? Punkte
+
+TOBOT, PART (c) 1990 KE-SOFT
+
+I
+
+I
+
+service
+
+As soon as the music is heard. the loading process is complete and the game can be started with the START button. will. With SELECT the high score list is shown, with the OPTION key you get to the editor. Tobot loses a life with the "Q" key, which is ended prematurely with the ESCAPE key. Game
+
+Our robot Tobot has always been an enthusiastic hobbyist. After he had finally fulfilled his dream of building a time machine, he promptly landed it in an old, ruined castle. There he had the salad! How was he supposed to get out of here? Unfortunately, he had left the time machine in front of the castle door
+
+loading instruction
+
+Turn on the floppy disk drive and turn off your Atari XL/XE. Now insert the Tobot disk face down into drive one and power on the XL/XE while holding the OPTION button. The program is now loaded automatically.
+
+game description
+
+The task is to first collect all the keys in each of the 50 rooms of the castle and then leave the room through a door. A lot of dangers like Deadly spikes, boulders, crumbling floors, holes, and spiders (which can only wound Tobot's legs) await Tobot. Tobot can use the laser to clear boulders. He can also build laser bridges that disappear when you walk over them. Keys can only be collected when Tobot stands directly below them and jumps up. Some floors then can be blasted. In addition, Tobot has the ability to teleport. A model will then be left where Tobot stood. The model should never be shot down! Just like that, no keys should eat! Spin a Each shot and each laser bridge costs Tobot energy. If Tobot has no more energy, he can either shoot or build bridges. This can be increased again on energy chargers.
+
+steering
+
+Control is via joystick in port one. You can run left and right, down, climb ladders, jump or blast down diagonally. With the fire button held down, To bot can shoot left and right, diagonally down/right down to build the laser bridge below, charge for energy (if he's in front of a charger) and jump up to grab a key. Tobot is teleported using the keyboard (space key). The Tobot model is brought to where Tobot is currently standing by pressing the "S" key.
+
+To sue
+
+The following displays are located at the top of the screen:
+
+• A bar showing the energy level. • The number of remaining Tobots (initially 7)
+
+The room number (1-50) The score
+
+scoring
+
+. Destroy stone ....... 10 points
+
+. Collect keys... 100 points
+
+• Space made... 550 points
+
++ Energy Bonus
+
+All rooms done. ??? Points
+
+Der Editor
+
+T.... Tobots Startposition K ...... Anzahl der Schlüssel (2)
+
+Mit Hilfe des Editors ist es mög lich, eigene Räume zu erstellen und zu spielen. Der Cursor wird mit dem Feuerknopf gesteuert, Symbole. wer den per Feuerknopf Tastenfunktionen: gesetzt. Die
+
+L Screen Laden
+
+Screen Speichern < .... Screen Löschen
+
+SPACE.. Leerzeichen setzen
+
+ESCAPE. Zum Titelbild (Achtung: Screen wird gelöscht!)
+
+Ziffern von 0-9 angeben) Screennummer (2 Ziffern, N
+
+1-50)
+
+с W Farbe (Joystick, Knopf) Symbol wählen
+
+1 2 Spinne 1 X-Min Position.
+
+Spinne I X-Max Position
+
+3 Spinne 1 ausschalten
+
+4-6
+
+Spinne 2 (s.o.)
+
+7-9 Spinne 3 (s.o.)
+
+G
+
+Geschwindigkeit der Spin
+
+nen (Nummer 1-3, Geschw.)
+
+BROS 1990 KE-SOFT (c)
+
+Fred und sein Bruder Ted waren sehr springt. Sammelt Fred einen Pilz, glücklich zusammen, bis ein böses ist er in der Lage, Mauersteine mit Monster kam und Ted entführte. Von Zeugen bekam Fred zu hören, daß Ted. in einem geheimen Schloß versteckt wurde, und machte sich natürlich sofort auf den Weg, Ted zu befrei - en.
+
+Ladeanweisung
+
+Schalten Sie die Diskettenstation ein und Ihren Atari XL/XE aus. Le- gen Sie nun die Bros-Diskette mit der Rückseite in Laufwerk eins ein und schalten Sie den XL/XE bei gehaltener OPTION-Taste ein. Das Programm wird nun automatisch gela den.
+
+Spielbeschreibung
+
+dem Kopf zu zerstören. In manchen Mauersteinen befinden sich Bonus leben und andere Extras... Hat Fred einen Pilz und sammelt ein Sternsymbol, so bekommt er zehn Schuß. Manche Monster kann Fred auch töten, indem er auf sie springt. Achtung: Wenn Fred ein Le ben verliert, verliert er gleich zeitig auch seine Extras! Nach er folgreichen Spiel besteht evtl. die Möglichekti, einen erreichten High einzutragen.
+
+Punktezählung
+
+• Münze sammeln ......... 10 Punkte
+
+Mauerstein zerstören .. 25 Punkte Monster beseitigen... 100 Punkte
+
+Pilz sammeln ... 100 Punkte
+
+• Bonusgegenstand Level geschafft ??? Punkte Zeitbonus!
+
+Das geheime Land ist in acht Welten mit jeweils vier Unterwelten aufge teilt. Die vierte Unterwelt jeder Welt ist ein geheimes Schloß, in dem Ted versteckt sein könnte! Am Ende einer Unterwelt befindet sich jeweils eine Röhre, in die Fred hi- neingehen kann, um die nächste Welt zu betreten. Auf seinem. Weg kann Fred Münzen sammeln, die Landschaft herumliegen. Für 100 Münzen bekommt Fred ein Bonusleben. außerdem kann Fred aus Blöcken ver- schiedene Gegenstände herausquet- - Pilz vorhanden?
+
+Anzeigen
+
+Am oberen Bildschirmrand sich folgende Anzeigen: befinden
+
+Erreichte Punktezahl in der Anzahl der gesammelten Münzen
+
+Verbleibende Leben
+
+• Nummer der Welt und Unterwelt • Verbleibende Zeit
+
+schen, indem er von unten dagegen Munition vorhanden?
+
+The Editor
+
+T.... Tobot's starting position K ...... number of keys (2)
+
+With the help of the editor it is possible to create and play your own rooms. The cursor is controlled with the fire button, symbols are set with the fire button Key functions:. the
+
+L Screen Laden
+
+Save screen < .... Delete screen
+
+SPACE.. Set spaces
+
+ESCAPE. To the title picture (Caution: Screen will be deleted!)
+
+Specify digits from 0-9) Screen number (2 digits, N
+
+1-50)
+
+с W Select color (joystick, button) icon
+
+1 2 Spinne 1 X-Min Position.
+
+Spinne 1 X-Max Position
+
+3 Turn off spider 1
+
+4-6
+
+Spin 2 (s.o.)
+
+7-9 Spin 3 (s.o.)
+
+G
+
+speed of spin
+
+nen (number 1-3, speed)
+
+BROS 1990 KE-SOFT (c)
+
+Fred and his brother Ted were very jumpy. Fred collects a mushroom, happily together until an evil he is able to wall bricks with monsters came and kidnapped Ted. Fred was told by witnesses that Ted. was hidden in a secret castle and of course immediately set out to free Ted.
+
+loading instruction
+
+Turn on the floppy disk drive and turn off your Atari XL/XE. Now insert the Bros disk with the back into drive one and power on the XL/XE while holding the OPTION button. The program is now loaded automatically.
+
+game description
+
+to destroy the head. Some bricks contain bonus lives and other extras... If Fred has a mushroom and collects a star symbol, he gets ten shots. Fred can also kill some monsters by jumping on them. Attention: If Fred loses a life, he also loses his extras at the same time! After a successful game, there may be the possibility of entering a high that has been reached.
+
+scoring
+
+• Collect coin ......... 10 points
+
+Destroy brick .. 25 points Eliminate monsters ... 100 points
+
+Collect mushroom... 100 points
+
+• Bonus item level done ??? Points time bonus!
+
+The secret land is divided into eight worlds, each with four underworlds. The fourth underworld of each world is a secret castle where Ted might be hiding! At the end of each underworld is a tube that Fred can enter to enter the next world. On his. way, Fred can collect coins lying around the countryside. Fred gets a bonus life for 100 coins. In addition, Fred can squeeze various objects out of blocks- - Is there a mushroom?
+
+To sue
+
+The following displays are located at the top edge of the screen
+
+Achievement of points in the number of coins collected
+
+remaining lives
+
+• Number of world and underworld • Remaining time
+
+by throwing ammunition from below?
+
+TOBOT/BROS
+
+ATARI XL/XE
+
+Zwei Spiele auf einer Disk!
+
+Entkommen Sie aus dem alten Schloß!
+
+Retten Sie Ihren Bruder!
+
+Ein interessantes Denkspiel und ein spannendes Geschicklichkeitsspiel!
+
+Hergestellt von
+
+KE-SOFT Kemal Ezcan Frankenstraße 24 6457 Maintal 4
+
+Info und Katalog kostenlos!
+
+Programm und Verpackung (c) 1990 KE-SOFT
+
+
+TOBOT/BROS
+
+ATARI XL / XE
+
+Two games on one disc!
+
+Escape from the old castle!
+
+Save your brother!
+
+An interesting mind game and an exciting game of skill!
+
+Prepared by
+
+KE-SOFT Kemal Ezcan Frankenstrasse 24 6457 Maintal 4
+
+Info and catalog for free!
+
+Program and packaging (c) 1990 KE-SOFT

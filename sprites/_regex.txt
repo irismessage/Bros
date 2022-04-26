@@ -1,0 +1,3 @@
+For processing photoshop exports with layers to files
+[_0-9]+(.+)
+$1
