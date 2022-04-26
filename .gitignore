@@ -2,8 +2,7 @@
 !.gitignore
 !cart/
 !cart/*
-!sprites/
-!sprites/*
 !bros.bat
 !bros.txt
 !sources.txt
+!sheet.png
