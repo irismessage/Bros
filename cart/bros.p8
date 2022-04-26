@@ -4,7 +4,7 @@ __lua__
 --bros is 120x169px
 --15x21 sprites
 
-game = {
+g = {
 	score=0,
 	coins=0,
 	lives=3,
@@ -88,16 +88,16 @@ function pad(num, digits)
 end
 
 function draw_score()
-	print(pad(game.score,4),0,8)
-	spr(33, 24, 8)
-	print(":"..pad(game.coins,2),32,8)
-	spr(34, 48, 8)
-	print(":"..game.lives,56,8)
-	print("lvl:"..game.lvl,68,8)
-	spr(35, 96, 8)
-	print(":"..game.timer,104,8)
-	spr(36, 120, 8)
-	print(":"..game.wep, 120, 8)
+	print(pad(g.score,4),0,8)
+	spr(33, 20, 8)
+	print(pad(g.coins,2),28,8)
+	spr(34, 40, 8)
+	print(g.lives,48,8)
+	print("lvl"..g.lvl,56,8)
+	spr(35, 78, 8)
+	print(pad(g.timer,3),86,8)
+	spr(36, 102, 8)
+	print(pad(g.wep,2),110,8)
 end
 
 __gfx__
