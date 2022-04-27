@@ -68,40 +68,52 @@ end
 -->8
 --highscore system
 
+--data layout
+--00 is 1 if cdata initialised
+--01 to 10 top scores
+--11 to 20 packed names
+
 function initscores()
 	cartdata("bros_sorb")
-	inited = dget(30)
-	if inited == 0 then
-		for i=10,29 do
-			dset(i,32)
+	if dget(30) == 0 then
+		for i=10,19 do
+			--three spaces
+			dset(i,0x202020)
 		end
 		dset(30,1)
 	end
 end
 
+function packname(name)
+	--pack 3 char string
+	--into 3 byte number
+	packed = 0
+	for i=1,3 do
+		char = ord(sub(name,i,i))
+		shift = char << ((i-1) * 8)
+		packed |= shift
+	end
+	return packed
+end
+
+function unpackname(name)
+	--unpack 3 byte number
+	--into 3 char string
+	unpacked = ""
+	for i=0,2 do
+		shift = (name>>i*8)~0xffff00
+		char = chr(shift)
+		unpacked = unpacked..char
+	end
+	return unpacked
+end
+
 function loadscores()
-	--data layout
-	--00 to 09 top scores
-	--10 to 29 names
-	--three nums per name
-	--30 is 1 if cdata initialised
-	cartdata("bros_sorb")
-	for i=0,9 do
-		h = i + 1
-		scoresn[h] = dget(i)
-		
-		k = i + 3
-		scoresc[h] = ""
-		for j=0,3 do
-			l = k + j
-			o = dget(l)
-			if o == 0 then
-				o = 32
-				dset(l,o)
-			end
-			c = chr(o)
-			scoresc[h] = scoresc[h]..c
-		end
+	initscores()
+	for i=1,10 do
+		scoresn[i] = dget(i)
+		name = dget(i+10)
+		scoresc[i] = unpackname(name)
 	end
 end
 
@@ -115,25 +127,12 @@ function rankscore(num)
 end
 
 function shiftscores(rank)
-	for i=9,rank,-1 do
+	for i=10,rank,-1 do
 		j = i-1
 		scoresn[i] = scoresn[j]
 		scoresc[i] = scoresc[j]
-		savescore(i, scoresn[i], scoresc[i])
-	end
-end
-
-function savescore(rank, num, name)
-	--rank from 0 to 9
-	--num is score value
-	--name is 3 char string
-	--save to cart mem
-	dset(rank, num)
-	rank += 9 + 3 * rank
-	for i=1,3 do
-		c = sub(name, i,i)
-		o = ord(c)
-		dset(rank, 0)
+		dset(i,dget(j))
+		dset(i+10,dget(j+10))
 	end
 end
 
@@ -142,12 +141,13 @@ function askname()
 	return "abc"
 end
 
-function score(num)
+function savescore(num)
 	rank = rankscore(num)
 	if (rank == 10) return
 	name = askname()
 	shiftscores(rank)
-	savescore(rank, num, name)
+	dset(rank, num)
+	dset(rank+10, packname(name))
 end
 
 function scorescol(x,rank)
