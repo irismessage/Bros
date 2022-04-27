@@ -26,6 +26,7 @@ g = {
 p = {
 	x=0,
 	y=0,
+	r=1,
 	jump=0,
 }
 
@@ -76,16 +77,13 @@ end
 
 function initscores()
 	cartdata("bros_sorb")
-	dset(0,0)
 	if dget(0) == 0 then
 		dset(0,1)
 		for i=1,10 do
 			dset(i,0)
 		end
 		for i=11,20 do
-			--three spaces
-			--dset(i,0x202020)
-			dset(i,packname("abc"))
+			dset(i,packname("   "))
 		end
 	end
 end
@@ -97,9 +95,7 @@ function packname(name)
 	packed = 0
 	for i=1,3 do
 		char = ord(sub(name,i,i))-96
-		printh(char)
 		shift = char << ((i-1) * 5)
-		printh(shift)
 		packed |= shift
 	end
 	return packed
@@ -109,11 +105,9 @@ function unpackname(name)
 	unpacked = ""
 	for i=0,2 do
 		shift = (name>>(i*5)) & 0x1f
-		printh(shift)
 		char = chr(shift+96)
 		unpacked = unpacked..char
 	end
-	print(unpacked)
 	return unpacked
 end
 
@@ -166,7 +160,7 @@ function scorescol(x,rank)
 		y += 8
 		print(pad(i,2),x,y)
 		print(pad(scoresn[i],5),x+12,y)
-		print(scoresc[i],x+36,y)
+		print(scoresc[i],x+40,y)
 	end
 end
 
