@@ -29,8 +29,8 @@ scoresc={}
 function _init()
 	cls(1)
 	load_font()
-	mainscreen()
-	--scorescreen()
+	--mainscreen()
+	scorescreen()
 end
 
 function _update()
@@ -64,30 +64,61 @@ function loadscores()
 	--three nums per name
 	cartdata("bros_sorb")
 	for i=0,9 do
-		scoresn[i+1] = dget(i)
-	end
-	for i=10,29 do
-		n = dget(i)
-		if n == 0 then
-			n = 32
-			dset(i,n)
+		h = i + 1
+		scoresn[h] = dget(i)
+		
+		k = i + 3
+		scoresc[h] = ""
+		for j=0,3 do
+			l = k + j
+			o = dget(l)
+			if o == 0 then
+				o = 32
+				dset(l,o)
+			end
+			c = chr(o)
+			scoresc[h] = scoresc[h]..c
 		end
-		c = chr(n)
-		scoresc[i-9] = c
 	end
 end
 
-function rankscore(score)
+function rankscore(num)
 	for i=0,9 do
-		if score > scoresn[i] then
+		if num > scoresn[i] then
 			return i
 		end
 	end
 	return 10
 end
 
+function shiftscores(rank)
+	for i=9,rank,-1 do
+		j = i-1
+		scoresn[i] = scoresn[j]
+		scoresc[i] = scoresc[j]
+		savescore(i, scoresn[i], scoresc[i])
+	end
+end
+
+function savescore(rank, num, name)
+	--rank from 0 to 9
+	--num is score value
+	--name is 3 char string
+	--save to cart mem
+	dset(rank, num)
+	rank += 9 + 3 * rank
+	for i=1,3 do
+		c = sub(name, i,i)
+		o = ord(c)
+		dset(rank, 0)
+	end
+end
+
 function sprtochar(sprn)
 	--sprn is sprite number
+	--convert sprite n to custom
+	--font format and return
+	--as table of 8 bytes
 	char = {}
 	col = sprn % 16
 	row = flr(sprn / 16)
@@ -103,6 +134,19 @@ function sprtochar(sprn)
 		end
 	end
 	return char
+end
+
+function askname()
+	--todo implement
+	return "abc"
+end
+
+function score(num)
+	rank = rankscore(num)
+	if (rank == 10) return
+	name = askname()
+	shiftscores(rank)
+	savescore(rank, num, name)
 end
 
 function fblock(src, dest, len)
