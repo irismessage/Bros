@@ -39,25 +39,49 @@ e = {
 	curs=1,
 }
 
+-- state
+s = {
+	main=true,
+	hi=false,
+	entry=false,
+	play=false,
+}
+
 scoresn={}
 scoresc={}
 
 function _init()
 	loadfont()
 	loadscores()
---	mainscreen()
---	scorescreen()
-	askname()
+	mainscreen()
 end
 
 function _update()
---	g.timer -= 1
-	updatenameentry()
+	updatestate()
+	
+	if s.main then
+		-- main screen
+	elseif s.hi then
+		-- high scores display
+	elseif s.entry then
+		updatenameentry()
+	elseif s.play then
+		-- levels
+		g.timer -= 1
+	end
 end
 
 function _draw()
 	scorebarl()
-	drawnameentry()
+	if s.main then
+		-- main screen
+	elseif s.hi then
+		-- high scores display
+	elseif s.entry then
+		drawnameentry()
+	elseif s.play then
+		-- levels
+	end
 end
 
 function mainscreen()
@@ -77,6 +101,32 @@ function scorescreen()
 	print(t, 20, 28)	
 	scorescol(8,1)
 	scorescol(64,6)
+end
+
+function updatestate()
+	if s.main then
+		if btnp(❎) then
+--			s.main = false
+--			s.play = true
+		elseif btnp(🅾️) then
+			s.main = false
+			s.hi = true
+			scorescreen()
+		end
+	elseif s.hi then
+		if btnp(❎) or btnp(🅾️) then
+			s.hi = false
+			s.main = true
+			mainscreen()
+		end
+	elseif s.entry then
+		if btnp(❎) then
+			savescore()
+			s.entry = false
+			s.hi = true
+			scorescreen()
+		end
+	end
 end
 
 -->8
@@ -157,7 +207,6 @@ function askname()
 	scorebars()
 	print("great score",42,40)
 	print("enter your name",34,56)
-	return "abc"
 end
 
 function drawnameentry()
@@ -187,11 +236,16 @@ function updatenameentry()
 	end
 end
 
-function savescore(num)
+function checkscore(num)
 	rank = rankscore(num)
-	if (rank == 10) return
-	name = askname()
+	if (rank == 10) return false
 	shiftscores(rank)
+	return true
+end
+
+function savescore()
+	cs = e.text
+	name = cs[1]..cs[2]..cs[3]
 	dset(rank, num)
 	dset(rank+10, packname(name))
 end
