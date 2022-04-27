@@ -14,6 +14,7 @@ __lua__
 --2 custom font system
 --3 top bar rendering
 
+-- game
 g = {
 	score=0,
 	coins=0,
@@ -23,6 +24,7 @@ g = {
 	wep=0,
 }
 
+-- player
 p = {
 	x=0,
 	y=0,
@@ -30,22 +32,32 @@ p = {
 	jump=0,
 }
 
+-- name entry
+e = {
+ ords={97,97,97},
+	chrs={"a","a","a"},
+	curs=1,
+}
+
 scoresn={}
 scoresc={}
 
 function _init()
-	load_font()
+	loadfont()
 	loadscores()
-	--mainscreen()
-	scorescreen()
+--	mainscreen()
+--	scorescreen()
+	askname()
 end
 
 function _update()
-	--g.timer -= 1
+--	g.timer -= 1
+	updatenameentry()
 end
 
 function _draw()
 	scorebarl()
+	drawnameentry()
 end
 
 function mainscreen()
@@ -83,7 +95,8 @@ function initscores()
 			dset(i,0)
 		end
 		for i=11,20 do
-			dset(i,packname("   "))
+			default = packname("   ")
+			dset(i,default)
 		end
 	end
 end
@@ -140,8 +153,38 @@ function shiftscores(rank)
 end
 
 function askname()
-	--todo implement
+	cls(1)
+	scorebars()
+	print("great score",42,40)
+	print("enter your name",34,56)
 	return "abc"
+end
+
+function drawnameentry()
+	rectfill(58,72,70,86,1)
+	color(15)
+	for i=1,3 do
+		print(e.chrs[i],54+4*i,72)
+	end
+	print(":",54+4*e.curs,80)
+end
+
+function updatenameentry()
+	c = e.curs
+	if btnp(➡️) and c < 3 then
+		e.curs += 1
+	end
+	if btnp(⬅️) and 1 < c then
+		e.curs -= 1
+	end
+	if btnp(⬆️) and e.ords[c]<122 then
+		e.ords[c] += 1
+		e.chrs[c] = chr(e.ords[c])
+	end
+	if btnp(⬇️) and 97<e.ords[c] then
+		e.ords[c] -= 1
+		e.chrs[c] = chr(e.ords[c])
+	end
 end
 
 function savescore(num)
@@ -202,8 +245,8 @@ function fblock(src, dest, len)
 	end
 end
 
-function load_font()
-	--load custom font from sprite
+function loadfont()
+	-- load custom font from sprite
 	-- sheet and activate it
 	
 	--letters
