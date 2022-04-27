@@ -8,6 +8,12 @@ __lua__
 --bros is 120x169px
 --15x21 sprites
 
+--tabs
+--0 main
+--1 highscore system
+--2 custom font system
+--3 top bar rendering
+
 g = {
 	score=0,
 	coins=0,
@@ -57,6 +63,7 @@ function scorescreen()
 	print("h i g h s c o r e s :", 20, 24)	
 end
 
+-->8
 function loadscores()
 	--data layout
 	--00 to 09 top scores
@@ -114,6 +121,20 @@ function savescore(rank, num, name)
 	end
 end
 
+function askname()
+	--todo implement
+	return "abc"
+end
+
+function score(num)
+	rank = rankscore(num)
+	if (rank == 10) return
+	name = askname()
+	shiftscores(rank)
+	savescore(rank, num, name)
+end
+
+-->8
 function sprtochar(sprn)
 	--sprn is sprite number
 	--convert sprite n to custom
@@ -134,19 +155,6 @@ function sprtochar(sprn)
 		end
 	end
 	return char
-end
-
-function askname()
-	--todo implement
-	return "abc"
-end
-
-function score(num)
-	rank = rankscore(num)
-	if (rank == 10) return
-	name = askname()
-	shiftscores(rank)
-	savescore(rank, num, name)
 end
 
 function fblock(src, dest, len)
@@ -180,6 +188,7 @@ function load_font()
 	poke(0x5602, 8)
 end
 
+-->8
 function pad(num, digits)
 	padded = tostr(num)
 	diff = digits - #padded
