@@ -1,1 +1,1 @@
-pico8 bros.p8 -export bros.p8.png
+pico8 cart/bros.p8 -export bros.p8.png
