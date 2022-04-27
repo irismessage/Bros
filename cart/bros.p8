@@ -77,13 +77,13 @@ end
 
 function die()
 	e.rank = rankscore(g.score)
-	if rank != 11 then
-		s.entry = true
+	if e.rank != 11 then
 		askname()
 	end
 end
 
 function mainscreen()
+	s.main = true
 	cls(1)
 	map(0)
 	scorebars()
@@ -94,6 +94,7 @@ function mainscreen()
 end
 
 function scorescreen()
+	s.hi = true
 	cls(1)
 	scorebars()
 	t = "h i g h s c o r e s :"
@@ -121,21 +122,18 @@ function updatestate()
 --			s.play = true
 		elseif btnp(🅾️) then
 			s.main = false
-			s.hi = true
 			scorescreen()
 		end
 	elseif s.hi then
 		if btnp(❎) or btnp(🅾️) then
 			s.hi = false
-			s.main = true
 			mainscreen()
 			g.score = 0
 		end
 	elseif s.entry then
 		if btnp(❎) then
-			savescore(e.rank)
+			savescore()
 			s.entry = false
-			s.hi = true
 			scorescreen()
 		end
 	end
@@ -215,6 +213,7 @@ function shiftscores(rank)
 end
 
 function askname()
+	s.entry = true
 	cls(1)
 	scorebars()
 	print("great score",42,40)
@@ -248,12 +247,14 @@ function updatenameentry()
 	end
 end
 
-function savescore(rank)
+function savescore()
 	cs = e.chrs
 	name = cs[1]..cs[2]..cs[3]
 	shiftscores(e.rank)
-	dset(rank, num)
-	dset(rank+10, packname(name))
+	scoresn[e.rank] = g.score
+	scoresc[e.rank] = name
+	dset(e.rank, g.score)
+	dset(e.rank+10, packname(name))
 end
 
 function scorescol(x,rank)
