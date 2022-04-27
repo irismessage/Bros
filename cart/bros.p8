@@ -34,12 +34,13 @@ function _update()
 end
 
 function _draw()
-	draw_score()
+	scorebarl()
 end
 
 function mainscreen()
 	cls(1)
 	map(0)
+	scorebars()
 	--❎🅾️
 	print("x:play",8,104)
 	print("pause:screen",38,104)
@@ -48,6 +49,7 @@ end
 
 function scorescreen()
 	cls(1)
+	scorebars()
 	print("h i g h s c o r e s :", 20, 24)	
 end
 
@@ -141,16 +143,32 @@ function pad(num, digits)
 	return padded
 end
 
-function draw_score()
-	print(pad(g.score,5),4,8)
+function scorebars()
+	--draw top bar static part
 	spr(33, 24, 8)
-	print(pad(g.coins,2),32,8)
 	spr(34, 42, 8)
-	print(g.lives,52,8)
 	print("lvl"..g.lvl,60,8)
 	spr(35, 82, 8)
-	print(pad(g.timer,3),90,8)
 	spr(36, 106, 8)
+end
+
+function clearbar(x, len)
+	for i=x,x+len do
+		spr(1,i,8)
+	end
+end
+
+function scorebarl()
+	--draw top bar live part
+	clearbar(4,5)
+	print(pad(g.score,5),4,8)
+	clearbar(32,2)
+	print(pad(g.coins,2),32,8)
+	spr(1,52,8)
+	print(g.lives,52,8)
+	clearbar(90,3)
+	print(pad(g.timer,3),90,8)
+	clearbar(114,2)
 	print(pad(g.wep,2),114,8)
 end
 
