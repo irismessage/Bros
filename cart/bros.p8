@@ -37,6 +37,7 @@ e = {
  ords={97,97,97},
 	chrs={"a","a","a"},
 	curs=1,
+	rank=0,
 }
 
 -- state
@@ -59,11 +60,7 @@ end
 function _update()
 	updatestate()
 	
-	if s.main then
-		-- main screen
-	elseif s.hi then
-		-- high scores display
-	elseif s.entry then
+	if s.entry then
 		updatenameentry()
 	elseif s.play then
 		-- levels
@@ -73,14 +70,16 @@ end
 
 function _draw()
 	scorebarl()
-	if s.main then
-		-- main screen
-	elseif s.hi then
-		-- high scores display
-	elseif s.entry then
+	if s.entry then
 		drawnameentry()
-	elseif s.play then
-		-- levels
+	end
+end
+
+function die()
+	e.rank = rankscore(g.score)
+	if rank != 11 then
+		s.entry = true
+		askname()
 	end
 end
 
@@ -103,8 +102,20 @@ function scorescreen()
 	scorescol(64,6)
 end
 
+function testscore()
+	if btnp(⬆️) then
+		g.score += 100
+	elseif btnp(⬇️) then
+		g.score -= 100
+	elseif btnp(➡️) then
+		s.main = false
+		die()
+	end
+end
+
 function updatestate()
 	if s.main then
+		testscore()
 		if btnp(❎) then
 --			s.main = false
 --			s.play = true
@@ -118,10 +129,11 @@ function updatestate()
 			s.hi = false
 			s.main = true
 			mainscreen()
+			g.score = 0
 		end
 	elseif s.entry then
 		if btnp(❎) then
-			savescore()
+			savescore(e.rank)
 			s.entry = false
 			s.hi = true
 			scorescreen()
@@ -184,12 +196,12 @@ function loadscores()
 end
 
 function rankscore(num)
-	for i=0,9 do
+	for i=1,10 do
 		if num > scoresn[i] then
 			return i
 		end
 	end
-	return 10
+	return 11
 end
 
 function shiftscores(rank)
@@ -236,16 +248,10 @@ function updatenameentry()
 	end
 end
 
-function checkscore(num)
-	rank = rankscore(num)
-	if (rank == 10) return false
-	shiftscores(rank)
-	return true
-end
-
-function savescore()
-	cs = e.text
+function savescore(rank)
+	cs = e.chrs
 	name = cs[1]..cs[2]..cs[3]
+	shiftscores(e.rank)
 	dset(rank, num)
 	dset(rank+10, packname(name))
 end
