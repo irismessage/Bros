@@ -60,9 +60,10 @@ end
 function scorescreen()
 	cls(1)
 	scorebars()
-	print("h i g h s c o r e s :", 20, 24)	
-	scorescol(8,0)
-	scorescol(64,5)
+	t = "h i g h s c o r e s :"
+	print(t, 20, 28)	
+	scorescol(8,1)
+	scorescol(64,6)
 end
 
 -->8
@@ -75,36 +76,44 @@ end
 
 function initscores()
 	cartdata("bros_sorb")
-	if dget(30) == 0 then
-		for i=10,19 do
-			--three spaces
-			dset(i,0x202020)
+	dset(0,0)
+	if dget(0) == 0 then
+		dset(0,1)
+		for i=1,10 do
+			dset(i,0)
 		end
-		dset(30,1)
+		for i=11,20 do
+			--three spaces
+			--dset(i,0x202020)
+			dset(i,packname("abc"))
+		end
 	end
 end
 
+--functions to convert between
+--three character strings
+--and 15-byte numbers
 function packname(name)
-	--pack 3 char string
-	--into 3 byte number
 	packed = 0
 	for i=1,3 do
-		char = ord(sub(name,i,i))
-		shift = char << ((i-1) * 8)
+		char = ord(sub(name,i,i))-96
+		printh(char)
+		shift = char << ((i-1) * 5)
+		printh(shift)
 		packed |= shift
 	end
 	return packed
 end
 
 function unpackname(name)
-	--unpack 3 byte number
-	--into 3 char string
 	unpacked = ""
 	for i=0,2 do
-		shift = (name>>i*8)~0xffff00
-		char = chr(shift)
+		shift = (name>>(i*5)) & 0x1f
+		printh(shift)
+		char = chr(shift+96)
 		unpacked = unpacked..char
 	end
+	print(unpacked)
 	return unpacked
 end
 
@@ -152,12 +161,12 @@ end
 
 function scorescol(x,rank)
 	y=48
-	print("nr.score name",x,y)
+	print("nr score name",x,y)
 	for i=rank,rank+4 do
 		y += 8
-		print(pad(i+1,2),x,y)
-		print(pad(scoresn[i],5),x+14,y)
-		print(scoresc[i],x+40,y)
+		print(pad(i,2),x,y)
+		print(pad(scoresn[i],5),x+12,y)
+		print(scoresc[i],x+36,y)
 	end
 end
 
