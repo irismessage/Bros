@@ -33,14 +33,14 @@ scoresn={}
 scoresc={}
 
 function _init()
-	cls(1)
 	load_font()
+	loadscores()
 	--mainscreen()
 	scorescreen()
 end
 
 function _update()
-	g.timer -= 1
+	--g.timer -= 1
 end
 
 function _draw()
@@ -61,14 +61,30 @@ function scorescreen()
 	cls(1)
 	scorebars()
 	print("h i g h s c o r e s :", 20, 24)	
+	scorescol(8,0)
+	scorescol(64,5)
 end
 
 -->8
+--highscore system
+
+function initscores()
+	cartdata("bros_sorb")
+	inited = dget(30)
+	if inited == 0 then
+		for i=10,29 do
+			dset(i,32)
+		end
+		dset(30,1)
+	end
+end
+
 function loadscores()
 	--data layout
 	--00 to 09 top scores
 	--10 to 29 names
 	--three nums per name
+	--30 is 1 if cdata initialised
 	cartdata("bros_sorb")
 	for i=0,9 do
 		h = i + 1
@@ -134,7 +150,20 @@ function score(num)
 	savescore(rank, num, name)
 end
 
+function scorescol(x,rank)
+	y=48
+	print("nr.score name",x,y)
+	for i=rank,rank+4 do
+		y += 8
+		print(pad(i+1,2),x,y)
+		print(pad(scoresn[i],5),x+14,y)
+		print(scoresc[i],x+40,y)
+	end
+end
+
 -->8
+--custom font system
+
 function sprtochar(sprn)
 	--sprn is sprite number
 	--convert sprite n to custom
@@ -189,6 +218,8 @@ function load_font()
 end
 
 -->8
+--top bar rendering
+
 function pad(num, digits)
 	padded = tostr(num)
 	diff = digits - #padded
