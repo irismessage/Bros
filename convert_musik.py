@@ -1,91 +1,63 @@
-start = 29
+import sys
 
-"""
-29
-31
-33
-35
-37
-40
-42
-45
-47
-50
-53
-57
-60
-64
-68
-72
-76
-81
-85
-91
-96
-102
-108
-114
-121
-128
-136
-144
-153
-162
-173
-182
-193
-204
-217
-230
-243
-"""
+
+PICO_8_OFFSET = -2
+
 
 thing = """\
-243 C3
-230 C#3
-217 D3
-204 D#3
-193 E3
-182 F3
-173 F#3
-162 G3
-153 G#3
-144 A3
-136 A#3
-128 B3
-121 C4
-114 C#4
-108 D4
-102 D#4
-96 E4
-91 F4
-85 F#4
-81 G4
-76 G#4
-72 A4
-68 A#4
-64 B4
-60 C5
-57 C#5
-53 D5
-50 D#5
-47 E5
-45 F5
-42 F#5
-40 G5
-37 G#5
-35 A5
-33 A#5
-31 B5
-29 C6
+243 C 3
+230 C# 3
+217 D 3
+204 D# 3
+193 E 3
+182 F 3
+173 F# 3
+162 G 3
+153 G# 3
+144 A 3
+136 A# 3
+128 B 3
+121 C 4
+114 C# 4
+108 D 4
+102 D# 4
+96 E 4
+91 F 4
+85 F# 4
+81 G 4
+76 G# 4
+72 A 4
+68 A# 4
+64 B 4
+60 C 5
+57 C# 5
+53 D 5
+50 D# 5
+47 E 5
+45 F 5
+42 F# 5
+40 G 5
+37 G# 5
+35 A 5
+33 A# 5
+31 B 5
+29 C 6
 """
 
 noteslist = [l.split() for l in thing.splitlines()]
-notes = {int(pitch): note for pitch, note in noteslist}
+for note in noteslist:
+    note[0] = int(note[0])
+    note[2] = int(note[2]) + PICO_8_OFFSET
+
+notes = {}
+for pitch, note, octave in noteslist:
+    unpadded = note + str(octave)
+    padded = unpadded.ljust(3)
+    notes[pitch] = padded
 
 #print(notes)
 
-path = 'datamined/MUSIK1.DAT'
+path = f'datamined/MUSIK{sys.argv[1]}.DAT'
 print(path)
 with open(path, 'rb') as file:
     file.seek(48)
@@ -104,5 +76,12 @@ def closest(target_pitch):
 
 
 converted = [closest(num) for num in data]
-for i in range(0, len(converted), 8):
-    print(' '.join(converted[i:i+8]))
+bars = [converted[i:i+8] for i in range(0, len(converted), 8)]
+print(len(bars))
+print("Press enter for each bar")
+try:
+    for bar in bars:
+        input()
+        print(' '.join(bar), end='')
+except KeyboardInterrupt:
+    print('\n^C', end='')
