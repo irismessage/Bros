@@ -104,4 +104,5 @@ def closest(target_pitch):
 
 
 converted = [closest(num) for num in data]
-print(' '.join(converted))
+for i in range(0, len(converted), 8):
+    print(' '.join(converted[i:i+8]))
