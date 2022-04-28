@@ -1,15 +1,29 @@
+- tools and emulators
 https://atari800.github.io/
 https://github.com/atari800/atari800
-https://www.spriters-resource.com/atari/bros/
+https://github.com/rossumur/esp_8_bit/blob/master/atr_image_explorer.htm
+
+- relevant sites
+https://en.wikipedia.org/wiki/Atari_8-bit_family
+http://www.atarimania.com/
+http://www.atarimania.com/documents-atari-400-800-xl-xe-manuals_2_8.html
+- reference manual with music notes
+http://www.atarimania.com/documents/Atari-Basic-Reference-Manual-Rev-C.pdf
+
+- ke-soft
 https://www.mobygames.com/company/ke-soft
 https://de-m-wikipedia-org.translate.goog/wiki/KE-SOFT?_x_tr_sl=de&_x_tr_tl=en&_x_tr_hl=en-US&_x_tr_pto=wapp
-http://www.atarimania.com/
+
+- the developer
+https://atariage.com/forums/topic/233511-ke-soft-kemal-ezcan-zong-atari-8-bit-games-and-music/
+https://www.yodasvideoarcade.com/
+https://www-kultboy-com.translate.goog/Yoda-Zhang-Interview/40/?_x_tr_sl=de&_x_tr_tl=en&_x_tr_hl=en&_x_tr_pto=sc
+https://www.kultboy.com/Yoda-Zhang-Interview/40/
+
+- BROS
 http://highscore.com/games/Atari400800XLXEEmulated/Bros/58675
 game-atari-400-800-xl-xe-tobot-bros_5425.html
 https://therubberfruit.tumblr.com/post/166757423277/i-tried-to-see-if-i-could-play-through-bros-atari
 https://archive.org/details/a8b_Bros_1989_KE_Soft_DE_en_a3
 https://gury.atari8.info/detail.php?id=873&src=2&c=ch=b
-https://atariage.com/forums/topic/233511-ke-soft-kemal-ezcan-zong-atari-8-bit-games-and-music/
-https://www.yodasvideoarcade.com/
-https://www-kultboy-com.translate.goog/Yoda-Zhang-Interview/40/?_x_tr_sl=de&_x_tr_tl=en&_x_tr_hl=en&_x_tr_pto=sc
-https://www.kultboy.com/Yoda-Zhang-Interview/40/
+https://www.spriters-resource.com/atari/bros/
