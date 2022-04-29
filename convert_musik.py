@@ -85,15 +85,41 @@ def closest(target_pitch):
     return result
 
 
+def packconverted(conv):
+    prefix = '01100000'
+    instrument = 3
+    volume = 3
+    effect = 0
+
+
+def unpack(sfx: str):
+    sfx_bin = f'{int(sfx, 16):b}'
+    for i in range(0, 640, 20):
+        note = sfx_bin[i:i+8]
+        frequency = int(note[1:4], 2)
+        octave = int(note[4:8], 2)
+        print(frequency, octave)
+
+
 converted = [closest(num) for num in data]
-bars = [converted[i:i+8] for i in range(0, len(converted), 8)]
-print(len(bars))
-print("Press enter for each bar")
-try:
-    for i, bar in enumerate(bars):
-        input()
-        print(' '.join(bar), end='')
-        if (i + 1) % 4 == 0:
-            print()
-except KeyboardInterrupt:
-    print('\n^C', end='')
+
+
+def printconv(conv):
+    bars = [conv[i:i+8] for i in range(0, len(conv), 8)]
+    print(len(bars))
+    print("Press enter for each bar")
+    try:
+        for i, bar in enumerate(bars):
+            input()
+            print(' '.join(bar), end='')
+            if (i + 1) % 4 == 0:
+                print()
+    except KeyboardInterrupt:
+        print('\n^C', end='')
+
+
+if __name__ == '__main__':
+    # printconv()
+    unpack(
+            '0c3100d3100e3100f310103101131012310133101431015310163101731018310193101a3101b3101c3101d3101e3101f310203102131022310233100000000000000000000000000000000000000000'
+    )
