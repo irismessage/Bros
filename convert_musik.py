@@ -4,6 +4,16 @@ import sys
 PICO_8_OFFSET = -2
 
 
+# 1, 2, 4 are 42 bars
+# 3 is 38 bars
+# musik PICO-8 index
+# 1     00
+# 2     11
+# 3     22
+# 4     32
+# end   43
+
+
 thing = """\
 243 C 3
 230 C# 3
@@ -80,8 +90,10 @@ bars = [converted[i:i+8] for i in range(0, len(converted), 8)]
 print(len(bars))
 print("Press enter for each bar")
 try:
-    for bar in bars:
+    for i, bar in enumerate(bars):
         input()
         print(' '.join(bar), end='')
+        if (i + 1) % 4 == 0:
+            print()
 except KeyboardInterrupt:
     print('\n^C', end='')
