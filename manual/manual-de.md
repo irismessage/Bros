@@ -25,54 +25,51 @@ Programm und Verpackung (c) 1990 KE-SOFT
 Fred und sein Bruder Ted waren sehr 
 glücklich zusammen, bis ein böses
 Monster kam und Ted entführte. Von 
-Weugen bekam Fred zu hören, daß Ted 
+Zeugen bekam Fred zu hören, daß Ted 
 in einem geheimen Schloß versteckt 
 wurde, und mqchte sich natürlich 
-sofort auf den Weg, Ted zu befrei-
-en.
+sofort auf den Weg, Ted zu befreien.
 
 ## Ladeanweisung
 Schalten Sie die Diskettenstation 
-ein und Ihren Atari XL/XE aus. Le-
-gen Sie nun die Bros-Diskette mit 
+ein und Ihren Atari XL/XE aus. Legen 
+Sie nun die Bros-Diskette mit 
 der Ruckseite in Laufwerk eins 
 ein und schalten Sie den XL/XE bei
 gehaltener OPTION-Taste ein. Das
-Programm wird nun automatisch gela-
-den.
+Programm wird nun automatisch geladen.
 
 ## Spielbeschreibung
 Das geheime Land is in acht Welten 
-mit jeweils vier Unterwelten aufge-
-teilt. Die vierte Unterwelt jeder 
+mit jeweils vier Unterwelten aufgeteilt. 
+Die vierte Unterwelt jeder 
 Welt is ein geheimes Schloß, in 
 dem Ted versteckt sein könnte! Am 
 Ende einer Unterwelt befindet sich 
-jeweils eine Röhre, in die Fred hi-
-neingehen kann, um die nächste Welt 
+jeweils eine Röhre, in die Fred hineingehen 
+kann, um die nächste Welt 
 zu betreten. auf seinem Weg kann 
 Fred Münzen sammeln, die in der 
 Landschaft herumliegen. Für 100 
 Münzen bekommt Fred ein Bonusleben. 
-außerdem kann Fred aus Blöcken ver-
-schiedene Gegenstände herausquet-
-schen, indem er von unten dagegen
+außerdem kann Fred aus Blöcken verschiedene
+Gegenstände herausquetschen, 
+indem er von unten dagegen
 
 springt. Sammelt Fred einen Pilz, 
 ist er in der Lage, Mauersteine mit 
 dem Kopf zu zerstören. In machen 
-Mauersteinen befinded sich Bonus-
-leben und andere Extras ...
+Mauersteinen befinded sich Bonusleben 
+und andere Extras ...
 Hat Fred einen Pilz und sammelt ein 
 Sternsymbol, so bekommt er zehn 
 Schuß. Manche Monster kann Fred 
 auch töten, indem er auf sie 
-springt. Achtung: Wenn Fred ein Le-
-ben verliert, verliert er gleich-
-zeitig auch seine Extras! Nach er-
+springt. Achtung: Wenn Fred ein Leben 
+verliert, verliert er gleichzeitig 
+auch seine Extras! Nach er-
 folgreichen Spiel besteht evtl. die 
-Moglichekti, einen erreichten High-
-einzutragen.
+Moglichekti, einen erreichten Higheinzutragen.
 
 ## Punktezahlung
 
