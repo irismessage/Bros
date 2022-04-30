@@ -16,6 +16,7 @@ http://www.atarimania.com/documents-atari-400-800-xl-xe-manuals_2_8.html
 http://www.atarimania.com/documents/Atari-Basic-Reference-Manual-Rev-C.pdf
 https://en.wikipedia.org/wiki/Turbo-BASIC_XL
 https://atariwiki.org/wiki/Wiki.jsp?page=Turbo-BASIC%20XL
+https://en.wikipedia.org/wiki/Atari_CX40_joystick
 
 - ke-soft
 https://www.mobygames.com/company/ke-soft
