@@ -5,6 +5,6 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 
 w::NumpadUp
 a::NumpadLeft
-s::NumpadDown
+s::NumpadClear
 d::NumpadRight
 Space::NumpadUp
