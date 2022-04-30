@@ -91,8 +91,7 @@ function mainscreen()
 	cls(1)
 	map(0)
 	scorebars()
-	music(-1)
-	music(32)
+	music(24)
 	g.timer = 600
 	print("🅾️:play",4,104)
 	print("‖:screen",44,104)
@@ -103,8 +102,6 @@ function scorescreen()
 	s.hi = true
 	cls(1)
 	scorebars()
-	music(-1)
-	music(32)
 	t = "h i g h s c o r e s :"
 	print(t, 20, 28)	
 	scorescol(8,1)
@@ -398,7 +395,6 @@ function levelscreen()
 	s.play = true
 	cls(1)
 	map(16,0)
-	music(-1)
 	music(0)
 	scorebars()
 	print("pre-alpha",0,24,9)
@@ -805,8 +801,8 @@ __music__
 00 1d424344
 00 1e424344
 00 1f424344
-01 20684344
-04 21694344
+01 23284344
+00 24294344
 00 232a4344
 00 242b4344
 00 252c4344
