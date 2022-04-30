@@ -117,8 +117,16 @@ def unpack(sfx: str):
         print(frequency, octave)
 
 
+def musik_number():
+    try:
+        musik = sys.argv[1]
+    except IndexError:
+        musik = input('Musik number (1 to 4): ')
+    return musik
+
+
 def mine():
-    path = f'datamined/MUSIK{sys.argv[1]}.DAT'
+    path = f'datamined/MUSIK{musik_number()}.DAT'
     print(path)
     with open(path, 'rb') as file:
         file.seek(48)
