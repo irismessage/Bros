@@ -2,6 +2,11 @@
 https://atari800.github.io/
 https://github.com/atari800/atari800
 https://github.com/rossumur/esp_8_bit/blob/master/atr_image_explorer.htm
+https://sourceforge.net/projects/atari800/files/ROM/Original%20XL%20ROM/xf25.zip
+https://www.emutopia.com/index.php/emulators/category-items/3-emulators/320-atari-400-800-xl-xe
+http://www.emulators.com/xformer.htm
+https://atariage.com/forums/topic/176545-topic-for-newbies-or-veterans-returning-to-atari/
+https://www.virtualdub.org/altirra.html
 
 - relevant sites
 https://en.wikipedia.org/wiki/Atari_8-bit_family
