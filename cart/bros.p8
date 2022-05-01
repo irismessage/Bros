@@ -552,47 +552,64 @@ p = {
 	x=16,
 	y=96,
 	l=false,
-	mov=0,
+	movet=0,
+	jumpt=0,
 	jump=0,
 }
+tick = 1
 
 function drawbro()
 	sprn = 1
 	if p.jump < 4 then
 		sprn = 10
-	elseif p.mov % 2 != 0 then
+	elseif p.movet % 2 != 0 then
 		sprn = 2
 	end
 	spr(sprn,p.x,p.y,1,1,p.l)
 end
 
-movdist = 4
-movtick = 2
 function updatemove()
-	if p.mov == 0 then
-		if btn(⬅️) then
-			p.l = true
-			p.mov = movtick
-			if not lcol() and p.x>4 then
-				p.x -= movdist
-			end
+	if p.movet != 0 then
+		if p.movet > 0 then
+			p.movet -= 1
 		end
-		if btn(➡️) then
-			p.l = false
-			p.mov = movtick
-			if not rcol() then
-				p.x += movdist
-			end
+		return
+	end
+	
+	if btn(⬅️) then
+		p.l = true
+		p.movet = tick
+		if not lcol() and p.x>4 then
+			p.x -= 4
 		end
 	end
-	if p.mov > 0 then
-		p.mov -= 1
+	if btn(➡️) then
+		p.l = false
+		p.movet = tick
+		if not rcol() then
+			p.x += 4
+		end
 	end
 end
 
+function jbtn()
+	return btn(⬆️) or btn(🅾️)
+end
+
 function updatejump()
- if p.jump>0 and btn(⬆️) then
+	if p.jumpt != 0 then
+		if p.jumpt > 0 then
+			p.jumpt -= 1
+		end
+		return
+	end
+
+ if p.jump>1 and jbtn() then
+ 	p.jumpt = tick
  	p.jump -= 1
+ 	if p.jump == 1 then
+			p.jumpt = 4*tick
+		end
  	if not ucol() then
  		p.y -= 8
 		end
