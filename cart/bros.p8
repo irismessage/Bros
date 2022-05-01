@@ -20,6 +20,7 @@ __lua__
 -- 3 top bar rendering
 -- 4 levels
 -- 5 sprite swap
+-- 6 movement
 
 -- game
 g = {
@@ -37,24 +38,6 @@ l = {
 	screen=1,
 }
 
--- player
-p = {
-	x=16,
-	y=96,
-	l=false,
-	mov=0,
-	jump=0,
-	jumpe=false,
-}
-
--- name entry
-e = {
- ords={97,97,97},
-	chrs={"a","a","a"},
-	curs=1,
-	rank=0,
-}
-
 -- state
 s = {
 	main=false,
@@ -63,11 +46,10 @@ s = {
 	play=false,
 }
 
-scoresn={}
-scoresc={}
-
-wait = 0
-await = nil
+wait = {
+	f=0,
+	call=nil,
+}
 
 function _init()
 	loadfont()
@@ -158,6 +140,17 @@ end
 --00 is 1 if cdata initialised
 --01 to 10 top scores
 --11 to 20 packed names
+
+-- name entry
+e = {
+ ords={97,97,97},
+	chrs={"a","a","a"},
+	curs=1,
+	rank=0,
+}
+
+scoresn={}
+scoresc={}
 
 function initscores()
 	cartdata("bros_sorb")
@@ -440,9 +433,9 @@ function updatemusplayer()
 end
 
 function updatewait()
-	if wait > 0 then
-		if (wait == 1) await()
-		wait -= 1
+	if wait.f > 0 then
+		if (wait.f == 1) wait.call()
+		wait.f -= 1
 		return true
 	end
 	return false
@@ -452,8 +445,8 @@ function die()
 	spr(3,p.x,p.y)
 	--todo recreate proper sounds
 	sfx(48)
-	wait = 30
-	await = gameover
+	wait.f = 30
+	wait.call = gameover
 end
 
 function gameover()
@@ -468,8 +461,8 @@ function gameover()
 		spr(17,24,y)
 		spr(17,88,y)
 	end
-	wait = 60
-	await = diefinish
+	wait.f = 60
+	wait.call = diefinish
 end
 
 function diefinish()
@@ -554,6 +547,16 @@ end
 -->8
 -- movement
 
+-- player
+p = {
+	x=16,
+	y=96,
+	l=false,
+	mov=0,
+	jump=0,
+	jumpe=false,
+}
+
 function drawbro()
 	sprn = 1
 	if p.jump > 0 then
@@ -588,23 +591,39 @@ end
 
 jumpmax = 4
 function updatejump()
+	-- jump end, they must fall
 	if p.jumpe then
 		if p.jump == 0 then
 			p.jumpe = false
 		else
-			p.jump -=1
-			p.y -= 8
+			p.jump -= 1
+			p.y += 8
 		end
-		return
-	end
-	if btn(⬆️) then
+	-- jump available
+	elseif btn(⬆️) then
 		p.jump += 1
-		p.y += 8
+		p.y -= 8
 		if p.jump == jumpmax then
 			p.jumpe = true
 		end
+	elseif p.jump > 0 then
+	 p.jump -= 1
+		p.y += 8
+	end
+end
+
+function collide(x,y)
+	return mget(x/8,y/8) == 0
+end
+
+function dcol()
+	y = p.y-8
+	if p.x % 8 == 0 then
+		return collide(p.x,y)
 	else
-		p.jump = 0
+		a = collide(p.x-4,y)
+		b = collide(p.x+4,y)
+		return a or b
 	end
 end
 __gfx__
