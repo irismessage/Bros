@@ -1,7 +1,4 @@
-import os
-
-
-os.linesep = '\n'
+import sys
 
 
 CART_PATH = 'cart/bros.p8'
@@ -29,7 +26,7 @@ def peekcart() -> Lines:
 
 
 def pokecart(cart: Lines):
-    with open(CART_PATH, 'w', encoding='utf-8') as file:
+    with open(CART_PATH, 'w', encoding='utf-8', newline='\n') as file:
         file.writelines(cart)
 
 
@@ -76,8 +73,13 @@ def writemap(maplines: Lines, cart: Lines):
 
 
 def main():
-    option = input('a: map to encoded, b: encoded to map\n')
-    scrn = int(input('Screen number (1 to 81)\n'))
+    try:
+        option = sys.argv[1]
+        scrn = sys.argv[2]
+    except IndexError:
+        option = input('a: map to encoded, b: encoded to map\n')
+        scrn = input('Screen number (1 to 81)\n')
+    scrn = int(scrn)
 
     cart = peekcart()
     if option == 'a':
