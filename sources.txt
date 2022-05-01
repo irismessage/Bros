@@ -12,6 +12,7 @@ https://www.virtualdub.org/altirra.html
 https://en.wikipedia.org/wiki/Atari_8-bit_family
 http://www.atarimania.com/
 http://www.atarimania.com/documents-atari-400-800-xl-xe-manuals_2_8.html
+http://bringerp.free.fr/RE/
 - reference manual with music notes
 http://www.atarimania.com/documents/Atari-Basic-Reference-Manual-Rev-C.pdf
 https://en.wikipedia.org/wiki/Turbo-BASIC_XL
