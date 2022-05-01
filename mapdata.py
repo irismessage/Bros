@@ -33,18 +33,18 @@ def pokecart(cart: Lines):
 def screensindex(cart: Lines):
     index = cart.index('screens = {\n')
     indexend = cart.index('}\n', index)
-    lenscreens = indexend - index -1
+    lenscreens = indexend - index - 1
     return index, indexend, lenscreens
 
 
 def mapindex(cart: Lines):
-    return cart.index('__map__\n') + 1
+    return cart.index('__map__\n') + 3
 
 
 def readmap(cart: Lines) -> Lines:
     maplines = []
     index = mapindex(cart)
-    maplines = cart[index:index+16]
+    maplines = cart[index:index + 13]
     return maplines
 
 
@@ -97,16 +97,5 @@ def main():
     print('Done')
 
 
-def test():
-    cart = peekcart()
-    # print(cart)
-    mapdata = readencoded(1, cart)
-    print(mapdata)
-    # print(readencoded(82, cart))
-    maplines = readmap(cart)
-    print(len(maplines))
-    print(maplines)
-
 if __name__ == '__main__':
-    # test()
     main()
