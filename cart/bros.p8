@@ -558,7 +558,7 @@ p = {
 
 function drawbro()
 	sprn = 1
-	if p.jump > 0 then
+	if p.jump < 4 then
 		sprn = 10
 	elseif p.mov % 2 != 0 then
 		sprn = 2
@@ -593,14 +593,19 @@ function updatejump()
  	p.jump -= 1
 		p.y -= 8
  elseif dcol() then
-		jump = 4
+		p.jump = 4
 	else
 		p.y += 8
 	end
 end
 
 function collide(x,y)
-	return mget(x/8,y/8) == 0
+	for s in all({" ",x,y,x/8,y/8,mget(x/8,y/8)}) do
+		printh(s)
+	end
+	-- 36: blank sprite
+	-- map offset
+	return mget(x/8+16,y/8+2) != 36
 end
 
 function dcol()
