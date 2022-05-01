@@ -554,7 +554,6 @@ p = {
 	l=false,
 	mov=0,
 	jump=0,
-	jumpe=false,
 }
 
 function drawbro()
@@ -589,25 +588,13 @@ function updatemove()
 	end
 end
 
-jumpmax = 4
 function updatejump()
-	-- jump end, they must fall
-	if p.jumpe then
-		if p.jump == 0 then
-			p.jumpe = false
-		else
-			p.jump -= 1
-			p.y += 8
-		end
-	-- jump available
-	elseif btn(⬆️) then
-		p.jump += 1
+ if p.jump>0 and btn(⬆️) then
+ 	p.jump -= 1
 		p.y -= 8
-		if p.jump == jumpmax then
-			p.jumpe = true
-		end
-	elseif p.jump > 0 then
-	 p.jump -= 1
+ elseif dcol() then
+		jump = 4
+	else
 		p.y += 8
 	end
 end
