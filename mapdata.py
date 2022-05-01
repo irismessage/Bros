@@ -50,10 +50,11 @@ def readmap(cart: Lines) -> Lines:
 
 def writeencoded(mapdata: str, scrn: int, cart: Lines):
     index, indexend, lenscreens = screensindex(cart)
+    mapdata = f'\t"{mapdata}",\n'
     if lenscreens < scrn:
         cart.insert(indexend, mapdata)
     else:
-        cart[index + scrn] = f'\t"{mapdata}",\n'
+        cart[index + scrn] = mapdata
 
 
 def readencoded(scrn: int, cart: Lines) -> str:
