@@ -83,7 +83,10 @@ for pitch, note, octave in noteslist:
 
 
 def closest(target_pitch):
-    closest = 255
+    if target_pitch == 00:
+        # indicates pause
+        return '00 '
+    closest = float('inf')
     result = ''
     for pitch, note in notes.items():
         diff = abs(pitch - target_pitch)
