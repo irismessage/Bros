@@ -2,20 +2,23 @@ import sys
 
 
 CART_PATH = 'cart/bros.p8'
+OFFSET = 2
+ROWS = 13
+WIDTH = 32
 Lines = list[str]
 
 
 def process(maplines: Lines) -> str:
     processed = []
     for line in maplines:
-        processed.append(line[:32])
+        processed.append(line[:WIDTH])
     return ''.join(processed)
 
 
 def deprocess(mapdata: str) -> Lines:
     processed = []
-    for i in range(0,512,32):
-        processed.append(mapdata[i:i+32])
+    for i in range(0,ROWS*WIDTH,WIDTH):
+        processed.append(mapdata[i:i+WIDTH])
     return processed
 
 
@@ -38,13 +41,13 @@ def screensindex(cart: Lines):
 
 
 def mapindex(cart: Lines):
-    return cart.index('__map__\n') + 3
+    return cart.index('__map__\n') + OFFSET + 1
 
 
 def readmap(cart: Lines) -> Lines:
     maplines = []
     index = mapindex(cart)
-    maplines = cart[index:index + 13]
+    maplines = cart[index:index + ROWS]
     return maplines
 
 
@@ -70,7 +73,7 @@ def readencoded(scrn: int, cart: Lines) -> str:
 def writemap(maplines: Lines, cart: Lines):
     index = mapindex(cart)
     for i, line in enumerate(maplines):
-        cart[index+i] = line + cart[index+i][32:]
+        cart[index+i] = line + cart[index+i][WIDTH:]
 
 
 def main():
