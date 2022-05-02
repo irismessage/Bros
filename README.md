@@ -9,10 +9,11 @@ This is a remake of the game in PICO-8, complete with custom font, accurate data
 - Hollow https://youtu.be/QSFgMCD7zUU
 
 ## Files
-- sources.txt -- useful links to more information, emulators, ROMs, etc.
-- Bros.atr -- original game ROM. BROS is in the public domain.
+- sources.md -- useful links to more information, emulators, ROMs, etc.
+- Bros.atr -- original game ROM
 - atari800-remap.ahk -- autohotkey script for more sane controls without a numpad on the atari800 emu
-- convert-musik.py -- converts the datamined .DAT files into SPN music notes
+- convert-musik.py -- python script to convert the datamined .DAT files into SPN music notes
+- mapdata.py -- python script to move levels between PICO-8 map block, and text encoded format
 - sheet.png, sheet.psd -- sprite sheet
 
 ## Folders
