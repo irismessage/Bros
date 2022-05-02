@@ -660,6 +660,7 @@ function updatejump()
 		return
 	end
 	
+	d = dcol()
  if p.jump>1 and jbtn() then
  	p.jumpt = tick
  	p.jump -= 1
@@ -669,12 +670,12 @@ function updatejump()
  	if not ucol() then
  		p.y -= 8
 		end
-		
- if dcol() or rcol() or lcol() then
-		p.jump = 4
-	end
-	if not dcol() then
+	elseif not d then
 		p.y += 8
+	end
+		
+ if d or rcol() or lcol() then
+		p.jump = 4
 	end
 end
 
