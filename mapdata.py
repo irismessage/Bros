@@ -90,15 +90,16 @@ def main():
         maplines = readmap(cart)
         mapdata = process(maplines)
         writeencoded(mapdata, scrn, cart)
+        print(f'Saved map to screen {scrn}')
     elif option == 'b':
         mapdata = readencoded(scrn, cart)
         maplines = deprocess(mapdata)
         writemap(maplines, cart)
+        print(f'Loaded map from screen {scrn}')
     else:
         print('Wrong')
         return
     pokecart(cart)
-    print('Done')
 
 
 if __name__ == '__main__':
