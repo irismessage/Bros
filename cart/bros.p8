@@ -518,7 +518,7 @@ end
 
 function checkforlevelup()
  if btn(➡️) and p.movet==0 then
- 	if p.x > 108 then
+ 	if p.x == 116 then
  		levelup()
 		end
  end
@@ -528,9 +528,8 @@ function updatelevel()
 	if g.timer > 0 then
 		g.timer -= 0.5
 	end
-	updatemove()
-	updatejump()
 	checkforlevelup()
+	updatemovement()
 end
 
 -->8
@@ -621,7 +620,7 @@ function drawbro()
 	spr(sprn,p.x,p.y,1,1,p.l)
 end
 
-function updatemove()
+function updatewalk()
 	if p.movet > 0 then
 		p.movet -= 1
 		return
@@ -660,7 +659,7 @@ function updatejump()
 		p.jumpt -= 1
 		return
 	end
-
+	
  if p.jump>1 and jbtn() then
  	p.jumpt = tick
  	p.jump -= 1
@@ -670,9 +669,11 @@ function updatejump()
  	if not ucol() then
  		p.y -= 8
 		end
- elseif dcol() then
+		
+ if dcol() or rcol() or lcol() then
 		p.jump = 4
-	else
+	end
+	if not dcol() then
 		p.y += 8
 	end
 end
@@ -710,6 +711,11 @@ function lcol()
 end
 function rcol()
 	return xcollide(8)
+end
+
+function updatemovement()
+	updatewalk()
+	updatejump()
 end
 
 -->8
