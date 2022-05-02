@@ -2,30 +2,30 @@
 - list of emulators    
 https://www.emutopia.com/index.php/emulators/category-items/3-emulators/320-atari-400-800-xl-xe
 - atari800 emulator    
-https://atari800.github.io/
+https://atari800.github.io/    
 https://github.com/atari800/atari800
 - standalone datamining tool    
 https://github.com/rossumur/esp_8_bit/blob/master/atr_image_explorer.htm
 - old emulator, needed to get OS ROM files if you want them    
-https://sourceforge.net/projects/atari800/files/ROM/Original%20XL%20ROM/xf25.zip
+https://sourceforge.net/projects/atari800/files/ROM/Original%20XL%20ROM/xf25.zip    
 http://www.emulators.com/xformer.htm
 - best emulator for windows, with datamining tools    
 https://www.virtualdub.org/altirra.html
 
 ## relevant sites
-https://en.wikipedia.org/wiki/Atari_8-bit_family
+https://en.wikipedia.org/wiki/Atari_8-bit_family    
 http://www.atarimania.com/
 - atari game datamining    
 http://bringerp.free.fr/RE/
 - general atari intro thread    
 https://atariage.com/forums/topic/176545-topic-for-newbies-or-veterans-returning-to-atari/
 - BASIC variant it was programmed in    
-https://en.wikipedia.org/wiki/Turbo-BASIC_XL
+https://en.wikipedia.org/wiki/Turbo-BASIC_XL    
 https://atariwiki.org/wiki/Wiki.jsp?page=Turbo-BASIC%20XL
 - joystick it was made for    
 https://en.wikipedia.org/wiki/Atari_CX40_joystick
 - Atari BASIC manual with music note table    
-http://www.atarimania.com/documents-atari-400-800-xl-xe-manuals_2_8.html
+http://www.atarimania.com/documents-atari-400-800-xl-xe-manuals_2_8.html    
 http://www.atarimania.com/documents/Atari-Basic-Reference-Manual-Rev-C.pdf
 
 
@@ -33,7 +33,7 @@ http://www.atarimania.com/documents/Atari-Basic-Reference-Manual-Rev-C.pdf
 - mobygames listing    
 https://www.mobygames.com/company/ke-soft
 - german wikipedia article    
-https://de.m.wikipedia.org/wiki/KE-SOFT
+https://de.m.wikipedia.org/wiki/KE-SOFT    
 https://de-m-wikipedia-org.translate.goog/wiki/KE-SOFT?_x_tr_sl=de&_x_tr_tl=en&_x_tr_hl=en-US&_x_tr_pto=wapp
 
 ## the developer
@@ -42,7 +42,7 @@ https://atariage.com/forums/topic/233511-ke-soft-kemal-ezcan-zong-atari-8-bit-ga
 - their website    
 https://www.yodasvideoarcade.com/
 - an interview    
-https://www.kultboy.com/Yoda-Zhang-Interview/40/
+https://www.kultboy.com/Yoda-Zhang-Interview/40/    
 https://www-kultboy-com.translate.goog/Yoda-Zhang-Interview/40/?_x_tr_sl=de&_x_tr_tl=en&_x_tr_hl=en&_x_tr_pto=sc
 
 ## BROS
