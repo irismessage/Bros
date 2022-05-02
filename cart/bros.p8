@@ -75,16 +75,15 @@ function _draw()
 	elseif s.entry then
 		drawnameentry()
 	end
-	scorebarl()
 end
 
 function mainscreen()
 	s.main = true
 	cls(1)
 	map(16,0)
-	scorebars()
 	music(24)
-	g.timer = 600
+	g.timer = 0
+	drawtopbar()
 	print("🅾️:play",4,104)
 	print("‖:screen",44,104)
 	print("❎:scores",88,104)
@@ -353,33 +352,25 @@ function pad(num, digits)
 	return padded
 end
 
-function scorebars()
-	--draw top bar static part
+function drawtimer()
+	rectfill(90,8,102,16,1)
+	color(15)
+	t = pad(flr(g.timer),3)
+	print(t,90,8)
+end
+
+function drawtopbar()
+	rectfill(4,8,124,16,1)
+	drawtimer()
 	spr(32, 24, 8)
 	spr(33, 42, 8)
 	print("lvl",60,8)
 	spr(34, 82, 8)
 	spr(35, 106, 8)
-end
-
-function clearbar(x,len)
-	rectfill(x,8,x+(4*len),16,1)
-	color(15)
-end
-
-function scorebarl()
-	--draw top bar live part
-	clearbar(4,5)
 	print(pad(g.score,5),4,8)
-	clearbar(32,2)
 	print(pad(g.coins,2),32,8)
-	clearbar(52,1)
 	print(g.lives,52,8)
-	clearbar(72,2)
 	print(l.world..l.stage, 72,8)
-	clearbar(90,3)
-	print(pad(flr(g.timer),3),90,8)
-	clearbar(114,2)
 	print(pad(g.wep,2),114,8)
 end
 
@@ -401,6 +392,7 @@ offset=2
 
 function levelscreen()
 	s.play = true
+	g.timer = 999
 	loadlevel()
 end
 
@@ -466,39 +458,16 @@ function loadlevel()
 	scrn += (l.stage-1) * 4
 	scrn += l.screen
 	if l.screen == 1 then
-		music((l.screen % 3) - 1)
+		music(((l.stage-1)%3)*8)
 	end
 	loadscreen(scrn)
-	cls(1)
 	l.transition = true
 end
 
 function drawlevel()
-	map(0)
+	map(0,2,0,16,16,13)
 	drawentities()
-	scorebars()
-end
-
-function alphmsg()
-	print("pre-alpha",0,24,9)
-	print("levels not yet playable")
-	print("⬆️increase score")
-	print("⬇️decrease score")
-	print("➡️die")
-	print("⬅️cycle music")
-	color(15)
-end
-
-musid = 0
-function updatemusplayer()
-	if btnp(⬅️) then
-		if musid < 3 then
-			musid += 1
-		else
-			musid = 0
-		end
-		music(musid*8)
-	end
+	drawtimer()
 end
 
 function updatewait()
