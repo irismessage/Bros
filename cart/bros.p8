@@ -89,19 +89,6 @@ function mainscreen()
 	print("❎:scores",88,104)
 end
 
-function testscore()
-	p.x = 16
-	p.y = 96
-	if btnp(⬆️) then
-		g.score += 100
-	elseif btnp(⬇️) then
-		g.score -= 100
-	elseif btnp(➡️) then
-		s.play = false
-		die()
-	end
-end
-
 function updatestate()
 	if s.main then
 		if btnp(🅾️) then
@@ -179,7 +166,7 @@ function unpackname(name)
 	for i=0,2 do
 		shift = (name>>(i*5)) & 0x1f
 		char = chr(shift+96)
-		unpacked = unpacked..char
+		unpacked += char
 	end
 	return unpacked
 end
@@ -279,7 +266,7 @@ end
 function scorescreen()
 	s.hi = true
 	cls(1)
-	scorebars()
+	drawtopbar()
 	t = "h i g h s c o r e s :"
 	print(t, 20, 28)	
 	scorescol(8,1)
