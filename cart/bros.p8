@@ -49,6 +49,8 @@ wait = {
 bg = 36
 
 function _init()
+	palt(0,false)
+	color(15)
 	loadfont()
 	loadscores()
 	mainscreen()
@@ -334,7 +336,6 @@ function loadfont()
 	end
 
 	--switch and metadata
-	color(15)
 	poke(0x5f58,0x1 | 0x80)
 	poke(0x5600,4)
 	poke(0x5601,8)
@@ -346,11 +347,8 @@ end
 
 function pad(num, digits)
 	padded = tostr(num)
-	diff = digits - #padded
-	if diff > 0 then
-		for i=1,diff do
-			padded = "0"..padded
-		end
+	for i=1,digits-#padded do
+		padded = "0"..padded
 	end
 	return padded
 end
@@ -375,7 +373,7 @@ function scorebarl()
 	print(pad(g.score,5),4,8)
 	clearbar(32,2)
 	print(pad(g.coins,2),32,8)
-	spr(0,52,8)
+	clearbar(52,1)
 	print(g.lives,52,8)
 	clearbar(72,2)
 	print(l.world..l.stage, 72,8)
@@ -635,15 +633,19 @@ function updatemove()
 	
 	if btn(⬅️) then
 		p.l = true
-		p.movet = tick
-		if not lcol() and p.x>4 then
+		if lcol() or p.x<8 then
+			p.movet = 2*tick
+		else
+			p.movet = tick
 			p.x -= 4
 		end
 	end
 	if btn(➡️) then
 		p.l = false
-		p.movet = tick
-		if not rcol() then
+		if rcol() then
+		 p.movet = 2*tick
+		else
+			p.movet = tick
 			p.x += 4
 		end
 	end
@@ -654,10 +656,8 @@ function jbtn()
 end
 
 function updatejump()
-	if p.jumpt != 0 then
-		if p.jumpt > 0 then
-			p.jumpt -= 1
-		end
+	if p.jumpt > 0 then
+		p.jumpt -= 1
 		return
 	end
 
