@@ -260,6 +260,7 @@ function updatejump()
  		bonk()
  	else
  		p.y -= 8
+ 		jumpsfx()
 		end
 	elseif dcol() then
 		p.jump = jumpmax
@@ -275,6 +276,11 @@ function updatejump()
 	if y > 108 then
 		die()
 	end
+end
+
+function jumpsfx()
+	jumpstep = jumpmax-p.jump-1
+	sfx(48,-1,jumpstep*8,8)
 end
 
 function mantle()
@@ -360,11 +366,14 @@ function bonk()
 		mx = p.x/8
 		my = p.y/8-1
 		if mget(mx,my)==17 then
+			sfx(48)
 			coin.x = p.x
 			coin.y = p.y-16
 			coin.show = true
 			coin.lifet = 5
 			mset(mx,my,15)
+		else
+			sfx(48)
 		end
 	end
 end
