@@ -28,8 +28,9 @@ https://en.wikipedia.org/wiki/Atari_CX40_joystick
 http://www.atarimania.com/documents-atari-400-800-xl-xe-manuals_2_8.html    
 http://www.atarimania.com/documents/Atari-Basic-Reference-Manual-Rev-C.pdf
 
-
 ## ke-soft
+- ZONG magazine archive with sound editor rom    
+https://web.archive.org/web/20160322024937/http://www.kemalsatariarchiv.gmxhome.de/von1989.html
 - mobygames listing    
 https://www.mobygames.com/company/ke-soft
 - german wikipedia article    

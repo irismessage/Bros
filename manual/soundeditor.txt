@@ -1,0 +1,50 @@
+Soundeditor
+Die Bedienung des Soundeditons ist recht einfach. In der oberen Bildschinnzeile steht der Name der Tabelle, die genade beanbeitet wind. Mit dem Joystick wind der Cursor in der Tabelle bewegt, nit dem Feuenknopf wird ein Wert gesetzt. Das Wechseln zwischen den einzelnen Ta-bellen enfolgt dunch Tippen der Taste 
+"*".
+Volumetable: oben=laut, unten=leise Distortion-table: oben=14, unten=0 Pitchmod. Table: oben=+ (tiefer), unten=- (hohen) 
+Durch Tippen der Taste "G" and an-schlieBendes Steuenn mit dem Joystick wind die Grundtonhohe eingestellt. Der ✓organg wind dunch Knopfdnuck beendet. Mit der Modulationstiefe, d.h. dem Wert, 
+
+Translation types
+Text translation
+Source text
+Soundeditor
+Die Bedienung des Soundeditons ist recht einfach. In der oberen Bildschinnzeile steht der Name der Tabelle, die genade beanbeitet wind. Mit dem Joystick wind der Cursor in der Tabelle bewegt, nit dem Feuenknopf wird ein Wert gesetzt. Das Wechseln zwischen den einzelnen Ta-bellen enfolgt dunch Tippen der Taste 
+"*".
+Volumetable: oben=laut, unten=leise Distortion-table: oben=14, unten=0 Pitchmod. Table: oben=+ (tiefer), unten=- (hohen) 
+Durch Tippen der Taste "G" and an-schlieBendes Steuenn mit dem Joystick wind die Grundtonhohe eingestellt. Der ✓organg wind dunch Knopfdnuck beendet. Mit der Modulationstiefe, d.h. dem Wert,
+643 / 5,000
+Translation results
+sound editor
+The operation of the sound editor is quite simple. In the top line of the screen is the name of the table that is being edited. The cursor is moved in the table with the joystick, and a value is set with the fire button. You can switch between the individual tables by tapping the button
+"*".
+Volume table: top=loud, bottom=quiet Distortion table: top=14, bottom=0 pitch mod. Table: top=+ (lower), bottom=- (higher)
+The basic pitch is set by tapping the "G" key and then controlling it with the joystick. The process ends with the push of a button. With the modulation depth, i.e. the value
+
+um den die Tonhiihe beeinfluOT wird, sowie der Geschwindigkeit wird in gleichen Weise verfahren. (Taste "H" bzw. "5"). Die Taste "F" fullt die 9esamte Tabelle in der aktuellen Cunsorhohe. Mit "T" (Test) wird der Sound horbar gemacht. Der Soundediton bietet die Moglichkeit, bis zu 50 Sounds zu editieren. Die Mummer des aktuellen Sounds kann lunch Tippen von "N" CSteuern usw., gewahlt wenden. Mit "D" gelangt man ins Diskmenu, wei-ches nach Auflisten der auf der Dis-kette befindlichen Soundfiies die Mog-lichkeit zum Speichern oder Laden von Sounds bietet. Sowohl beim Speichern als auch beim Laden ist die Hummer des Soundfiles an-zugeben (Taste 0-9). Das Soundfile wird auf Diskette unten dem Namen SOUNDx.DAT abgelegt. 
+Wichtig: 
+
+by which the pitch is influenced, as well as the speed, proceed in the same way. (Key "H" or "5"). The "F" key fills the entire table in the current customer height. With "T" (test) the sound is made audible. The sound editor offers the possibility to edit up to 50 sounds. The number of the current sound can be selected by typing "N" CControl etc. "D" takes you to the disk menu, which offers the option of saving or loading sounds after listing the sound files on the disk. Both when saving and when loading, the Hummer of the sound file must be specified (key 0-9). The sound file is stored on diskette under the name SOUNDx.DAT.
+Important:
+
+Beim Speichern von Sounds wind nun bis zu der aktuellen Soundnunner abgespei-chent! 
+Mit "q" (fur Quit) gelangt man in den Editor zunuck. 
+Hier nocheinnal die Funktionen in Video-Uberblick: 
+Auf Platz neun die Grundtonhohe mit der Taste "G". Platz neon hat heute die Modulations-tiefe milt "M". Speed mit der Taste "5" konnte rich nun auf Platz acht plazienen. Neu aufgenonnen wunde die 5oundnummer and "N" auf Platz sleben. Das Slattern dunch "*" konnte rich noch-einnal auf Platz sechs hochanbeiten. Diese woche neu auf Platz funf: Fill mit 
+"Film 
+Der Top-Oldie heute ist Test von "T".(4) 
+
+When saving sounds, they are now saved up to the current sound nunner!
+"q" (for Quit) takes you back to the editor.
+Here are the functions in a video overview:
+In ninth place is the fundamental pitch with the "G" key. Square neon today has the modulation depth mild "M". Speed with the "5" key was now able to place eighth. Newly recorded, the 5ound number and "N" remained in place. The slattern dunch "*" was able to work its way up to sixth place. New this week in fifth place: Fill mit
+"Movie
+Today's top oldie is Test by "T".(4)
+
+
+ Das Diskmenu schneckt heute besonders gut: Platz drei fur "D". Welter geht's mit dem Superrenner Load von "L" auf Platz zwei. Der absolute Spitzenrenner in der ZONG-Sound-Editor-Hotline-Parade (ZSENP) ist "5" and der Spitzenhit Save. (Ann. d. Red.: "0" (Quilt) muOlte leider disqualifiziert werden, schade!) 
+Viel Spal)! 
+Ladeanweisung: Diskettenruckseite booten, Taste "A" Tippen. 
+
+The disc menu is particularly good today: third place for "D". It's even better with the super racer Load from "L" in second place. The absolute top seller in the ZONG Sound Editor Hotline Parade (ZSENP) is "5" and the top hit Save. (Ann. ed.: "0" (Quilt) unfortunately had to be disqualified, too bad!)
+Have fun)!
+Loading instruction: Boot from the back of the disk, tap the "A" button.
