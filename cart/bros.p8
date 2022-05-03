@@ -4,25 +4,24 @@ __lua__
 -- bros
 -- je-soft
 
+-- 0 bros
+-- 1 movement
+-- 2 entities
+-- 3 levels
+-- 4 hiscores
+-- 5 font
+-- 6 swap
+-- 7 encoded
+
 -- notes
 -- bros is 120x169px
 -- 15x21 sprites
 -- 8 worlds
 -- 4 levels per world
+-- 32 levels
 -- 5 screens per level
 -- 20 screens per world
--- 32 levels
 -- 160 screens
-
--- tabs
--- 0 main
--- 1 highscore system
--- 2 custom font system
--- 3 top bar rendering
--- 4 levels
--- 5 sprite swap
--- 6 movement
--- 7 encoded screens
 
 -- game
 g = {
@@ -45,7 +44,6 @@ wait = {
 	f=0,
 	call=nil,
 }
-
 bg = 36
 
 function _init()
@@ -77,18 +75,6 @@ function _draw()
 	end
 end
 
-function mainscreen()
-	s.main = true
-	cls(1)
-	map(16,0)
-	music(24)
-	g.timer = 0
-	drawtopbar()
-	print("🅾️:play",4,104)
-	print("‖:screen",44,104)
-	print("❎:scores",88,104)
-end
-
 function updatestate()
 	if s.main then
 		if btnp(🅾️) then
@@ -115,220 +101,16 @@ function updatestate()
 	end
 end
 
--->8
---highscore system
-
---data layout
---00 is 1 if cdata initialised
---01 to 10 top scores
---11 to 20 packed names
-
--- name entry
-ne = {
- ords={97,97,97},
-	chrs={"a","a","a"},
-	curs=1,
-	rank=0,
-}
-
-scoresn={}
-scoresc={}
-
-function initscores()
-	cartdata("bros_sorb")
-	if dget(0) == 0 then
-		dset(0,1)
-		for i=1,10 do
-			dset(i,0)
-		end
-		for i=11,20 do
-			default = packname("   ")
-			dset(i,default)
-		end
+function updatewait()
+	if wait.f > 0 then
+		if (wait.f == 1) wait.call()
+		wait.f -= 1
+		return true
 	end
+	return false
 end
 
---functions to convert between
---three character strings
---and 15-byte numbers
-function packname(name)
-	packed = 0
-	for i=1,3 do
-		char = ord(sub(name,i,i))-96
-		shift = char << ((i-1) * 5)
-		packed |= shift
-	end
-	return packed
-end
-
-function unpackname(name)
-	unpacked = ""
-	for i=0,2 do
-		shift = (name>>(i*5)) & 0x1f
-		char = chr(shift+96)
-		unpacked = unpacked..char
-	end
-	return unpacked
-end
-
-function loadscores()
-	initscores()
-	for i=1,10 do
-		scoresn[i] = dget(i)
-		name = dget(i+10)
-		scoresc[i] = unpackname(name)
-	end
-end
-
-function rankscore(num)
-	for i=1,10 do
-		if num > scoresn[i] then
-			return i
-		end
-	end
-	return 11
-end
-
-function shiftscores(rank)
-	for i=10,rank,-1 do
-		j = i-1
-		scoresn[i] = scoresn[j]
-		scoresc[i] = scoresc[j]
-		dset(i,dget(j))
-		dset(i+10,dget(j+10))
-	end
-end
-
-function askname()
-	s.entry = true
-	cls(1)
-	scorebars()
-	print("great score",42,40)
-	print("enter your name",34,56)
-end
-
-function drawnameentry()
-	rectfill(58,72,70,86,1)
-	color(15)
-	for i=1,3 do
-		print(ne.chrs[i],54+4*i,72)
-	end
-	print(":",54+4*ne.curs,80)
-end
-
-function updatenameentry()
-	c = ne.curs
-	if btnp(➡️) and c < 3 then
-		ne.curs += 1
-	end
-	if btnp(⬅️) and 1 < c then
-		ne.curs -= 1
-	end
-	if btnp(⬆️) then
-		if e.ords[c]<122 then
-			ne.ords[c] += 1
-		else
-			ne.ords[c] = 97
-		end
-		ne.chrs[c] = chr(e.ords[c])
-	end
-	if btnp(⬇️) then
-		if 97<e.ords[c] then
-			ne.ords[c] -= 1
-		else
-			ne.ords[c] = 122
-		end
-		ne.chrs[c] = chr(ne.ords[c])
-	end
-end
-
-function savescore()
-	cs = ne.chrs
-	name = cs[1]..cs[2]..cs[3]
-	shiftscores(ne.rank)
-	scoresn[ne.rank] = g.score
-	scoresc[ne.rank] = name
-	dset(ne.rank, g.score)
-	dset(ne.rank+10, packname(name))
-end
-
-function scorescol(x,rank)
-	y=48
-	print("nr score name",x,y)
-	for i=rank,rank+8,2 do
-		y += 8
-		print(pad(i,2),x,y)
-		print(pad(scoresn[i],5),x+12,y)
-		print(scoresc[i],x+40,y)
-	end
-end
-
-function scorescreen()
-	s.hi = true
-	cls(1)
-	drawtopbar()
-	t = "h i g h s c o r e s :"
-	print(t, 20, 28)	
-	scorescol(8,1)
-	scorescol(64,2)
-end
-
--->8
---custom font system
-
-function sprtochar(sprn)
-	--sprn is sprite number
-	--convert sprite n to custom
-	--font format and return
-	--as table of 8 bytes
-	char = {}
-	x,y = sprnxy(sprn)
-	for i=0,7 do
-		a = i + 1
-		char[a] = 0
-		for j=0,7 do
-			if sget(x+j, y+i) == 0 then
-				char[a] |= 2^j 
-			end
-		end
-	end
-	return char
-end
-
-function fblock(src, dest, len)
-	--font copy block
-	--src is sprite number
-	--dest is p8scii code
-	daddr = 0x5600 + dest * 8
-	for i=1,len do
-		char = sprtochar(src)
-		poke(daddr, unpack(char))
-		src += 1
-		daddr += 8
-	end
-end
-
-function loadfont()
-	-- load custom font from sprite
-	-- sheet and activate it
-
-	--letters, numbers
-	fblock(48,97,26)
-	fblock(80,48,10)
-	--symbols
-	dests = {58,142,151,21,45,131,139,145,148}
-	for i=1,#dests do
-		fblock(95+i,dests[i],1)
-	end
-
-	--switch and metadata
-	poke(0x5f58,0x1 | 0x80)
-	poke(0x5600,4,8,8)
-end
-
--->8
 --top bar rendering
-
 function pad(num, digits)
 	padded = tostr(num)
 	for i=1,digits-#padded do
@@ -359,228 +141,16 @@ function drawtopbar()
 	print(pad(g.wep,2),114,8)
 end
 
--->8
---levels system
-
--- level
-l = {
-	world=1,
-	stage=1,
-	screen=1,
-	transition=false,
-}
--- entities
-e= {
-	coins={},
-}
-offset=2
-
-function levelscreen()
-	s.play = true
-	g.timer = 999
-	loadlevel()
-end
-
-function loadscreen(scrn)
-	hexscreen = screens[scrn]
-	for y=0,15 do
-		for x=0,15 do
-			i = (y*32)+(x*2)+1
-			sprc = sub(hexscreen,i,i+1)
-			sprn = tonum(sprc,0x1)
-			ym = y+offset
-			sprn = submtile(sprn,x,ym)
-			mset(x,ym,sprn)
-		end
-	end
-end
-
-function submtile(sprn,x,y)
-	if sprn == 1 then
-		sprn = bg
-		p.x = 8*x
-		p.y = 8*y
-	end
-	return sprn
-end
-
-function drawentities()
-	for c in all(e.coins) do
-		spr(32,c[1],c[2])
-	end
-end
-
-function updateentities()
-	for i=1,#e.coins do
-		c = e.coins[i]
-		if c[3] == 0 then
-			coinup()
-			deli(e.coins,i)
-			i -= 1
-		else
-			c[3] -= 1
-		end
-	end
-end
-
-function levelup()
-	l.screen += 1
-	if l.screen > 5 then
-		l.screen = 1
-		l.stage += 1
-		g.timer = 999
-	end
-	if l.stage > 4 then
-		l.stage = 1
-		l.world += 1
-	end
+function mainscreen()
+	s.main = true
+	cls(1)
+	map(16,0)
+	music(24)
+	g.timer = 0
 	drawtopbar()
-	loadlevel()
-end
-
-function loadlevel()
-	scrn = 0
-	scrn += (l.world-1) * 20
-	scrn += (l.stage-1) * 4
-	scrn += l.screen
-	if l.screen == 1 then
-		music(((l.stage-1)%3)*8)
-	end
-	loadscreen(scrn)
-	l.transition = true
-end
-
-function drawlevel()
-	map(0,2,0,16,16,13)
-	drawentities()
-	drawtimer()
-end
-
-function updatewait()
-	if wait.f > 0 then
-		if (wait.f == 1) wait.call()
-		wait.f -= 1
-		return true
-	end
-	return false
-end
-
-function die()
-	spr(3,p.x,p.y)
-	--todo recreate proper sounds
-	sfx(48)
-	wait.f = 30
-	wait.call = gameover
-end
-
-function gameover()
-	map(36,6,24,40,8,5)
-	print("game  over",40,56)
-	wait.f = 60
-	wait.call = diefinish
-end
-
-function diefinish()
-	e.rank = rankscore(g.score)
-	s.play = false
-	if e.rank != 11 then
-		askname()
-	else
-		mainscreen()
-	end
-end
-
-function checkforlevelup()
- if btn(➡️) and p.movet==0 then
- 	if p.x > 114 then
- 		levelup()
-		end
- end
-end
-
-function coinup()
-	g.coins += 1
-	if g.coins > 99 then
-		g.lives += 1
-		g.coins = 0
-	end
-	drawtopbar()
-end
-
-function updatelevel()
-	if g.timer > 0 then
-		g.timer -= 0.5
-	end
-	checkforlevelup()
-	updatemovement()
-	updateentities()
-end
-
--->8
---sprite swap
-
-function sprnxy(sprn)
-	x = (sprn%16)*8
-	y = flr(sprn/16)*8
-	return x,y
-end
-
-function getspr(sprn)
-	x,y = sprnxy(sprn)
-	sprite = {}
-	for i=0,7 do
-		sprite[i] = {}
-		for j=0,7 do
-			sprite[i][j] = sget(x+i,y+j)
-		end
-	end
-	return sprite
-end
-
-function setspr(sprn,sprite)
-	x,y = sprnxy(sprn)
-	for i=0,7 do
-		for j=0,7 do
-			sset(x+i,y+j,sprite[i][j])
-		end
-	end
-end
-
-function swapspr(sprna,sprnb)
-	spra = getspr(sprna)
-	sprb = getspr(sprnb)
-	setspr(sprna,sprb)
-	setspr(sprnb,spra)
-end
-
-function along()
-	for i=1,3 do
-		swapspr(i,36+i)
-	end
-	swapspr(10,40)
-	music(60)
-end
-
-pachinko = {2,2,3,3,0,1,0,1,5,4}
-codestep = 1
-function updatecode()
-	req = pachinko[codestep]
-	if not btn() then
-		return
-	end
-	for btnid=0,5 do
-		if btnid!=req and btnp(btnid) then
-			codestep = 1
-			return
-		end
-	end
-	if btnp(req) then
-		codestep += 1
-		if codestep > #pachinko then
-			codestep = 1
-			along()
-		end
-	end
+	print("🅾️:play",4,104)
+	print("‖:screen",44,104)
+	print("❎:scores",88,104)
 end
 
 -->8
@@ -736,16 +306,442 @@ function updatemovement()
 end
 
 -->8
--- encoded screens
+-- entities
 
+function coinup()
+	g.coins += 1
+	if g.coins > 99 then
+		g.lives += 1
+		g.coins = 0
+	end
+	drawtopbar()
+end
 
+function drawentities()
+	for c in all(e.coins) do
+		spr(32,c[1],c[2])
+	end
+end
+
+function updateentities()
+	for i=1,#e.coins do
+		c = e.coins[i]
+		if c[3] == 0 then
+			coinup()
+			deli(e.coins,i)
+			i -= 1
+		else
+			c[3] -= 1
+		end
+	end
+end
+
+-->8
+-- levels
+
+l = {
+	world=1,
+	stage=1,
+	screen=1,
+	transition=false,
+}
+-- entities
+e= {
+	coins={},
+}
+offset=2
+
+function levelscreen()
+	s.play = true
+	g.timer = 999
+	loadlevel()
+end
+
+function loadscreen(scrn)
+	hexscreen = screens[scrn]
+	for y=0,15 do
+		for x=0,15 do
+			i = (y*32)+(x*2)+1
+			sprc = sub(hexscreen,i,i+1)
+			sprn = tonum(sprc,0x1)
+			ym = y+offset
+			sprn = submtile(sprn,x,ym)
+			mset(x,ym,sprn)
+		end
+	end
+end
+
+function submtile(sprn,x,y)
+	if sprn == 1 then
+		sprn = bg
+		p.x = 8*x
+		p.y = 8*y
+	end
+	return sprn
+end
+
+function levelup()
+	l.screen += 1
+	if l.screen > 5 then
+		l.screen = 1
+		l.stage += 1
+		g.timer = 999
+	end
+	if l.stage > 4 then
+		l.stage = 1
+		l.world += 1
+	end
+	drawtopbar()
+	loadlevel()
+end
+
+function loadlevel()
+	scrn = 0
+	scrn += (l.world-1) * 20
+	scrn += (l.stage-1) * 4
+	scrn += l.screen
+	if l.screen == 1 then
+		music(((l.stage-1)%3)*8)
+	end
+	loadscreen(scrn)
+	l.transition = true
+end
+
+function checkforlevelup()
+ if btn(➡️) and p.movet==0 then
+ 	if p.x > 114 then
+ 		levelup()
+		end
+ end
+end
+
+function die()
+	spr(3,p.x,p.y)
+	--todo recreate proper sounds
+	sfx(48)
+	wait.f = 30
+	wait.call = gameover
+end
+
+function gameover()
+	map(36,6,24,40,8,5)
+	print("game  over",40,56)
+	wait.f = 60
+	wait.call = diefinish
+end
+
+function diefinish()
+	e.rank = rankscore(g.score)
+	s.play = false
+	if e.rank != 11 then
+		askname()
+	else
+		mainscreen()
+	end
+end
+
+function updatelevel()
+	if g.timer > 0 then
+		g.timer -= 0.5
+	end
+	checkforlevelup()
+	updatemovement()
+	updateentities()
+end
+
+function drawlevel()
+	map(0,2,0,16,16,13)
+	drawentities()
+	drawtimer()
+end
+
+-->8
+-- hiscores
+
+-- data layout
+-- 00 is 1 if cdata initialised
+-- 01 to 10 top scores
+-- 11 to 20 packed names
+
+-- name entry
+ne = {
+ ords={97,97,97},
+	chrs={"a","a","a"},
+	curs=1,
+	rank=0,
+}
+
+scoresn={}
+scoresc={}
+
+function loadscores()
+	initscores()
+	for i=1,10 do
+		scoresn[i] = dget(i)
+		name = dget(i+10)
+		scoresc[i] = unpackname(name)
+	end
+end
+
+function initscores()
+	cartdata("bros_sorb")
+	if dget(0) == 0 then
+		dset(0,1)
+		for i=1,10 do
+			dset(i,0)
+		end
+		for i=11,20 do
+			default = packname("   ")
+			dset(i,default)
+		end
+	end
+end
+
+--functions to convert between
+--three character strings
+--and 15-byte numbers
+function packname(name)
+	packed = 0
+	for i=1,3 do
+		char = ord(sub(name,i,i))-96
+		shift = char << ((i-1) * 5)
+		packed |= shift
+	end
+	return packed
+end
+
+function unpackname(name)
+	unpacked = ""
+	for i=0,2 do
+		shift = (name>>(i*5)) & 0x1f
+		char = chr(shift+96)
+		unpacked = unpacked..char
+	end
+	return unpacked
+end
+
+function rankscore(num)
+	for i=1,10 do
+		if num > scoresn[i] then
+			return i
+		end
+	end
+	return 11
+end
+
+function shiftscores(rank)
+	for i=10,rank,-1 do
+		j = i-1
+		scoresn[i] = scoresn[j]
+		scoresc[i] = scoresc[j]
+		dset(i,dget(j))
+		dset(i+10,dget(j+10))
+	end
+end
+
+function askname()
+	s.entry = true
+	cls(1)
+	scorebars()
+	print("great score",42,40)
+	print("enter your name",34,56)
+end
+
+function drawnameentry()
+	rectfill(58,72,70,86,1)
+	color(15)
+	for i=1,3 do
+		print(ne.chrs[i],54+4*i,72)
+	end
+	print(":",54+4*ne.curs,80)
+end
+
+function updatenameentry()
+	c = ne.curs
+	if btnp(➡️) and c < 3 then
+		ne.curs += 1
+	end
+	if btnp(⬅️) and 1 < c then
+		ne.curs -= 1
+	end
+	if btnp(⬆️) then
+		if e.ords[c]<122 then
+			ne.ords[c] += 1
+		else
+			ne.ords[c] = 97
+		end
+		ne.chrs[c] = chr(e.ords[c])
+	end
+	if btnp(⬇️) then
+		if 97<e.ords[c] then
+			ne.ords[c] -= 1
+		else
+			ne.ords[c] = 122
+		end
+		ne.chrs[c] = chr(ne.ords[c])
+	end
+end
+
+function savescore()
+	cs = ne.chrs
+	name = cs[1]..cs[2]..cs[3]
+	shiftscores(ne.rank)
+	scoresn[ne.rank] = g.score
+	scoresc[ne.rank] = name
+	dset(ne.rank, g.score)
+	dset(ne.rank+10, packname(name))
+end
+
+function scorescol(x,rank)
+	y=48
+	print("nr score name",x,y)
+	for i=rank,rank+8,2 do
+		y += 8
+		print(pad(i,2),x,y)
+		print(pad(scoresn[i],5),x+12,y)
+		print(scoresc[i],x+40,y)
+	end
+end
+
+function scorescreen()
+	s.hi = true
+	cls(1)
+	drawtopbar()
+	t = "h i g h s c o r e s :"
+	print(t, 20, 28)	
+	scorescol(8,1)
+	scorescol(64,2)
+end
+
+-->8
+-- font
+
+function sprtochar(sprn)
+	-- sprn is sprite number
+	-- convert sprite n to custom
+	-- font format and return
+	-- as table of 8 bytes
+	char = {}
+	x,y = sprnxy(sprn)
+	for i=0,7 do
+		a = i + 1
+		char[a] = 0
+		for j=0,7 do
+			if sget(x+j, y+i) == 0 then
+				char[a] |= 2^j 
+			end
+		end
+	end
+	return char
+end
+
+function fblock(src, dest, len)
+	--font copy block
+	--src is sprite number
+	--dest is p8scii code
+	daddr = 0x5600 + dest * 8
+	for i=1,len do
+		char = sprtochar(src)
+		poke(daddr, unpack(char))
+		src += 1
+		daddr += 8
+	end
+end
+
+function loadfont()
+	-- load custom font from sprite
+	-- sheet and activate it
+
+	--letters, numbers
+	fblock(48,97,26)
+	fblock(80,48,10)
+	--symbols
+	dests = {58,142,151,21,45,131,139,145,148}
+	for i=1,#dests do
+		fblock(95+i,dests[i],1)
+	end
+
+	--switch and metadata
+	poke(0x5f58,0x1 | 0x80)
+	poke(0x5600,4,8,8)
+end
+
+-->8
+-- swap
+
+function sprnxy(sprn)
+	x = (sprn%16)*8
+	y = flr(sprn/16)*8
+	return x,y
+end
+
+function getspr(sprn)
+	x,y = sprnxy(sprn)
+	sprite = {}
+	for i=0,7 do
+		sprite[i] = {}
+		for j=0,7 do
+			sprite[i][j] = sget(x+i,y+j)
+		end
+	end
+	return sprite
+end
+
+function setspr(sprn,sprite)
+	x,y = sprnxy(sprn)
+	for i=0,7 do
+		for j=0,7 do
+			sset(x+i,y+j,sprite[i][j])
+		end
+	end
+end
+
+function swapspr(sprna,sprnb)
+	spra = getspr(sprna)
+	sprb = getspr(sprnb)
+	setspr(sprna,sprb)
+	setspr(sprnb,spra)
+end
+
+function along()
+	for i=1,3 do
+		swapspr(i,36+i)
+	end
+	swapspr(10,40)
+	music(60)
+end
+
+pachinko = {2,2,3,3,0,1,0,1,5,4}
+codestep = 1
+function updatecode()
+	req = pachinko[codestep]
+	if not btn() then
+		return
+	end
+	for btnid=0,5 do
+		if btnid!=req and btnp(btnid) then
+			codestep = 1
+			return
+		end
+	end
+	if btnp(req) then
+		codestep += 1
+		if codestep > #pachinko then
+			codestep = 1
+			along()
+		end
+	end
+end
+
+-->8
+-- encoded
+
+-- todo: rle
 screens = {
 	"24242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424241211121112111224242424242424242424242424242424242424242424242424242424242424242424242401242424242424242424242424241514141414141414141414141414141615141414141414141414141414141416",
 	"24242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424240824242424242424242424242412111211122424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242412111211121112242424242424242424242424242424242424242401242424242424242424242424241514141414141414141414141414141615141414141414141414141414141416",
 	"24242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424082424242424242424242424241211121112242424242424242424242424242424242424242424242424242424242424242424242424242424242424241211121112242424242424242419192424242424242424242424240124171824242424242424242424241514141718141414141414142424141615141417181414141414141424241416",
 }
-
--- todo: rle?
 
 __gfx__
 00000000111222111122211114411441141111411114141111111111111111111111111111111111111222117777777777777777777777777777777777777777
