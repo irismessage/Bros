@@ -294,39 +294,41 @@ function mantle()
 	end
 end
 
+-- collision
 function ccollide(x,y)
-	return mget(x/8,y/8) != bg
+	return mget(x/8,y/8)
 end
 
-function ycollide(ud)
-	y = p.y + ud
-	if p.x % 8 == 0 then
-		return ccollide(p.x,y)
+function ycol(x,y)
+	if x % 8 == 0 then
+		return ccollide(x,y),bg
 	else
-		a = ccollide(p.x-4,y)
-		b = ccollide(p.x+4,y)
-		return a or b
+		a = ccollide(x-4,y)
+		b = ccollide(x+4,y)
+		return a,b
 	end
 end
 function ucol()
-	return ycollide(-8)
+	a,b = ycol(p.x,p.y-8)
+	return a!=bg or b!=bg
 end
 function dcol()
-	return ycollide(8)
+	a,b = ycol(p.x,p.y+8)
+	return a!=bg or b!=bg
 end
 
-function xcollide(lr)
-	if p.x % 8 != 0 then
-		return false
+function xcol(x,y)
+	if x % 8 != 0 then
+		return bg
 	else
-		return ccollide(p.x+lr,p.y)
+		return ccollide(x,y)
 	end
 end
 function lcol()
-	return xcollide(-8)
+	return xcol(p.x-8,p.y) != bg
 end
 function rcol()
-	return xcollide(8)
+	return xcol(p.x+8,p.y) != bg
 end
 
 function updatemovement()
