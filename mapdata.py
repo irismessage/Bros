@@ -1,3 +1,4 @@
+import re
 import sys
 
 
@@ -8,17 +9,31 @@ WIDTH = 32
 Lines = list[str]
 
 
+def compress(mapdata: str) -> str:
+    def compress_repl(matchobj: re.Match):
+        return f'24{len(matchobj[0])}'
+    return re.sub('(24){1,99}', compress_repl, mapdata)
+
+
+def decompress(mapdata: str) -> str:
+    def decompress_repl(matchobj: re.Match):
+        return "24" * matchobj[1]
+    return re.sub('24([0-9]{2})', decompress_repl, mapdata)
+
+
 def process(maplines: Lines) -> str:
     processed = []
     for line in maplines:
-        processed.append(line[:WIDTH])
+        line_compressed = compress(line[:WIDTH])
+        processed.append(line_compressed)
     return ''.join(processed)
 
 
 def deprocess(mapdata: str) -> Lines:
     processed = []
     for i in range(0,ROWS*WIDTH,WIDTH):
-        processed.append(mapdata[i:i+WIDTH])
+        line_decompressed = decompress(mapdata[i:i+WIDTH])
+        processed.append(line_decompressed)
     return processed
 
 

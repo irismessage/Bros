@@ -41,7 +41,8 @@ https://de-m-wikipedia-org.translate.goog/wiki/KE-SOFT?_x_tr_sl=de&_x_tr_tl=en&_
 - forum post by them    
 https://atariage.com/forums/topic/233511-ke-soft-kemal-ezcan-zong-atari-8-bit-games-and-music/
 - their website    
-https://www.yodasvideoarcade.com/
+https://www.yodasvideoarcade.com/    
+https://yodagames.de/
 - an interview    
 https://www.kultboy.com/Yoda-Zhang-Interview/40/    
 https://www-kultboy-com.translate.goog/Yoda-Zhang-Interview/40/?_x_tr_sl=de&_x_tr_tl=en&_x_tr_hl=en&_x_tr_pto=sc

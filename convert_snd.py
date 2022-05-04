@@ -61,8 +61,9 @@ def convert_snd(sndbytes: bytes) -> list[SFX]:
 
 def main():
     sndbytes = mine()
-    sfx = convert_sfx(sndbytes)
-    print(sfx)
+    snds = convert_snd(sndbytes)
+    for s in snds:
+        print(s)
 
 
 if __name__ == '__main__':
