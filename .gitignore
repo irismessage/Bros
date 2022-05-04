@@ -1,5 +1,7 @@
 *.lnk
 *.p8.png
+
+__pycache__/
 cart/bros.bin/
 music/
 psd/

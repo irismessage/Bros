@@ -4,16 +4,6 @@ Die Bedienung des Soundeditons ist recht einfach. In der oberen Bildschinnzeile 
 Volumetable: oben=laut, unten=leise Distortion-table: oben=14, unten=0 Pitchmod. Table: oben=+ (tiefer), unten=- (hohen) 
 Durch Tippen der Taste "G" and an-schlieBendes Steuenn mit dem Joystick wind die Grundtonhohe eingestellt. Der ✓organg wind dunch Knopfdnuck beendet. Mit der Modulationstiefe, d.h. dem Wert, 
 
-Translation types
-Text translation
-Source text
-Soundeditor
-Die Bedienung des Soundeditons ist recht einfach. In der oberen Bildschinnzeile steht der Name der Tabelle, die genade beanbeitet wind. Mit dem Joystick wind der Cursor in der Tabelle bewegt, nit dem Feuenknopf wird ein Wert gesetzt. Das Wechseln zwischen den einzelnen Ta-bellen enfolgt dunch Tippen der Taste 
-"*".
-Volumetable: oben=laut, unten=leise Distortion-table: oben=14, unten=0 Pitchmod. Table: oben=+ (tiefer), unten=- (hohen) 
-Durch Tippen der Taste "G" and an-schlieBendes Steuenn mit dem Joystick wind die Grundtonhohe eingestellt. Der ✓organg wind dunch Knopfdnuck beendet. Mit der Modulationstiefe, d.h. dem Wert,
-643 / 5,000
-Translation results
 sound editor
 The operation of the sound editor is quite simple. In the top line of the screen is the name of the table that is being edited. The cursor is moved in the table with the joystick, and a value is set with the fire button. You can switch between the individual tables by tapping the button
 "*".
