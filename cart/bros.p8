@@ -115,8 +115,13 @@ end
 
 function updatewait()
 	if wait.f > 0 then
-		if (wait.f == 1) wait.call()
-		wait.f -= 1
+		if wait.f == 1 then
+		 wait.call()
+		elseif btnp(❎) or btnp(🅾️) then
+			wait.f = 1
+		else
+			wait.f -= 1
+		end
 		return true
 	end
 	return false
@@ -263,6 +268,8 @@ function updatejump()
 			p.jumpt = 4*tick
 		end
  	if ucol() then
+ 		p.jump = 0
+ 		p.jumpt = 4*tick
  		bonk()
  	else
  		p.y -= 8
@@ -279,14 +286,14 @@ function updatejump()
 		p.y += 8
 	end
 	
-	if y > 108 then
+	if p.y > 108 then
 		die()
 	end
 end
 
 function jumpsfx()
 	jumpstep = jumpmax-p.jump-1
-	sfx(48,-1,jumpstep*8,8)
+	sfx(48,1,jumpstep*8,8)
 end
 
 function mantle()
@@ -419,6 +426,7 @@ function updatefungus()
 			g.fungus = true
 			fungus.show = false
 			drawtopbar()
+			sfx(48)
 		end
 	end
 end
@@ -438,6 +446,7 @@ function updatefguy()
 		elseif p.y+8 == fguy.y then
 			fguy.show = false
 			g.score += 100
+			sfx(48)
 		end
 	end
 	
@@ -626,10 +635,10 @@ function gameover()
 	map(36,6,32,40,9,5)
 	print("game  over",44,56)
 	wait.f = 120
-	wait.call = diefinish
+	wait.call = dieforever
 end
 
-function diefinish()
+function dieforever()
  ne.rank = rankscore(g.score)
 	if ne.rank != 11 then
 		askname()
@@ -638,10 +647,16 @@ function diefinish()
 	end
 end
 
-function updatelevel()
-	if g.timer > 0 then
+function updatetimer()
+	if g.timer == 0 then
+		die()
+	else
 		g.timer -= 0.5
 	end
+end
+
+function updatelevel()
+	updatetimer()
 	checkforlevelup()
 	updatemovement()
 	updateentities()
@@ -936,7 +951,7 @@ end
 
 
 screens = {
-	"247712111211121112242301240e15141424011414141414141414141414161514142401141414141414141414141416",
+	"247712111211121112242301240e1514141414141414141414141414141615141414141414141414141414141416",
 	"243b08240c1211121112243a12111211121112241301240e1514141414141414141414141414141615141414141414141414141414141416",
 	"244908240c1211122a12242b121112111224081919240c0124011718240b1514141718141414141414142402141615141417181414141414141424021416",
 }
@@ -1225,7 +1240,7 @@ __music__
 00 01084344
 00 02094344
 00 030a4344
-04 040b4344
+02 040b4344
 00 7f424344
 01 0c114344
 00 0d124344
@@ -1233,7 +1248,7 @@ __music__
 00 0d144344
 00 0e154344
 00 0f164344
-04 10174344
+02 10174344
 00 7f424344
 01 191d4344
 00 1a1e4344
@@ -1241,7 +1256,7 @@ __music__
 00 19204344
 00 1a214344
 00 1b224344
-04 1c234344
+02 1c234344
 00 7f424344
 01 24294344
 00 252a4344
@@ -1249,7 +1264,7 @@ __music__
 00 252c4344
 00 262d4344
 00 272e4344
-04 282f4344
+02 282f4344
 00 7f424344
 00 41424344
 00 41424344
