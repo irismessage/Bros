@@ -18,12 +18,9 @@ def compress(mapdata: str) -> str:
 
 def decompress(mapdata: str) -> str:
     def decompress_repl(matchobj: re.Match):
-        print(matchobj[0])
-        print(matchobj[1])
         repeats = int(matchobj[1], 16)
         return "24" * repeats
-    # return re.sub('24([0-9a-f]{2})', decompress_repl, mapdata)
-    return mapdata
+    return re.sub('24([0-9a-f]{2})', decompress_repl, mapdata)
 
 
 def process(maplines: Lines) -> str:
