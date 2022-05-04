@@ -11,30 +11,36 @@ Lines = list[str]
 
 def compress(mapdata: str) -> str:
     def compress_repl(matchobj: re.Match):
-        return f'24{len(matchobj[0])}'
-    return re.sub('(24){1,99}', compress_repl, mapdata)
+        repeats = len(matchobj[0])//2
+        return f'24{repeats:02x}'
+    return re.sub('(24){1,255}', compress_repl, mapdata)
 
 
 def decompress(mapdata: str) -> str:
     def decompress_repl(matchobj: re.Match):
-        return "24" * matchobj[1]
-    return re.sub('24([0-9]{2})', decompress_repl, mapdata)
+        print(matchobj[0])
+        print(matchobj[1])
+        repeats = int(matchobj[1], 16)
+        return "24" * repeats
+    # return re.sub('24([0-9a-f]{2})', decompress_repl, mapdata)
+    return mapdata
 
 
 def process(maplines: Lines) -> str:
-    processed = []
+    processed_lines = []
     for line in maplines:
-        line_compressed = compress(line[:WIDTH])
-        processed.append(line_compressed)
-    return ''.join(processed)
+        processed_lines.append(line[:WIDTH])
+    processed_uncompressed = ''.join(processed_lines)
+    processed = compress(processed_uncompressed)
+    return processed
 
 
 def deprocess(mapdata: str) -> Lines:
-    processed = []
+    mapdata_decompressed = decompress(mapdata)
+    deprocessed = []
     for i in range(0,ROWS*WIDTH,WIDTH):
-        line_decompressed = decompress(mapdata[i:i+WIDTH])
-        processed.append(line_decompressed)
-    return processed
+        deprocessed.append(mapdata_decompressed[i:i+WIDTH])
+    return deprocessed
 
 
 def peekcart() -> Lines:
