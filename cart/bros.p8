@@ -344,6 +344,13 @@ function rcol()
 	return xcol(p.x+8,p.y) != bg
 end
 
+function checkforcoin()
+	if xcol(p.x,p.y) == 32 then
+		coinup()
+		mset(p.x/8,p.y/8,bg)
+	end
+end
+
 function updatemovement()
 	updatewalk()
 	updatejump()
