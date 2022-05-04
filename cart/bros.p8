@@ -392,6 +392,8 @@ function bonk()
 			fungus.x = p.x
 			fungus.y = p.y-16
 			fungus.show = true
+			g.score += 100
+			drawtopbar()
 			mset(mx,my,16)
 		elseif g.fungus and sprn==18 then
 			g.score += 25
@@ -428,7 +430,17 @@ end
 
 function updatefguy()
 	if (not fguy.show) return
-
+	
+	-- player interaction
+	if abs(p.x-fguy.x) < 8 then
+		if p.y == fguy.y then
+			die()
+		elseif p.y+8 == fguy.y then
+			fguy.show = false
+			g.score += 100
+		end
+	end
+	
 	-- fall
 	if fguy.y > 108 then
 		fguy.show = false
