@@ -353,7 +353,7 @@ coin={
 fguy={
 	x=0,
 	y=0,
-	l=false,
+	l=true,
 	movet=0,
 	fallt=0,
 	show=false
@@ -397,10 +397,41 @@ function updatecoin()
 	end
 end
 
+function fguydcol()
+	a,b = ycol(fguy.x,fguy.y+8)
+	return a!=bg or b!=bg
+end
+
 function updatefguy()
+	if (not fguy.show) return
+
+	-- fall
+	if not fguydcol() then
+		if fguy.fallt == 0 then
+			fguy.fallt = 1
+			fguy.y += 8
+		else
+			fguy.fallt -= 1
+		end
+		return
+	end
+	
+	-- walk
 	if fguy.movet == 0 then
-		fguy.x -= 4
-		fguy.movet = 4
+		fguy.movet = 8
+		if fguy.l then
+			if xcol(fguy.x-8,fguy.y) == bg then
+				fguy.x -= 4
+			else
+				fguy.l = false
+			end
+		else
+			if xcol(fguy.x+8,fguy.y) == bg then
+				fguy.x += 4
+			else
+				fguy.l = true
+			end
+		end
 	else
 		fguy.movet -=1
 	end
@@ -411,7 +442,7 @@ function drawentities()
 		spr(32,coin.x,coin.y)
 	end
 	if fguy.show then
-		spr(8,fguy.x,fguy.y)
+		spr(8,fguy.x,fguy.y,1,1,fguy.l)
 	end
 end
 
@@ -486,6 +517,7 @@ function submtile(sprn,x,y)
 		sprn = bg
 		fguy.x = 8*x
 		fguy.y = 8*y
+		fguy.l = true
 		fguy.show = true
 	end
 	return sprn
