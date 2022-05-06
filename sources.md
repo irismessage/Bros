@@ -45,6 +45,8 @@ https://atariwiki.org/wiki/Wiki.jsp?page=File%20Suffix
 http://www.atarimania.com/utility-atari-400-800-xl-xe-sound-n-sampler_15982.html
 - assembly programming manual    
 https://www.atariarchives.org/alp/
+- SPN    
+https://en.wikipedia.org/wiki/Scientific_pitch_notation
 
 ## ke-soft
 - ZONG magazine archive with sound editor rom    
