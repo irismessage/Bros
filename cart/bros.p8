@@ -204,7 +204,7 @@ p = {
 	dead=false,
 }
 tick = 1
-jumpmax = 4
+jumpmax = 3
 
 function drawbro()
 	sprn = 1
@@ -258,7 +258,7 @@ function updatejump()
 		return
 	end
 	
- if p.jump>1 and jbtn() then
+ if 0 < p.jump and jbtn() then
  	p.jumpt = tick
  	p.jump -= 1
  	if p.jump == 1 then
@@ -272,6 +272,8 @@ function updatejump()
  		p.y -= 8
  		jumpsfx()
 		end
+	elseif p.jump<jumpmax and not jbtn() then
+		p.jump = 0
 	elseif dcol() then
 		p.jump = jumpmax
 	elseif mantle() then
