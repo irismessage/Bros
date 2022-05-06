@@ -201,10 +201,11 @@ p = {
 	movet=0,
 	jumpt=0,
 	jump=0,
+	coyote=0,
 	dead=false,
 }
 tick = 1
-jumpmax = 3
+jumpmax = 4
 
 function drawbro()
 	sprn = 1
@@ -258,12 +259,14 @@ function updatejump()
 		return
 	end
 	
- if 0 < p.jump and jbtn() then
+ if 1 < p.jump and jbtn() then
  	p.jumpt = tick
  	p.jump -= 1
+ 	-- hang at top
  	if p.jump == 1 then
 			p.jumpt = 4*tick
 		end
+		-- upwards collide
  	if ucol() then
  		p.jump = 0
  		p.jumpt = 4*tick
@@ -272,10 +275,10 @@ function updatejump()
  		p.y -= 8
  		jumpsfx()
 		end
-	elseif p.jump<jumpmax and not jbtn() then
-		p.jump = 0
 	elseif dcol() then
+		-- refill jump when ground
 		p.jump = jumpmax
+		p.coyote = 2
 	elseif mantle() then
 		p.jump = jumpmax+1
 		if not jbtn() then
@@ -283,6 +286,19 @@ function updatejump()
 		end
 	else
 		p.y += 8
+	end
+	
+	-- no resuming jumps
+	if p.jump<jumpmax and not jbtn() then
+		p.jump = 0
+	end
+	-- coyote time
+	if p.jump==jumpmax and not dcol() and not mantle() then
+		if 0 < p.coyote then
+			p.coyote -= 1
+		else
+			p.jump = 0
+		end
 	end
 	
 	if p.y > 108 then
@@ -297,12 +313,15 @@ end
 
 function mantle()
 	if btn(➡️) and rcol() then
-		return true
+		if ccollide(p.x+8,p.y-8) == bg then
+			return true
+		end
 	elseif btn(⬅️) and lcol() then
-		return true
-	else
-		return false
+		if ccollide(p.x-8,p.y-8) == bg then
+			return true
+		end
 	end
+	return false
 end
 
 -- collision
@@ -628,6 +647,9 @@ function resetp()
 	p.x = l.px
 	p.y = l.py
 	p.l = false
+	if timer == 0 then
+		timer = 999
+	end
 end
 
 function die()
