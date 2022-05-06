@@ -27,6 +27,24 @@ https://en.wikipedia.org/wiki/Atari_CX40_joystick
 - Atari BASIC manual with music note table    
 http://www.atarimania.com/documents-atari-400-800-xl-xe-manuals_2_8.html    
 http://www.atarimania.com/documents/Atari-Basic-Reference-Manual-Rev-C.pdf
+- sampler software atrs    
+https://atariage.com/forums/topic/205965-sample-cartridge/#comments
+- turbo-DOS    
+https://atariwiki.org/wiki/Wiki.jsp?page=Turbo-DOS
+- list of sample software    
+http://www.atarimania.com/faq-atari-400-800-xl-xe-what-sound-digitizers-samplers-were-produced-for-the-atari_65.html
+- more sample software information    
+https://atari-owner.com/club/articles/audio-solutions-for-the-atari-8-bit-home-computer.32/
+- sound n sampler 2: COULD BE IT
+http://forum.atarimania.com/viewtopic.php?f=2&t=18563&p=35093&sid=bfee8ded313d3674a9c11f1aad50496d#p35093
+- atari music archive with info    
+http://asma.atari.org/
+- file extension details    
+https://atariwiki.org/wiki/Wiki.jsp?page=File%20Suffix
+- atarimania entry for sound n sampler, missing stuff    
+http://www.atarimania.com/utility-atari-400-800-xl-xe-sound-n-sampler_15982.html
+- assembly programming manual    
+https://www.atariarchives.org/alp/
 
 ## ke-soft
 - ZONG magazine archive with sound editor rom    

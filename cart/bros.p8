@@ -53,12 +53,6 @@ wait = {
 bg = 36
 
 function _init()
-	title = "\66\82\79\83"
-	extcmd("set_title",title)
-	palt(0,false)
-	color(15)
-	loadfont()
-	loadscores()
 	mainscreen()
 end
 
@@ -532,6 +526,12 @@ function levelscreen()
 	g.lives = 4
 	g.timer = 999
 	drawtopbar()
+	l.world = 1
+	l.stage = 1
+	l.screen = 1
+	coin.show = false
+	fungus.show = false
+	fguy.show = false
 	loadlevel()
 	resetp()
 	wait.f = 5
@@ -898,6 +898,17 @@ function sprnxy(sprn)
 	y = flr(sprn/16)*8
 	return x,y
 end
+
+function boot()
+	title = "\66\82\79\83"
+	extcmd("set_title",title)
+	palt(0,false)
+	color(15)
+	loadfont()
+	loadscores()
+end
+
+boot()
 
 function getspr(sprn)
 	x,y = sprnxy(sprn)
