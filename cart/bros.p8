@@ -57,7 +57,7 @@ function _init()
 end
 
 function _update60()
-	debugstats()
+--	debugstats()
 	if (updatewait()) return
 	updatestate()
 	updatecode()
@@ -90,7 +90,7 @@ function debugstats()
 	printh("p.x"..pad(p.x,3))
 	printh("p.y"..pad(p.y,3))
 	printh("p.jump"..p.jump)
-	printh("p.jumpt"..p.jumpt)
+	printh("p.jtick"..p.jtick)
 end
 
 function updatestate()
@@ -100,7 +100,7 @@ function updatestate()
 			levelscreen()
 		elseif btnp(❎) then
 			s.main = false
-			scorescreen()
+			h.namesreen()
 		end
 	elseif s.hi then
 		if btnp(❎) or btnp(🅾️) then
@@ -114,7 +114,7 @@ function updatestate()
 		end
 		if btnp(❎) or btnp(🅾️) then
 			s.entry = false
-			scorescreen()
+			h.namesreen()
 		end
 	end
 end
@@ -201,19 +201,33 @@ end
 -->8
 -- movement
 
--- player
+tick = 2
+-- walk
+wtickl = 1 * tick
+-- stop walk
+stickl = 4 * tick
+-- up jump
+utickl = 1 * tick
+-- down fall
+dtickl = 2 * tick
+-- refill jump on floor
+rtickl = 2 * tick
+-- bonk
+btickl = 4 * tick
+
+jumpmax = 4
+
 p = {
 	x=0,
 	y=0,
 	l=false,
-	movet=0,
-	jumpt=0,
-	jump=0,
+	wtick=0,
+	jtick=0,
+	jump=jumpmax,
 	coyote=0,
 	dead=false,
 }
-tick = 2
-jumpmax = 4
+
 
 function drawbro()
 	sprn = 1
@@ -221,7 +235,7 @@ function drawbro()
 		sprn = 3
 	elseif btn(⬆️) or btn(🅾️) then
 		sprn = 10
-	elseif p.movet%(2*tick)!=0 then
+	elseif p.wtick%(2*tick)!=0 then
 		sprn = 2
 	end
 	y = p.y
@@ -229,8 +243,8 @@ function drawbro()
 end
 
 function updatewalk()
-	if p.movet > 0 then
-		p.movet -= 1
+	if p.wtick > 0 then
+		p.wtick -= 1
 		return
 	end
 	
@@ -241,54 +255,61 @@ function updatewalk()
 	if btn(⬅️) then
 		p.l = true
 		if lcol() or p.x<8 then
-			p.movet = 4*tick
+			p.wtick = stickl
 		else
-			p.movet = 1*tick
+			p.wtick = wtickl
 			p.x -= 4
 		end
 	end
 	if btn(➡️) then
 		p.l = false
 		if rcol() then
-		 p.movet = 4*tick
+		 p.wtick = stickl
 		else
-			p.movet = 1*tick
+			p.wtick = wtickl
 			p.x += 4
 		end
 	end
 end
 
 function updatejump()
-	if p.jumpt > 0 then
-		p.jumpt -= 1
+	if p.jtick > 0 then
+		p.jtick -= 1
 		return
 	end
-	p.jumpt = tick
+	p.y += 8
 	
+	p.jtick = tick
 	if dcol() then
 		p.y -= 8
-		p.jump = jumpmax
+		if p.jump < jumpmax then
+			if p.jump == 0 then
+				p.jump = jumpmax
+				p.jtick = rtickl
+				return
+			end
+		end
 		p.coyote = 2
 	end
-	p.y += 8
 	
  if 0 < p.jump then
  	if btn(⬆️) or btn(🅾️) then
  		p.y -= 16
-	 	p.jump -= 1
-	 	p.jumpt = 2*tick
-	 	if p.jump == 0 then
-	 		p.jumpt = 0
+ 		p.jtick = utickl
+	 	if p.jump == 1 then
+	 		p.jtick = 0
 			end
+	 	p.jump -= 1
 	 	if ucol() then
 	 		p.y += 8
 	 		p.jump = 0
-	 		p.jumpt = 4*tick
+	 		p.jtick = btickl
 	 		bonk()
 	 	end
 		elseif p.jump < jumpmax then
 			p.jump = 0
 		end
+		return
 	end
 	
 	-- coyote time
@@ -307,11 +328,12 @@ end
 
 -- called in drawlevel()
 function jumpsfx()
-	if 0<p.jump and p.jump<jumpmax then
+	printh(p.jump.." "..p.jtick)
+	if 0<p.jump and p.jump<jumpmax and p.jtick%4==0 then
 		jumpstep = (jumpmax-p.jump)*2-1
-		if (p.jumpt==0) jumpstep+=1
-		sfx(49+jumpstep-1,-2)
-		sfx(49+jumpstep,-1)
+		printh(jumpstep)
+		if (p.jtick==0) jumpstep+=1
+		sfx(49+jumpstep)
 	end
 end
 
@@ -336,7 +358,7 @@ function ucol()
 	return ft(a) or ft(b)
 end
 function dcol()
-	a,b = ycol(p.x,p.y+8)
+	a,b = ycol(p.x,p.y)
 	return ft(a) or ft(b)
 end
 
@@ -364,8 +386,8 @@ function checkforcoin()
 end
 
 function updatemovement()
-	updatewalk()
 	updatejump()
+	updatewalk()
 	checkforcoin()
 end
 
@@ -387,8 +409,8 @@ fguy={
 	x=0,
 	y=0,
 	l=true,
-	movet=0,
-	fallt=0,
+	wtick=0,
+	jtick=0,
 	show=false
 }
 
@@ -485,18 +507,18 @@ function updatefguy()
 		fguy.show = false
 	end
 	if not fguydcol() then
-		if fguy.fallt == 0 then
-			fguy.fallt = tick
+		if fguy.jtick == 0 then
+			fguy.jtick = tick
 			fguy.y += 8
 		else
-			fguy.fallt -= 1
+			fguy.jtick -= 1
 		end
 		return
 	end
 	
 	-- walk
-	if fguy.movet == 0 then
-		fguy.movet = 8*tick
+	if fguy.wtick == 0 then
+		fguy.wtick = 8*tick
 		if fguy.l then
 			if not ft(xcol(fguy.x-8,fguy.y)) then
 				fguy.x -= 4
@@ -513,7 +535,7 @@ function updatefguy()
 			end
 		end
 	else
-		fguy.movet -=1
+		fguy.wtick -=1
 	end
 end
 
@@ -645,7 +667,7 @@ function loadlevel()
 end
 
 function checkforlevelup()
- if btn(➡️) and p.movet==0 then
+ if btn(➡️) and p.wtick==0 then
  	if p.x > 114 then
  		levelup()
 		end
@@ -685,8 +707,8 @@ function gameover()
 end
 
 function dieforever()
- ne.rank = rankscore(g.score)
-	if ne.rank != 11 then
+ h.rank = rankscore(g.score)
+	if h.rank != 11 then
 		askname()
 	else
 		mainscreen()
@@ -714,7 +736,6 @@ function drawlevel()
 	drawentities()
 	drawtimer()
 	drawbro()
-	debugstats()
 end
 
 -->8
@@ -725,23 +746,21 @@ end
 -- 01 to 10 top scores
 -- 11 to 20 packed names
 
--- name entry
-ne = {
- ords={97,97,97},
+h = {
+	ords={97,97,97},
 	chrs={"a","a","a"},
 	curs=1,
 	rank=0,
+	scores={},
+	names={},
 }
-
-scoresn={}
-scoresc={}
 
 function loadscores()
 	initscores()
 	for i=1,10 do
-		scoresn[i] = dget(i)
+		h.scores[i] = dget(i)
 		name = dget(i+10)
-		scoresc[i] = unpackname(name)
+		h.names[i] = unpackname(name)
 	end
 end
 
@@ -784,7 +803,7 @@ end
 
 function rankscore(num)
 	for i=1,10 do
-		if num > scoresn[i] then
+		if num > h.scores[i] then
 			return i
 		end
 	end
@@ -794,8 +813,8 @@ end
 function shiftscores(rank)
 	for i=10,rank,-1 do
 		j = i-1
-		scoresn[i] = scoresn[j]
-		scoresc[i] = scoresc[j]
+		h.scores[i] = h.scores[j]
+		h.names[i] = h.names[j]
 		dset(i,dget(j))
 		dset(i+10,dget(j+10))
 	end
@@ -813,64 +832,64 @@ function drawnameentry()
 	rectfill(58,72,70,86,1)
 	color(15)
 	for i=1,3 do
-		print(ne.chrs[i],54+4*i,72)
+		print(h.chrs[i],54+4*i,72)
 	end
-	print(":",54+4*ne.curs,80)
+	print(":",54+4*h.curs,80)
 end
 
 function updatenameentry()
 	-- cursor
-	c = ne.curs
+	c = h.curs
 	if btnp(➡️) and c < 3 then
-		ne.curs += 1
+		h.curs += 1
 	end
 	if btnp(⬅️) and 1 < c then
-		ne.curs -= 1
+		h.curs -= 1
 	end
 	
 	-- character
 	for b,v in pairs({[2]=1,[3]=-1}) do
 		if btnp(b) then
-			ne.ords[c] += v
-			if 122 < ne.ords[c] then
-				ne.ords[c] = 97
-			elseif ne.ords[c] < 97 then
-				ne.ords[c] = 122
+			h.ords[c] += v
+			if 122 < h.ords[c] then
+				h.ords[c] = 97
+			elseif h.ords[c] < 97 then
+				h.ords[c] = 122
 			end
-			ne.chrs[c] = chr(ne.ords[c])
+			h.chrs[c] = chr(h.ords[c])
 		end
 	end
 end
 
 function savescore()
-	cs = ne.chrs
+	cs = h.chrs
 	name = cs[1]..cs[2]..cs[3]
-	shiftscores(ne.rank)
-	scoresn[ne.rank] = g.score
-	scoresc[ne.rank] = name
-	dset(ne.rank, g.score)
-	dset(ne.rank+10, packname(name))
+	shiftscores(h.rank)
+	h.scores[h.rank] = g.score
+	h.names[h.rank] = name
+	dset(h.rank, g.score)
+	dset(h.rank+10, packname(name))
 end
 
-function scorescol(x,rank)
+function h.namesol(x,rank)
 	y=48
 	print("nr score name",x,y)
 	for i=rank,rank+8,2 do
 		y += 8
 		print(pad(i,2),x,y)
-		print(pad(scoresn[i],5),x+12,y)
-		print(scoresc[i],x+40,y)
+		print(pad(h.scores[i],5),x+12,y)
+		print(h.names[i],x+40,y)
 	end
 end
 
-function scorescreen()
+function h.namesreen()
 	s.hi = true
 	cls(1)
 	drawtopbar()
 	t = "h i g h s c o r e s :"
 	print(t, 20, 28)	
-	scorescol(8,1)
-	scorescol(64,2)
+	h.namesol(8,1)
+	h.namesol(64,2)
 end
 
 -->8
