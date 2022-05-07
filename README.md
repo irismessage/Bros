@@ -1,8 +1,8 @@
 # BROS (WIP)
 
-BROS is a 1990 video game for the Atari 800 XL. 
+BROS is a 1990 video game for the Atari 800 XL.
 
-This is a remake of the game in PICO-8, complete with custom font, accurate datamined music, etc. 
+This is a remake of the game in PICO-8, complete with custom font, accurate datamined music, etc.
 
 - Try on the bbs https://www.lexaloffle.com/bbs/?tid=47563
 - Music on youtube https://youtu.be/oAwkf06aJ-Q

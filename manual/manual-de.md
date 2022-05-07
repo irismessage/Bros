@@ -20,7 +20,7 @@ Programm und Verpackung (c) 1990 KE-SOFT
 
 
 # BROS
-## (c) 1990 KE-SOFT 
+## (c) 1990 KE-SOFT
 
 Fred und sein Bruder Ted waren sehr 
 glücklich zusammen, bis ein böses

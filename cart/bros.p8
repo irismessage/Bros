@@ -61,7 +61,7 @@ function _update60()
 	if (updatewait()) return
 	updatestate()
 	updatecode()
-	
+
 	if s.play then
 		updatelevel()
 		if btnp(❎) then
@@ -214,8 +214,11 @@ dtickl = 2 * tick
 rtickl = 2 * tick
 -- bonk
 btickl = 4 * tick
+-- apex of jump
+atickl = 0 * tick
 
 jumpmax = 4
+coyotemax = 2
 
 p = {
 	x=0,
@@ -247,11 +250,11 @@ function updatewalk()
 		p.wtick -= 1
 		return
 	end
-	
+
 	if btn(⬅️) and btn(➡️) then
 		return
 	end
-	
+
 	if btn(⬅️) then
 		p.l = true
 		if lcol() or p.x<8 then
@@ -278,7 +281,7 @@ function updatejump()
 		return
 	end
 	p.y += 8
-	
+
 	p.jtick = tick
 	if dcol() then
 		p.y -= 8
@@ -289,29 +292,29 @@ function updatejump()
 				return
 			end
 		end
-		p.coyote = 2
+		p.coyote = coyotemax
 	end
-	
- if 0 < p.jump then
- 	if btn(⬆️) or btn(🅾️) then
- 		p.y -= 16
- 		p.jtick = utickl
-	 	if p.jump == 1 then
-	 		p.jtick = 0
+
+	if 0 < p.jump then
+		if btn(⬆️) or btn(🅾️) then
+			p.y -= 16
+			p.jtick = utickl
+			if p.jump == 1 then
+				p.jtick = atickl
 			end
-	 	p.jump -= 1
-	 	if ucol() then
-	 		p.y += 8
-	 		p.jump = 0
-	 		p.jtick = btickl
-	 		bonk()
-	 	end
+			p.jump -= 1
+			if ucol() then
+				p.y += 8
+				p.jump = 0
+				p.jtick = btickl
+				bonk()
+			end
 		elseif p.jump < jumpmax then
 			p.jump = 0
 		end
 		return
 	end
-	
+
 	-- coyote time
 	if p.jump==jumpmax and not dcol() then
 		if 0 < p.coyote then
@@ -320,7 +323,7 @@ function updatejump()
 			p.jump = 0
 		end
 	end
-	
+
 	if p.y > 108 then
 		die()
 	end
@@ -342,7 +345,9 @@ function ccollide(x,y)
 	return mget(x/8,y/8)
 end
 
-function ft(sprn) return fget(sprn,0) end
+function ft(sprn)
+	return fget(sprn,0)
+end
 
 function ycol(x,y)
 	if x % 8 == 0 then
@@ -484,7 +489,7 @@ end
 
 function updatefguy()
 	if (not fguy.show) return
-	
+
 	-- player interaction
 	if abs(p.x-fguy.x) <= 8 then
 		sep = p.y - fguy.y
@@ -501,7 +506,7 @@ function updatefguy()
 			end
 		end
 	end
-	
+
 	-- fall
 	if fguy.y > 108 then
 		fguy.show = false
@@ -515,7 +520,7 @@ function updatefguy()
 		end
 		return
 	end
-	
+
 	-- walk
 	if fguy.wtick == 0 then
 		fguy.wtick = 8*tick
@@ -667,11 +672,11 @@ function loadlevel()
 end
 
 function checkforlevelup()
- if btn(➡️) and p.wtick==0 then
- 	if p.x > 114 then
- 		levelup()
+	if btn(➡️) and p.wtick==0 then
+		if p.x > 114 then
+			levelup()
 		end
- end
+	end
 end
 
 function resetp()
@@ -846,7 +851,7 @@ function updatenameentry()
 	if btnp(⬅️) and 1 < c then
 		h.curs -= 1
 	end
-	
+
 	-- character
 	for b,v in pairs({[2]=1,[3]=-1}) do
 		if btnp(b) then
@@ -886,8 +891,9 @@ function h.namesreen()
 	s.hi = true
 	cls(1)
 	drawtopbar()
+	print("00",90,8)
 	t = "h i g h s c o r e s :"
-	print(t, 20, 28)	
+	print(t, 20, 28)
 	h.namesol(8,1)
 	h.namesol(64,2)
 end
@@ -907,7 +913,7 @@ function sprtochar(sprn)
 		char[a] = 0
 		for j=0,7 do
 			if sget(x+j, y+i) == 0 then
-				char[a] |= 2^j 
+				char[a] |= 2^j
 			end
 		end
 	end
