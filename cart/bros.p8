@@ -205,11 +205,12 @@ tick = 2
 -- walk
 wtickl = 1 * tick
 -- stop walk
+-- todo
 stickl = 4 * tick
 -- up jump
-utickl = 1 * tick
+utickl = 2 * tick
 -- down fall
-dtickl = 2 * tick
+dtickl = 1 * tick
 -- refill jump on floor
 rtickl = 2 * tick
 -- bonk
@@ -238,7 +239,7 @@ function drawbro()
 		sprn = 3
 	elseif btn(⬆️) or btn(🅾️) then
 		sprn = 10
-	elseif p.wtick%(2*tick)!=0 then
+	elseif p.wtick==1 then
 		sprn = 2
 	end
 	y = p.y
@@ -282,35 +283,36 @@ function updatejump()
 	end
 	p.y += 8
 
-	p.jtick = tick
+	p.jtick = dtickl
 	if dcol() then
 		p.y -= 8
-		if p.jump < jumpmax then
-			if p.jump == 0 then
-				p.jump = jumpmax
-				p.jtick = rtickl
-				return
-			end
-		end
 		p.coyote = coyotemax
+		if p.jump == 1 then
+			p.jump = jumpmax
+			p.jtick = rtickl
+			return
+		else
+			p.jtick = 0
+		end
 	end
 
-	if 0 < p.jump then
+	if 1 < p.jump then
 		if btn(⬆️) or btn(🅾️) then
 			p.y -= 16
 			p.jtick = utickl
-			if p.jump == 1 then
+			if p.jump == 2 then
 				p.jtick = atickl
+				p.wtick = 0
 			end
 			p.jump -= 1
 			if ucol() then
 				p.y += 8
-				p.jump = 0
+				p.jump = 1
 				p.jtick = btickl
 				bonk()
 			end
 		elseif p.jump < jumpmax then
-			p.jump = 0
+			p.jump = 1
 		end
 		return
 	end
@@ -320,7 +322,7 @@ function updatejump()
 		if 0 < p.coyote then
 			p.coyote -= 1
 		else
-			p.jump = 0
+			p.jump = 1
 		end
 	end
 
@@ -331,10 +333,10 @@ end
 
 -- called in drawlevel()
 function jumpsfx()
-	printh(p.jump.." "..p.jtick)
-	if 0<p.jump and p.jump<jumpmax and p.jtick%4==0 then
+	if 1<p.jump and p.jump<jumpmax and p.jtick%4==0 then
 		jumpstep = (jumpmax-p.jump)*2-1
-		printh(jumpstep)
+--		printh(p.jump.." "..p.jtick)
+--		printh(jumpstep)
 		if (p.jtick==0) jumpstep+=1
 		sfx(49+jumpstep)
 	end
@@ -493,10 +495,11 @@ function updatefguy()
 	-- player interaction
 	if abs(p.x-fguy.x) <= 8 then
 		sep = p.y - fguy.y
+		printh(sep)
 		if sep==0 or sep==8 then
 			die()
 		elseif sep == -8 then
-			if p.jump != 0 then
+			if p.jump != 1 then
 				die()
 			else
 				fguy.show = false

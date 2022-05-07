@@ -2,7 +2,9 @@
 *.p8.png
 
 __pycache__/
-cart/bros.bin/
+cart/*.bin/
+cart/demos/
+cart/games
 music/
 psd/
 screens/
