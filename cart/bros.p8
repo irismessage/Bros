@@ -577,9 +577,6 @@ function levelscreen()
 	l.world = 1
 	l.stage = 1
 	l.screen = 1
-	coin.show = false
-	fungus.show = false
-	fguy.show = false
 	loadlevel()
 	resetp()
 	wait.f = 5 * tick
@@ -593,26 +590,28 @@ end
 
 function decodescreen(scrn)
 	hexscreen = screens[scrn]
+	scrd = split(hexscreen,2,false)
+	for i=1,#scrd do
+		scrd[i] = tonum(scrd[i],0x1)
+	end
 	x = 0
 	y = offset
 	i = 1
 	while y < 17-offset do
-		sprc = sub(hexscreen,i,i+1)
-		if sprc == "24" then
-		 i += 2
-			repsc = sub(hexscreen,i,i+1)
-			reps = tonum(repsc,0x1)
+		sprn = scrd[i]
+		if sprn == bg then
+		 i += 1
+			reps = scrd[i]
 			for j=1,reps do
 				mset(x,y,bg)
 				nextm()
 			end
 		else
-			sprn = tonum(sprc,0x1)
 			sprn = submtile(sprn,x,y)
 			mset(x,y,sprn)
 			nextm()
 		end
-		i += 2
+		i += 1
 	end
 end
 
@@ -655,6 +654,9 @@ function levelup()
 end
 
 function loadlevel()
+	coin.show = false
+	fungus.show = false
+	fguy.show = false
 	scrn = 0
 	scrn += (l.world-1) * 20
 	scrn += (l.stage-1) * 4
