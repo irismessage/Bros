@@ -22,40 +22,41 @@ Program and package (c) 1990 KE-SOFT
 # BROS
 ## (c) 1990 KE-SOFT 
 
-Fred and his brother Ted were very
-happy together, till an evil
-Monster came and kidnapped ted. Witnesses told Fred
-that his brother was hidden in an castle
-and Fred instantaniously has gone on the way
+Fred and his brother Ted were very 
+happy together, till an evil 
+Monster came and kidnapped ted. Witnesses told Fred 
+that his brother was hidden in an castle 
+and Fred instantaniously has gone on the way 
 to free Ted.
 
 ## Ladeanweisung
-Start your disk station
-and shut down your Atari XL/XE. Now put  
+Start your disk station 
+and shut down your Atari XL/XE. Now put 
 put the bros-disk on its back in the drive one 
-and start the XL/XE while holding the OPTION-Key.
+and start the XL/XE while holding the OPTION-Key. 
 The program will now load automatically.
 
 ## Spielbeschreibung
-The secret land is split in eight worlds
-with each being split four subworlds(level?).
+The secret land is split in eight worlds 
+with each being split four subworlds(level?). 
 The fourth subworld in every world is a 
-castle in which Ted could be hidden! at
+castle in which Ted could be hidden! at 
 the end of a each world is a pipe, 
-in which Fred can go to get to the next
+in which Fred can go to get to the next 
 world. Fred can pick up coins which lay 
-on his way. Fred gets an extra life for 100
+on his way. Fred gets an extra life for 100 
 coins. Furthermore Fred can get different 
-objects out of blocks with jumping against
-them on the bottom side.
+objects out of blocks with jumping against 
+them on the bottom side. 
 If Fred picks up a mushroom then he 
 will be able to break brick blocks. 
 In some blocks is an extra life or 
-different extras... If Fred has a
-mushroom and picks up a star symbol
+different extras...
+If Fred has a 
+mushroom and picks up a star symbol 
 then he gets ten shots. Fred can 
-kill some monsters with jumping on them
-Attention: If Fred loses a life he will
+kill some monsters with jumping on them 
+Attention: If Fred loses a life he will 
 also lose his extras! After finishing 
 the game you can maybe save your 
 highscore.

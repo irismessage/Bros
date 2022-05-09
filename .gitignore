@@ -1,10 +1,11 @@
 *.lnk
-*.p8.png
-
 __pycache__/
+
+*.p8.png
 cart/*.bin/
 cart/demos/
-cart/games
+cart/games/
+
 music/
 psd/
 screens/

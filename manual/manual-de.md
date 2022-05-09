@@ -23,7 +23,7 @@ Programm und Verpackung (c) 1990 KE-SOFT
 ## (c) 1990 KE-SOFT
 
 Fred und sein Bruder Ted waren sehr 
-glücklich zusammen, bis ein böses
+glücklich zusammen, bis ein böses 
 Monster kam und Ted entführte. Von 
 Zeugen bekam Fred zu hören, daß Ted 
 in einem geheimen Schloß versteckt 
@@ -35,8 +35,8 @@ Schalten Sie die Diskettenstation
 ein und Ihren Atari XL/XE aus. Legen 
 Sie nun die Bros-Diskette mit 
 der Ruckseite in Laufwerk eins 
-ein und schalten Sie den XL/XE bei
-gehaltener OPTION-Taste ein. Das
+ein und schalten Sie den XL/XE bei 
+gehaltener OPTION-Taste ein. Das 
 Programm wird nun automatisch geladen.
 
 ## Spielbeschreibung
@@ -52,7 +52,7 @@ zu betreten. auf seinem Weg kann
 Fred Münzen sammeln, die in der 
 Landschaft herumliegen. Für 100 
 Münzen bekommt Fred ein Bonusleben. 
-außerdem kann Fred aus Blöcken verschiedene
+außerdem kann Fred aus Blöcken verschiedene 
 Gegenstände herausquetschen, 
 indem er von unten dagegen
 
@@ -61,15 +61,16 @@ ist er in der Lage, Mauersteine mit
 dem Kopf zu zerstören. In machen 
 Mauersteinen befinded sich Bonusleben 
 und andere Extras ...
+
 Hat Fred einen Pilz und sammelt ein 
 Sternsymbol, so bekommt er zehn 
 Schuß. Manche Monster kann Fred 
 auch töten, indem er auf sie 
 springt. Achtung: Wenn Fred ein Leben 
 verliert, verliert er gleichzeitig 
-auch seine Extras! Nach er-
-folgreichen Spiel besteht evtl. die 
-Moglichekti, einen erreichten Higheinzutragen.
+auch seine Extras! Nach erfolgreichen 
+Spiel besteht evtl. die Moglichekti, 
+einen erreichten Higheinzutragen.
 
 ## Punktezahlung
 

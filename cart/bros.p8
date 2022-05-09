@@ -53,6 +53,15 @@ wait = {
 bg = 36
 
 function _init()
+	bbs = false
+	if not bbs then
+		title = "\66\82\79\83"
+		extcmd("set_title",title)
+	end
+	palt(0,false)
+	color(15)
+	loadfont()
+	loadscores()
 	mainscreen()
 end
 
@@ -100,7 +109,7 @@ function updatestate()
 			levelscreen()
 		elseif btnp(❎) then
 			s.main = false
-			h.namesreen()
+			scorescreen()
 		end
 	elseif s.hi then
 		if btnp(❎) or btnp(🅾️) then
@@ -114,7 +123,7 @@ function updatestate()
 		end
 		if btnp(❎) or btnp(🅾️) then
 			s.entry = false
-			h.namesreen()
+			scorescreen()
 		end
 	end
 end
@@ -743,9 +752,8 @@ end
 -- hiscores
 
 -- data layout
--- 00 is 1 if cdata initialised
 -- 01 to 10 top scores
--- 11 to 20 packed names
+-- 11 to 41 3 nums per name
 
 h = {
 	ords={32,32,32},
@@ -760,50 +768,34 @@ function loadscores()
 	initscores()
 	for i=1,10 do
 		h.scores[i] = dget(i)
-		name = dget(i+10)
-		h.names[i] = unpackname(name)
+		h.names[i] = loadname(i)
 	end
 end
 
 function initscores()
-	cartdata("bros_sorb")
-	if dget(0) == 0 then
-		dset(0,1)
+	loaded = cartdata("bros_sorb")
+	if not loaded then
 		for i=1,10 do
-			dset(i,0)
-		end
-		for i=11,20 do
-			default = packname("   ")
-			dset(i,default)
+			savename(i,"   ")
 		end
 	end
 end
 
---functions to convert between
---three character strings
---and 15-byte numbers
-function packname(name)
-	packed = 0
-	for i=1,3 do
-		char = ord(sub(name,i,i))
-		if (char==32) char=123
-		char -= 96
-		shift = char << ((i-1) * 5)
-		packed |= shift
-	end
-	return packed
+function nameaddr(i)
+	-- 0x5e00 + 9 * 12
+	return 0x5e6c + i * 12
 end
 
-function unpackname(name)
-	unpacked = ""
-	for i=0,2 do
-		shift = (name>>(i*5)) & 0x1f
-		shift += 96
-		if (shift==123) shift=32
-		char = chr(shift)
-		unpacked ..= char
-	end
-	return unpacked
+function loadname(i)
+	addr = nameaddr(i)
+	name = chr(peek4(addr,3))
+	return name
+end
+
+function savename(i,name)
+	addr = nameaddr(i)
+	n1,n2,n3 = ord(name,1,3)
+	poke4(addr,n1,n2,n3)
 end
 
 function rankscore(num)
@@ -820,9 +812,19 @@ function shiftscores(rank)
 		j = i-1
 		h.scores[i] = h.scores[j]
 		h.names[i] = h.names[j]
-		dset(i,dget(j))
-		dset(i+10,dget(j+10))
+		dset(i,h.scores[i])
+		savename(i,h.names[i])
 	end
+end
+
+function savescore()
+	hc = h.chrs
+	name = hc[1]..hc[2]..hc[3]
+	shiftscores(h.rank)
+	h.scores[h.rank] = g.score
+	h.names[h.rank] = name
+	dset(h.rank,g.score)
+	savename(h.rank,name)
 end
 
 function askname()
@@ -866,17 +868,7 @@ function updatenameentry()
 	end
 end
 
-function savescore()
-	cs = h.chrs
-	name = cs[1]..cs[2]..cs[3]
-	shiftscores(h.rank)
-	h.scores[h.rank] = g.score
-	h.names[h.rank] = name
-	dset(h.rank, g.score)
-	dset(h.rank+10, packname(name))
-end
-
-function h.namesol(x,rank)
+function scorescol(x,rank)
 	y=48
 	print("nr score name",x,y)
 	for i=rank,rank+8,2 do
@@ -887,15 +879,15 @@ function h.namesol(x,rank)
 	end
 end
 
-function h.namesreen()
+function scorescreen()
 	s.hi = true
 	cls(1)
 	drawtopbar()
 	print("00",90,8)
 	t = "h i g h s c o r e s :"
 	print(t, 20, 28)
-	h.namesol(8,1)
-	h.namesol(64,2)
+	scorescol(8,1)
+	scorescol(64,2)
 end
 
 -->8
@@ -960,17 +952,6 @@ function sprnxy(sprn)
 	return x,y
 end
 
-function boot()
-	title = "\66\82\79\83"
-	extcmd("set_title",title)
-	palt(0,false)
-	color(15)
-	loadfont()
-	loadscores()
-end
-
-boot()
-
 function getspr(sprn)
 	x,y = sprnxy(sprn)
 	sprite = {}
@@ -1010,22 +991,23 @@ end
 pachinko = {2,2,3,3,0,1,0,1,5,4}
 codestep = 1
 function updatecode()
+	if (btn()==0) return
+	
 	req = pachinko[codestep]
-	if not btn() then
-		return
-	end
 	for btnid=0,5 do
-		if btnid!=req and btnp(btnid) then
-			codestep = 1
-			return
+		if btnp(btnid) then
+			if btnid==req then
+				codestep +=1
+			else
+				codestep = 1
+				return
+			end
 		end
 	end
-	if btnp(req) then
-		codestep += 1
-		if codestep > #pachinko then
-			codestep = 1
-			along()
-		end
+
+	if codestep > #pachinko then
+		codestep = 1
+		along()
 	end
 end
 
