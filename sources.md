@@ -53,6 +53,8 @@ https://www.atariarchives.org/alp/
 https://en.wikipedia.org/wiki/Scientific_pitch_notation
 - disk error codes    
 https://page6.org/archive/issue_22/page_10.htm
+- square wave    
+https://en.wikipedia.org/wiki/Square_wave
 
 ## ke-soft
 - ZONG magazine archive with sound editor rom    
