@@ -581,6 +581,8 @@ l = {
 offset=2
 
 function levelscreen()
+	g.score = 0
+	g.coins = 0
 	g.lives = 4
 	g.timer = 999
 	l.world = 1

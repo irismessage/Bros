@@ -55,6 +55,15 @@ https://en.wikipedia.org/wiki/Scientific_pitch_notation
 https://page6.org/archive/issue_22/page_10.htm
 - square wave    
 https://en.wikipedia.org/wiki/Square_wave
+- sampler    
+https://demozoo.org/productions/145427/
+- computronic magazine - nothing
+https://archive.org/details/computronic_magazine
+- ZONG pdfs    
+http://www.atarimania.com/atari-magazine-zong_38.html
+- SAMPLER MANUAL!    
+https://de.wikipedia.org/wiki/Atari_800XL#cite_note-170    
+https://de-m-wikipedia-org.translate.goog/wiki/Atari_800XL?_x_tr_sl=de&_x_tr_tl=en&_x_tr_hl=en-US&_x_tr_pto=wapp
 
 ## ke-soft
 - ZONG magazine archive with sound editor rom    
