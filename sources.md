@@ -37,6 +37,10 @@ http://www.atarimania.com/faq-atari-400-800-xl-xe-what-sound-digitizers-samplers
 https://atari-owner.com/club/articles/audio-solutions-for-the-atari-8-bit-home-computer.32/
 - sound n sampler 2: COULD BE IT
 http://forum.atarimania.com/viewtopic.php?f=2&t=18563&p=35093&sid=bfee8ded313d3674a9c11f1aad50496d#p35093
+- sound n sampler demo    
+https://youtu.be/E0nDiNJkJlc
+- digitised sound discussion    
+https://atariage.com/forums/topic/229953-digitized-sounds/
 - atari music archive with info    
 http://asma.atari.org/
 - file extension details    
@@ -47,6 +51,8 @@ http://www.atarimania.com/utility-atari-400-800-xl-xe-sound-n-sampler_15982.html
 https://www.atariarchives.org/alp/
 - SPN    
 https://en.wikipedia.org/wiki/Scientific_pitch_notation
+- disk error codes    
+https://page6.org/archive/issue_22/page_10.htm
 
 ## ke-soft
 - ZONG magazine archive with sound editor rom    

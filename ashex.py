@@ -38,6 +38,11 @@ for offset, offset2 in ((30, 0), (90, 8)):
 # print(colours)
 # for k, v in colours.items():
 #     print(k, v)
+# contents_hex = []
+# for b in contents:
+#     for i in range(3):
+#         contents_hex.append(f'{(b>>4*i)&0x03:02x}')
+# contents_hex = ''.join(contents_hex)
 contents_hex = ''.join(f'{b:02x}' for b in contents)
 for h in contents_hex:
     print(colours[h], end='')
