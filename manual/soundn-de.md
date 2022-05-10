@@ -40,6 +40,8 @@ Bevor es mit harter Theorie losgeht, etwas Praxis :
 
 Der Screen :
 
+![Der Screen](soundn-1.png)
+
 Titel & Copyright
 
 (B) Amplitudenanzeige & Bildschirnmodus
@@ -89,6 +91,8 @@ Bereich hinter den Zielpointer kopiert:
 
 blinken  Ziel  Ende
 
+![Duplicate](soundn-2.png)
+
 (2 4)(5 ?)  kopiert
 
 Die Endposition des Zielbereiches (?) steht bei (E).
@@ -135,6 +139,8 @@ Zur Aufnahme mub der A/D-Wandler in Port 1 stecken und der Digital-Data-Editor g
   - Lautstarkeregler am Monitor ok ?
   - AMPT-CTRL flackert ein wenig & etwas knacken im Lautsprecher ? Dann Knopt nach rechts drehen. - Wenn das nicht hilft, dann kommt hochstwahrscheinlich zu wenig Spannung am Modul an : andere Tonquelle und/oder anderes Kabel versuchen
   - Falsches uberspielkabel ? Es gibt 2 Typene :
+
+![Parallelkabel](soundn-3.png)
 
     1. (Parallelkabel)      2.
 
