@@ -20,7 +20,7 @@ Optional :
 Bevor es mit harter Theorie losgeht, etwas Praxis :
 
 1. Floppy & Computer ausschalten
-2. SOUND'N'SAMPLER MOdul in Port 1 (sonst lauft nix)
+2. SOUND'N'SAMPLER Modul in Port 1 (sonst lauft nix)
 3. Floppy einschalten, Diskette einiegen, Hebei schliessen
 4. Computer einschalten
     - der DIGITAL-DATA-EDITOR wird gebootet
@@ -68,7 +68,7 @@ Druckt man gleichzeitig CONTROL, dann geht die Bewgung 16x so schnell. Die aktue
 
 Die Amplitudenanzeige (A) zeigt die aktuelle Amplitude bzw. Aussteuerung des Eingangssignals am A/D-Wandler. Wenn ein Eingangssignal anliegt, sollte man die Aussteuerung mit dem Drehknopt am A/D-Wandler so einstellen, dab die Aussteuerungsmarke im Durschschnitt auf allen 4 Positionen etwa gleichmabig oft herumspringt, wobei die mittleren 2 Positionen ruhig ein wenig vevorzugt sein konnne. Dann hat man meistens den optimalen Klang (letztendich sollte aber doch das Ohr entschiden !). Der Aleich erfolgt moglichst im DIRECT MODE, was bedeutet, dab das Eingangssignal zwar direkt ausgegeben wird, jedoch noch nich aufgenommen wird. Dazu nub bei (D) das \<D\> invers aufleuchten, sonst START drucken. Wichtig zu wissen ist, dab die Tonqualitat im DIRECT MODE naturliich nicht die Beste sein kann, weil das Programm in diesen Fall ja nicht nur fur den Sound zu sorgen hat, sondern weil "ganz nebenbei" ja noch der DIGITAL-DATA-EDITOR lauft !
 
-SSS, das heibt SCREEN SYNCRONIZED SOUND, gibt Ihnen die Moglichkeit, den Bildschirm bei der Tonaugabe eingeschaltet zu lassen. Die entsprechende Anzeige is (B), und umgeschaltet wird mi tOPTION. Aufgrund der Syncronisation kann die Aufnahme/Wiedergabe-Geschwindigkeit hier nicht ganz frei gewahlt werden. Dafur gibt es hier 5 Modi, mit denen das Wichigste Abgedeckt ist. Die Modi konnen mit SELECT beliebig gewechselt werden, wenn SSS  =  ON! ist. Die Modusnummer steht dann direkt hinter der SPEED-Anzeige bei (F). Die Modi 1-3 unterscheiden sich nur in der Wiedergabegeschwindigkeit, die Mode 4 & 5 haben die gleich Geschwindigkeit wie Modus 2, der Ton wird aber so verzerrt, dab ein "roboterartiger" Blechsound dabei herauskommt.
+SSS, das heibt SCREEN SYNCRONIZED SOUND, gibt Ihnen die Moglichkeit, den Bildschirm bei der Tonaugabe eingeschaltet zu lassen. Die entsprechende Anzeige is (B), und umgeschaltet wird mit OPTION. Aufgrund der Syncronisation kann die Aufnahme/Wiedergabe-Geschwindigkeit hier nicht ganz frei gewahlt werden. Dafur gibt es hier 5 Modi, mit denen das Wichigste Abgedeckt ist. Die Modi konnen mit SELECT beliebig gewechselt werden, wenn SSS  =  ON! ist. Die Modusnummer steht dann direkt hinter der SPEED-Anzeige bei (F). Die Modi 1-3 unterscheiden sich nur in der Wiedergabegeschwindigkeit, die Mode 4 & 5 haben die gleich Geschwindigkeit wie Modus 2, der Ton wird aber so verzerrt, dab ein "roboterartiger" Blechsound dabei herauskommt.
 
 Die Aufnahme/Wiedergabe-Geschwindigkeit wird mit "<" und ">" verstellt. Bei (F) kann man die aktuelle Einstellung ablesen. Wie auch bei der Pointerpositionsanzeige, so erfolgt auch hier die Angabe im Hexadezimalsystem. Lassen Sie sich dadurch nicht irritieren : Eine Dezimalzahl wurde auch nicht mehr bringen, weil es hier keinen Sinn hat, den "echten" Wert zu wissen. Es reicht hier vollig aus, wenn man Hexzahlen unterscheiden kann, ug sich verschiedene Geschwindigkeiten oder Positionen merken zu konnen. Uberall, wo es auf den Wert der Zahl ankommt (ZB. Fehlermeldungen beim Disk I/O), werden naturlich dezimale Zahlen ausgegeben.
 

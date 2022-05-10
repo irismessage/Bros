@@ -23,7 +23,7 @@ Options :
 Before we start with hard theory, some practice:
 
 1. Turn off floppy & computer
-2. SOUND'N'SAMPLER MOdule in Port 1 (otherwise nothing works)
+2. SOUND'N'SAMPLER Module in Port 1 (otherwise nothing works)
 3. Switch on floppy, insert floppy disk, close hebei
 4. Turn on the computer
     - the DIGITAL-DATA-EDITOR is booted
@@ -71,7 +71,7 @@ If you press CONTROL at the same time, the movement is 16x as fast. The current 
 
 The amplitude display (A) shows the current amplitude or level of the input signal at the A/D converter. If an input signal is present, you should set the level with the rotary knob on the A/D converter in such a way that the level mark on average jumps around equally often in all 4 positions, whereby the middle 2 positions can be a little preferred. Then you usually have the best sound (in the end, however, the ear should decide!). If possible, the recording takes place in DIRECT MODE, which means that the input signal is output directly, but is not yet recorded. To do this, the \<D\> in (D) must light up inversely, otherwise press START. It is important to know that the sound quality in DIRECT MODE can of course not be the best, because in this case the program not only has to take care of the sound, but also because the DIGITAL-DATA-EDITOR is still running "by the way"!
 
-SSS, which stands for SCREEN SYNCRONIZED SOUND, gives you the option of keeping the screen on while listening to the sound. The corresponding display is (B), and is toggled with tOPTION. Due to the synchronization, the recording/playback speed cannot be freely selected here. There are 5 modes here that cover the most important things. The modes can be changed at will with SELECT if SSS = ON! is. The mode number is then directly behind the SPEED display at (F). Modes 1-3 differ only in the playback speed, modes 4 & 5 have the same speed as mode 2, but the sound is distorted in such a way that a "robot-like" tin sound comes out.
+SSS, which stands for SCREEN SYNCRONIZED SOUND, gives you the option of keeping the screen on while listening to the sound. The corresponding display is (B), and is toggled with OPTION. Due to the synchronization, the recording/playback speed cannot be freely selected here. There are 5 modes here that cover the most important things. The modes can be changed at will with SELECT if SSS = ON! is. The mode number is then directly behind the SPEED display at (F). Modes 1-3 differ only in the playback speed, modes 4 & 5 have the same speed as mode 2, but the sound is distorted in such a way that a "robot-like" tin sound comes out.
 
 The recording/playback speed is adjusted with "<" and ">". At (F) you can read the current setting. As with the pointer position display, the information is given in the hexadecimal system. Don't let this irritate you: A decimal number would no longer work either, because it makes no sense to know the "real" value here. It is sufficient here if one can distinguish between hex numbers in order to be able to remember different speeds or positions. Wherever the value of the number is important (e.g. error messages with disk I/O), decimal numbers are of course output.
 
