@@ -64,6 +64,8 @@ http://www.atarimania.com/atari-magazine-zong_38.html
 - SAMPLER MANUAL!    
 https://de.wikipedia.org/wiki/Atari_800XL#cite_note-170    
 https://de-m-wikipedia-org.translate.goog/wiki/Atari_800XL?_x_tr_sl=de&_x_tr_tl=en&_x_tr_hl=en-US&_x_tr_pto=wapp
+- PICO-8 sampling discussion    
+https://www.lexaloffle.com/bbs/?tid=33309
 
 ## ke-soft
 - ZONG magazine archive with sound editor rom    
