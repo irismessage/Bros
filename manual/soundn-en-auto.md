@@ -43,15 +43,17 @@ Before we start with hard theory, some practice:
 
 The screen :
 
+![Der Screen](soundn-1.png)
+
 Title & Copyright
 
 (B) Amplitude display & screen mode
 
-    Memory model with pointers (pointers)
+ Memory model with pointers (pointers)
 
 (E) Direct playback & pointer position Current working speed
 
-    Menu
+ Menu
 
 Line for text I/O (e.g. filename)
 
@@ -115,6 +117,7 @@ Syntax : hex number(0-F),hex number(0-F),hex number(0-F),hex number(0-F) RETURN
 
 For a linear display, the values ​​must be in ascending or descending order, equally spaced. The larger the distances, the louder :
 
+```
 quiet: 0,1,2,3 est eg. equals 5,6,7,8
   . 0,2,4,6 = C,A,8,6
   . 0,3,6,9
@@ -123,6 +126,7 @@ loud : 0.5,A,F
 
 Simulation of a 1 BIT A/D converter:
        0,0,7,7
+```
 
 **+REVERSE :** select with CONTROL+"R".
 Reverses the area between the two blinking pointers so that the track is played backwards during playback.
@@ -131,7 +135,7 @@ Reverses the area between the two blinking pointers so that the track is played 
 
 For recording, the A/D converter must be plugged into port 1 and the digital data editor loaded. In addition, the A/D converter must be connected to the output of a cassette recorder, record player, etc. via a suitable cable. The DIRECT MODE should be active (inverse <\D\> at (D), otherwise START), and the knob on the converter should be turned all the way to the left. Switch on the sound source (there must be something on the wire now!) and slowly turn the knob to the right (clockwise) until you can hear what you expect (read it (A)).
 
-    IF YOU HEAR NOTHING!!! CHECKLIST :
+IF YOU HEAR NOTHING!!! CHECKLIST :
   - DIRECT MODE active?
   - Is the converter correctly plugged into port 1?
   - Is the sound source running?
@@ -139,9 +143,11 @@ For recording, the A/D converter must be plugged into port 1 and the digital dat
   - AMPT-CTRL flickers a little & something cracks in the speaker? Then turn the knob to the right. - If that doesn't help, then most likely there is not enough voltage at the module: try another sound source and/or another cable
   - Wrong transfer cable? There are 2 types:
 
-    1. (parallel cable) 2.
+![Parallelkabel](soundn-3.png)
 
-    It must be a parallel cable!
+ 1. (parallel cable) 2.
+
+ It must be a parallel cable!
 
 The set SPEED should be between $01 and $50, where the lower the better, but the smoke is shorter. SSS MODE 1 has been retained for music, for speech you can go up to $50 depending on the voice (it should be deep). The quality of the sound template is very important for the quality of the recording !!! (e.g. on cassette). A simple recorder is sufficient as a playback device (the sound demos were made, for example, with a small, cheap mono recorder built in 1975 (not recorded!)). The sound template should not have an overly complex frequency spectrum, which sometimes causes problems with music. Voice recordings should be made with deep voices because a lower sampling rate is then sufficient (SPEED coarser). In addition, the sound templates for speech should be as perfect as possible (good dynamics, not overdriven). For such recordings you need good microphones and a good system. If everything is set to your satisfaction, all you have to do is press CONTROL+"i" and it will be digitized!
 
@@ -159,9 +165,9 @@ In principle, this is how it works: At the beginning of your program, you briefl
 
 "XLOAD.LST" needs 2 parameters:
 - The file name: Must not contain any device information and must be 8 characters long, otherwise fill with spaces. Don't put a point!
-- The extender must be 3 digits long, otherwise fill in with spaces here as well. For example: ADR("FILENAMEEXT") or ADR("DEMO SND")
+- The extender must be 3 digits long, otherwise fill in with spaces here as well. For example: `ADR("FILENAMEEXT") or ADR("DEMO SND")`
 - Address : where to put the data ? If you can get by with t22k, the area under the ROM should be used, e.g. Specify 40960. The hardware I/O ($D000-$D7FF) is calculated automatically. to be on the safe side, only addresses from 7680-63400 are accepted (otherwise ERROR 255).
-E.g.: ERROR=USR(ADR(LD$),ADR("FILENAMEEXT"),20000)
+E.g.: `ERROR=USR(ADR(LD$),ADR("FILENAMEEXT"),20000)`
 The end of the currently loaded sound file is (directly after loading) in 220/221 :
 END=PEEK(220)+256*PEEK(221)
 
@@ -169,6 +175,7 @@ END=PEEK(220)+256*PEEK(221)
 
 The sound can be output with the two routines "XOUT.LST" & "XOUT1.LST". When these routines are called, all parameters that can also be changed in the DIGITAL-DATA-EDITOR can be changed:
 
+```
 SSS : 0 = no SSS, 1 = SSS
 SYNC : if SSS=1 -> 0,1,3,8,16 correspond to SSS MODES 1 to 5
 SPEED : if SSS=0 -> playback speed (1-255)
@@ -178,21 +185,23 @@ END : Address up to where the data should be played
 
 IDATA : Address where the interpreter program is located (<256 = no call)
 TIME : Frequency of the interpreter call (0 = no call)
+```
 
 ### XOUT.LST :
 
-X=USR(ADR(0$),SSS,SYNC,SPEED,F0,F1,F2,F3,START,END)
+`X=USR(ADR(0$),SSS,SYNC,SPEED,F0,F1,F2,F3,START,END)`
 
 A machine program can be called up regularly during sound playback:
- 0$(187,187)=CHR$(255) -> no call
- 0$(187,187)=CHR$(X) -> call at raster line X (1-155) The machine program must be at the end of the 0$ instead of some of the many inverse "j" (or branch from there (e.g. JSR $0600)). DO NOT change the length of $0!
+ `0$(187,187)=CHR$(255)` -> no call
+ `0$(187,187)=CHR$(X)` -> call at raster line X (1-155) The machine program must be at the end of the 0$ instead of some of the many inverse "j" (or branch from there (e.g. JSR $0600)). DO NOT change the length of $0!
 
  ### XOUT1.LST :
 
- X=USR(ADR(01$),SSS,SYNC,SPEED,F0,F1,F2,F3,START,END,IDATA,TIME)
+ `X=USR(ADR(01$),SSS,SYNC,SPEED,F0,F1,F2,F3,START,END,IDATA,TIME)`
 
  Here there is now the interpreter, which can be called up regularly during the sound output in order to quickly change something. The second to last parameter (IDATA) indicates the address of the special interpreter program, the last parameter indicates the frequency of the call: 1 = very often, 2 to 254 = less and less the interpreter understands 8 commands:
 
+```
  Command : code parameter function
 ----------------------------------------------------------
  RESET : 0 none sets the program number of the interpreter
@@ -211,6 +220,7 @@ A machine program can be called up regularly during sound playback:
  RETURN : 255 none Interrupts interpreter and joins in
                                   Sound output further - at the next
                                   Interpreter call gents here
+```
 
 A program that constantly changes the background color during sound output then sees e.g. like this :
  ADD255.1 ; 255 is taken here as the color number and increased by 1
@@ -233,6 +243,7 @@ The result : 20,255,0,1,60,255,0,26,208,0,0
 These numbers have to be poked into memory somewhere, or better put in a string in the form of ATASCII characters.
 
 
+```
 ( LO/HI byte splitting: )
 ( Used to represent numbers that are larger than 255 and therefore cannot be represented with one byte. Whenever the interpreter receives an address )
 ( is passed as a parameter, the address must be represented with 2 bytes, since addresses can go up to 65535 here. )
@@ -244,6 +255,7 @@ These numbers have to be poked into memory somewhere, or better put in a string 
 
 ( reverse : )
 ( number = low byte + high byte * 256 )
+```
 
 
 Take a look at "XDEMO1.LST" : The interpreter program is stored in PGM$, but this is done in a cumbersome way here. Of course, you can also specify the ATASCII characters beforehand ( ?;CHR$(.) ), and insert the characters directly into the string ( PGM$="ABCD1234... " ).

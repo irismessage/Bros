@@ -46,11 +46,11 @@ Titel & Copyright
 
 (B) Amplitudenanzeige & Bildschirnmodus
 
-    Speichermodell mit Pointern (Zeiger)
+ Speichermodell mit Pointern (Zeiger)
 
 (E) Direkte Wiedergabe & Pointerposition Aktuelle Arbeitsgeschwindigkeit
 
-    Menu
+ Menu
 
 Zeile fur Text-I/O (zB. Filename)
 
@@ -116,6 +116,7 @@ Syntax :  hexzahl(0-F),hexzahl(0-F),hexzahl(0-F),hexzahl(0-F) RETURN
 
 Fur eine lineare Wiedergabe muben es Werte in auf oder absteigender Reihenfoige mit gleichen Abstanded sein. Je grober die Abstande, desto lauter :
 
+```
 leise: 0,1,2,3 est zB. gleich 5,6,7,8
   .    0,2,4,6     =          C,A,8,6
   .    0,3,6,9
@@ -124,6 +125,7 @@ laut : 0,5,A,F
 
 Simulation eines 1 BIT A/D-Wandler :
        0,0,7,7
+```
 
 **+REVERSE :** mit CONTROL+"R" anwahlen    
 Dreht den Bereich zwischen den beiden blinkenden Pointern so um, dab das Stuck bei der Wierdergabe ruckwarts gespielt wird.
@@ -132,7 +134,7 @@ Dreht den Bereich zwischen den beiden blinkenden Pointern so um, dab das Stuck b
 
 Zur Aufnahme mub der A/D-Wandler in Port 1 stecken und der Digital-Data-Editor geladen sein. Auberdem nub der A/D-Wandler Uber ein passendes Kabel mit dem Ausgang eines Kassettenrekorders, Plattenspielers etc. verbunden sein. Der DIRECT MODE solite aktiv sein (invers <\D\> bei (D), sonst START), und der Drehknopf am Wandler ganz nach links gedreht sein. Tonquelle einschalten (es mub jetzt was auf dem Draht sein !) und den Knopf langsam nach rechts (Uhrzeigersinn) drehen bis das Erwartete gut zu horen ist (lies ach zu (A)).
 
-    WENN SIE NICHTS HOREN !!!   CHECKLISTE :
+WENN SIE NICHTS HOREN !!!   CHECKLISTE :
   - DIRECT MODE aktiv ?
   - Steckt Wandler richtig in Port 1 ?
   - Lauft Tonquelle ?
@@ -142,9 +144,9 @@ Zur Aufnahme mub der A/D-Wandler in Port 1 stecken und der Digital-Data-Editor g
 
 ![Parallelkabel](soundn-3.png)
 
-    1. (Parallelkabel)      2.
+ 1. (Parallelkabel)      2.
 
-    Ein Parallelkabel mub es sein !
+ Ein Parallelkabel mub es sein !
 
 Die eingestelle SPEED sollte zwischen $01 und $50 liegen, woei je niedriger, je besser, abe rauch umso kurzer gilt. Fur musik hat sich SSS-MODUS l bewahrt, fur Sprache kann man je nach Stimme (tief sollte sie sein) bis $50 gehen. Sehr entscheident fur die Qualitat de rder Aufnahme ist die Qualitat de rSoundvorlage !!! (zb. auf Kassette). Als Abspielgerat reicht ein einfacher Rekorder (Die Sounddemos wurden zB. mit einem kleinen billigen Monorekorder Baujahr 1975 gemacht (nicht aufgenommen!)). Die soundvorlage sollte kein allzu komplexes Frequenzspektrum haben, was bei Musik manchmal Probleme bereitet. Sprachaufnahmen sollten mit tiefen Stimmen gemacht werden, weil dann eine niedrigere Abtastrate ausreicht (SPEED grober). Auberdem sollten die Tonvorlagen bei Sprache moglichst perfekt sein (gute Dynamik, nicht ubersteuret). Fur solche Aufnahmen braucht man gute Mikrofone und eine gute Anlage. Wenn nun alles zur Zufriedenheit eingestellt ist, braucht man nur noch CONTROL+"i" drucken, und es wird digitalisiert !
 
@@ -162,40 +164,43 @@ Im Prinzip lauft das so ab, dab Sie in Ihren Programm am Anfang kurz eine Ladero
 
 "XLOAD.LST" benotigt 2 Parameter :
 - Der Filename : Darf keine Deviceangabe enthalten und mub 8 Stelle lang sein, sonst mit Spaces auffullen. Keinen Punkt setzen !
-- Der Extender mub 3-Stellen lang sein, sonst auch hier mi t Spaces auffullen. ZB.: ADR("FILENAMEEXT") oder ADR("DEMO    SND")
+- Der Extender mub 3-Stellen lang sein, sonst auch hier mi t Spaces auffullen. ZB.: `ADR("FILENAMEEXT")` oder `ADR("DEMO    SND")`
 - Adresse : Wohin mit den Data ? Wenn man mi t22k auskommt, sollte der Bereich unter dem ROM genutzt werden, also zB. 40960 angeben. Der Hardware-I/O ($D000-$D7FF) wird autmatisch verrechnet. zur Sicherheit werden nur Adressen von 7680-63400 angenommen (sonst ERROR 255).    
-ZB.: ERROR=USR(ADR(LD$),ADR("FILENAMEEXT"),20000)    
+ZB.: `ERROR=USR(ADR(LD$),ADR("FILENAMEEXT"),20000)`    
 Das Ende des gerade geladenen Soundfiles steht (direkt nach dem Laden) in 220/221 :    
-END=PEEK(220)+256*PEEK(221)
+`END=PEEK(220)+256*PEEK(221)`
 
 ## DIE AUSGABE-ROUTINEN :
 
 Mit den beiden Routinene "XOUT.LST" & "XOUT1.LST" Kann der Sound ausgegeben werden. Beim Aufruf dieser Routinen konnen alle Parameter neu verstellt werden, die auch im DIGITAL-DATA-EDITOR verstellt werden konnen :
 
-SSS   : 0 = kein SSS, 1 = SSS    
-SYNC  : wenn SSS=1 -> 0,1,3,8,16 entsprechem den SSS-MODI 1 bis 5    
-SPEED : wenn SSS=0 -> Abspielgeschwindigkeit (1-255)    
-F0-F3 : Amplitudenfunktion , wie AMPT-CTRL (zB. 0,3,6,9)    
+```
+SSS   : 0 = kein SSS, 1 = SSS
+SYNC  : wenn SSS=1 -> 0,1,3,8,16 entsprechem den SSS-MODI 1 bis 5
+SPEED : wenn SSS=0 -> Abspielgeschwindigkeit (1-255)
+F0-F3 : Amplitudenfunktion , wie AMPT-CTRL (zB. 0,3,6,9)
 START : Adresse, wo die Sounddata beginnen
 END   : Adresse, bis wohin die Data abgespielt werden sollen
 
-IDATA : Adresse, wo das Interpreterprogram steht (<256 = kein Aufruf)    
+IDATA : Adresse, wo das Interpreterprogram steht (<256 = kein Aufruf)
 TIME  : Haufigkeit des Interpreteraufrus (0 = kein Aufruf)
+```
 
 ### XOUT.LST :
 
-X=USR(ADR(0$),SSS,SYNC,SPEED,F0,F1,F2,F3,START,END)
+`X=USR(ADR(0$),SSS,SYNC,SPEED,F0,F1,F2,F3,START,END)`
 
 Es kann bbei der Soundwiedergabe regelmabig ein Maschineenprogramm aufgerufen werden :    
- 0$(187,187)=CHR$(255) -> kein Aufruf
- 0$(187,187)=CHR$(X) -> Aufruf bei Rasterzeile X (1-155) Das Maschinenprogramm mub an Stelle einiger de rvielen inversen "j" am Ende des 0$ stehen (oder von dort aus verzweigen (zB. JSR $0600)). Die Lange von 0$ dabei NICHT verandern !
+ `0$(187,187)=CHR$(255)` -> kein Aufruf
+ `0$(187,187)=CHR$(X)` -> Aufruf bei Rasterzeile X (1-155) Das Maschinenprogramm mub an Stelle einiger de rvielen inversen "j" am Ende des 0$ stehen (oder von dort aus verzweigen (zB. JSR $0600)). Die Lange von 0$ dabei NICHT verandern !
 
  ### XOUT1.LST :
 
- X=USR(ADR(01$),SSS,SYNC,SPEED,F0,F1,F2,F3,START,END,IDATA,TIME)
+ `X=USR(ADR(01$),SSS,SYNC,SPEED,F0,F1,F2,F3,START,END,IDATA,TIME)`
 
  Hier gibt es jetzt den Interpreter, der wahrend der Soundausgabe regelmabig aufgerufen werden kann, um schnell mal was umzupoken. Das zweitletzte Parameter (IDATA) gibt die Adresse des speziellen Interpreterprogramms an, das letzte Parameter gibt die Haufigkeit des Aufrufs an : 1 = sehr oft , 2 bis 254 = immer seltener der Interpreter versteht 8 Befehle :
 
+```
  Befehl : Code  Paramter          Funktion
 --------------------------------------------
  RESET  :    0  keine             setzt Programmzahler des Interpreters
@@ -215,14 +220,18 @@ Es kann bbei der Soundwiedergabe regelmabig ein Maschineenprogramm aufgerufen we
  RETURN :  255  keine             Unterbricht Interpreter, und macht mit
                                   Soundausgabe weiter - beim nachsten
                                   Interpreteraufruf gents hier weiter
+```
 
 Ein Programm, welches bei der Soundausgabe die Hintergrundfare laufend andert, sieht dann zB. so aus :
+```
  ADD 255,1  ; 255 wird hier als Farbzahler genommen und um 1 erhoht
  BLOCK 255,53274,0 ; Farbzahler in Hardwarefarbregister schreiben
  RESET      ; zuruck zum Anfang
+```
 
 Das mub jetzt von Hand compilert werden (kein Maschinencode!)
 
+```
 ADD         : 20,     : Code von ADD
         255 : 255,0   : 2-lo/hi-Byte
           1 : 1,      : 1-Byte
@@ -231,12 +240,14 @@ BLOCK       : 60,     : Code von BLOCK
       53274 : 26,208, : 2-lo/hi-Byte
           0 : 0       : 1-Byte
 RESET       : 0       : Code von RESET
+```
 
 Das Ergebnis : 20,255,0,1,60,255,0,26,208,0,0
 
 Diese Zahlen muben irgentwo in den Speicher gepoket werden oder besser in Form von ATASCII-Zeichen in einem String untergebracht werden.
 
 
+```
 ( LO/HI-Byte Aufspaltung:                    )
 ( Dient zur Darstellung von Zahlen, die grober als 255 sind, und somit nicht mit einem Byte darstellbar sind. Immer wenn dem Interpreter eine Adresse               )
 ( als Parameter ubergeben wird, mub die Adresse mit 2 Byte dargestellt werden, da Adressen hier bis 65535 gehen konnen.             )
@@ -248,6 +259,7 @@ Diese Zahlen muben irgentwo in den Speicher gepoket werden oder besser in Form v
 
 (   Ungekehrt :                             )
 (     Zahl = low-Byte + high-Byte * 256   )
+```
 
 
 Sehen Sie sich dazu "XDEMO1.LST" an : Das Interpreterprogramm wird im PGM$ abgelegt, was hier jedoch auf eine umstandliche Art geschieht. Sie konne naturlich auch die ATASCII-Zeichen vorher bestimmen ( ?";CHR$(.) ), und die Zeichen direkt in den String einsetzen ( PGM$="ABCD1234... " ).
