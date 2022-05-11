@@ -2,7 +2,7 @@ import json
 import sys
 
 
-BG = 0x24
+BG = 14
 CART_PATH = 'cart/bros.p8'
 OFFSET = 2
 ROWS = 13
