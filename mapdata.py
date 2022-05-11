@@ -138,6 +138,17 @@ def writemap(maplines: Lines, cart: Lines):
         cart[index+i] = line + cart[index+i][WIDTH:]
 
 
+def reload_all():
+    # for when I change the codec
+    cart = peekcart()
+    for i in range(1,121):
+        mapdata = readencoded(i, cart)
+        maplines = deprocess(mapdata)
+        mapdata = process(maplines)
+        writeencoded(mapdata, i, cart)
+    pokecart(cart)
+
+
 def main():
     try:
         option = sys.argv[1]

@@ -23,10 +23,13 @@ __lua__
 -- 20 screens per world
 -- 160 screens
 
--- todo
--- more efficient collision
--- rearrange sprite sheet
--- sound effects
+-- sprite flags
+-- 0 collision
+-- 1 breaks with mushroom
+-- 4 bonk sfx
+-- 5 coin
+-- 6 mushroom
+-- 7 wep
 
 -- game
 g = {
@@ -50,6 +53,7 @@ wait = {
 	f=0,
 	call=nil,
 }
+-- background sprite number
 bg = 14
 
 function _init()
@@ -61,7 +65,7 @@ function _init()
 	palt(0,false)
 	color(15)
 	loadfont()
-	loadscores()
+	initscores()
 	mainscreen()
 end
 
@@ -408,11 +412,13 @@ coin={
 	y=0,
 	lifet=0,
 	show=false,
+	sprn=57,
 }
 fungus={
 	x=0,
 	x=0,
 	show=false,
+	sprn=59,
 }
 fguy={
 	x=0,
@@ -420,8 +426,11 @@ fguy={
 	l=true,
 	wtick=0,
 	jtick=0,
-	show=false
+	show=false,
+	sprn=17,
 }
+
+emptyblock = 39
 
 function coinup()
 	g.score += 10
@@ -441,25 +450,25 @@ function bonk()
 	my = p.y/8-1
 	sprn = mget(mx,my)
 	if sprn != bg then
-		if sprn==17 then
+		if fget(sprn,4) then
 			sfx(56,1)
+		end
+		if fget(sprn,5) then
 			coin.x = p.x
 			coin.y = p.y-16
 			coin.show = true
 			coin.lifet = 5*tick
-			mset(mx,my,16)
-		elseif sprn == 42 then
+			mset(mx,my,emptyblock)
+		elseif fget(sprn,6) then
 			fungus.x = p.x
 			fungus.y = p.y-16
 			fungus.show = true
 			g.score += 100
 			drawtopbar()
-			mset(mx,my,16)
-		elseif g.fungus and sprn==18 then
+			mset(mx,my,emptyblock)
+		elseif g.fungus and fget(sprn,1) then
 			g.score += 25
 			mset(mx,my,bg)
-		elseif sprn==0 then
-			sfx(63,1)
 		end
 	end
 end
@@ -550,14 +559,10 @@ function updatefguy()
 end
 
 function drawentities()
-	if coin.show then
-		spr(57,coin.x,coin.y)
-	end
-	if fungus.show then
-		spr(59,fungus.x,fungus.y)
-	end
-	if fguy.show then
-		spr(17,fguy.x,fguy.y,1,1,fguy.l)
+	for en in all({coin,fungus,fguy}) do
+		if en.show then
+			spr(en.sprn,en.x,en.y,1,1,en.l)
+		end
 	end
 end
 
@@ -759,17 +764,7 @@ h = {
 	chrs={" "," "," "},
 	curs=1,
 	rank=0,
-	scores={},
-	names={},
 }
-
-function loadscores()
-	initscores()
-	for i=1,10 do
-		h.scores[i] = dget(i)
-		h.names[i] = loadname(i)
-	end
-end
 
 function initscores()
 	loaded = cartdata("bros_sorb")
@@ -799,7 +794,7 @@ end
 
 function rankscore(num)
 	for i=1,10 do
-		if num > h.scores[i] then
+		if num > dget(i) then
 			return i
 		end
 	end
@@ -809,10 +804,10 @@ end
 function shiftscores(rank)
 	for i=10,rank,-1 do
 		j = i-1
-		h.scores[i] = h.scores[j]
-		h.names[i] = h.names[j]
-		dset(i,h.scores[i])
-		savename(i,h.names[i])
+		score = dget(j)
+		dset(i,score)
+		name = loadname(j)
+		savename(i,name)
 	end
 end
 
@@ -820,8 +815,6 @@ function savescore()
 	hc = h.chrs
 	name = hc[1]..hc[2]..hc[3]
 	shiftscores(h.rank)
-	h.scores[h.rank] = g.score
-	h.names[h.rank] = name
 	dset(h.rank,g.score)
 	savename(h.rank,name)
 end
@@ -872,9 +865,11 @@ function scorescol(x,rank)
 	print("nr score name",x,y)
 	for i=rank,rank+8,2 do
 		y += 8
+		score = dget(i)
+		name = loadname(i)
 		print(pad(i,2),x,y)
-		print(pad(h.scores[i],5),x+12,y)
-		print(h.names[i],x+40,y)
+		print(pad(score,5),x+12,y)
+		print(name,x+40,y)
 	end
 end
 
@@ -1216,7 +1211,7 @@ __label__
 11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
 
 __gff__
-0000000000000000000000000000000000000000000000010101010101010100000001010101010100010101010101000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+0000000000000000000000000000000000000000000000111111111111111100000013111111111100313151519191000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 __map__
 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
