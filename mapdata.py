@@ -1,5 +1,4 @@
 import json
-import re
 import sys
 
 
@@ -18,11 +17,9 @@ def get_p8scii() -> Lines:
 
 
 P8SCII = get_p8scii()
-BG_P8 = P8SCII[BG]
-BG_P8_RE = re.escape(BG_P8)
 
 
-def p8scii_encode(text: str) -> bytes:
+def p8scii_encode(text: str) -> bytearray:
     i = 0
     binary = bytearray()
     while i < len(text):
@@ -37,32 +34,36 @@ def p8scii_encode(text: str) -> bytes:
                 i += lc
                 break
         binary.append(P8SCII.index(longest_match))
-    return bytes(binary)
+    return binary
 
 
-def p8scii_decode(binary: bytes) -> str:
-    return ''.join(P8SCII[b] for b in binary)
+def p8scii_decode(binary: bytearray) -> str:
+    text = ''.join(P8SCII[b] for b in binary)
+    return text
 
 
 def compress(mapdata: str) -> str:
-    print(mapdata)
-    mapdata_bytes = bytes.fromhex(mapdata)
+    mapdata_bytes = bytearray.fromhex(mapdata)
+    length = 0
+    for i in range(len(mapdata_bytes) - 1, -1, -1):
+        mb = mapdata_bytes[i]
+        if (length and mb != BG) or length == 255:
+            mapdata_bytes[i+1:i+length+1] = [BG, length]
+            length = 0
+            continue
+        if mb == BG:
+            length += 1
+    mapdata_bytes[i:i+length] = [BG, length]
     mapdata = p8scii_decode(mapdata_bytes)
-    print(mapdata)
-    def compress_repl(matchobj: re.Match):
-        repeats = matchobj[0].count(BG_P8)
-        return BG_P8 + P8SCII[repeats]
-    mapdata = re.sub(f'({BG_P8_RE}){{1,255}}', compress_repl, mapdata)
-    print(mapdata)
     return mapdata
 
 
 def decompress(mapdata: str) -> str:
-    def decompress_repl(matchobj: re.Match):
-        repeats = P8SCII.index(matchobj[1])
-        return BG_P8 * repeats
-    expanded = re.sub(f'{BG_P8_RE}([0-9a-f]{{2}})', decompress_repl, mapdata)
     mapdata_bytes = p8scii_encode(expanded)
+    for i in range(len(mapdata_bytes) - 1, -1, -1):
+        if mapdata_bytes[i] == BG:
+            repeats = mapdata_bytes[i+1]
+            mapdata_bytes[i:i+2] = [BG] * repeats
     mapdata = hex(mapdata_bytes).removeprefix('0x')
     return mapdata
 
