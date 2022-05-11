@@ -22,7 +22,7 @@ P8SCII = get_p8scii()
 def p8scii_encode(text: str) -> bytearray:
     i = 0
     binary = bytearray()
-    while i < len(text):
+    while i < len(text) - 1:
         longest_match = ''
         llm = 0
         for c in P8SCII:
@@ -31,9 +31,8 @@ def p8scii_encode(text: str) -> bytearray:
                 if llm < lc:
                     llm = lc
                     longest_match = c
-                i += lc
-                break
         binary.append(P8SCII.index(longest_match))
+        i += llm
     return binary
 
 
@@ -59,12 +58,12 @@ def compress(mapdata: str) -> str:
 
 
 def decompress(mapdata: str) -> str:
-    mapdata_bytes = p8scii_encode(expanded)
+    mapdata_bytes = p8scii_encode(mapdata)
     for i in range(len(mapdata_bytes) - 1, -1, -1):
         if mapdata_bytes[i] == BG:
             repeats = mapdata_bytes[i+1]
             mapdata_bytes[i:i+2] = [BG] * repeats
-    mapdata = hex(mapdata_bytes).removeprefix('0x')
+    mapdata = mapdata_bytes.hex()
     return mapdata
 
 
