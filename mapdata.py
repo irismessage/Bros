@@ -3,7 +3,7 @@ import re
 import sys
 
 
-BG = 24
+BG = 0x24
 CART_PATH = 'cart/bros.p8'
 OFFSET = 2
 ROWS = 13
@@ -19,20 +19,52 @@ def get_p8scii() -> Lines:
 
 P8SCII = get_p8scii()
 BG_P8 = P8SCII[BG]
+BG_P8_RE = re.escape(BG_P8)
+
+
+def p8scii_encode(text: str) -> bytes:
+    i = 0
+    binary = bytearray()
+    while i < len(text):
+        longest_match = ''
+        llm = 0
+        for c in P8SCII:
+            lc = len(c)
+            if text[i:i+lc] == c:
+                if llm < lc:
+                    llm = lc
+                    longest_match = c
+                i += lc
+                break
+        binary.append(P8SCII.index(longest_match))
+    return bytes(binary)
+
+
+def p8scii_decode(binary: bytes) -> str:
+    return ''.join(P8SCII[b] for b in binary)
 
 
 def compress(mapdata: str) -> str:
+    print(mapdata)
+    mapdata_bytes = bytes.fromhex(mapdata)
+    mapdata = p8scii_decode(mapdata_bytes)
+    print(mapdata)
     def compress_repl(matchobj: re.Match):
-        repeats = P8SCII[len(matchobj[0])]
-        return f'{BG_P8}{repeats}'
-    return re.sub(f'({BG_P8}){{1,255}}', compress_repl, mapdata)
+        repeats = matchobj[0].count(BG_P8)
+        return BG_P8 + P8SCII[repeats]
+    mapdata = re.sub(f'({BG_P8_RE}){{1,255}}', compress_repl, mapdata)
+    print(mapdata)
+    return mapdata
 
 
 def decompress(mapdata: str) -> str:
     def decompress_repl(matchobj: re.Match):
         repeats = P8SCII.index(matchobj[1])
         return BG_P8 * repeats
-    return re.sub(BG_P8+'([0-9a-f]{2})', decompress_repl, mapdata)
+    expanded = re.sub(f'{BG_P8_RE}([0-9a-f]{{2}})', decompress_repl, mapdata)
+    mapdata_bytes = p8scii_encode(expanded)
+    mapdata = hex(mapdata_bytes).removeprefix('0x')
+    return mapdata
 
 
 def process(maplines: Lines) -> str:
