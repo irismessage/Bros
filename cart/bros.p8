@@ -610,7 +610,7 @@ function decodescreen(scrn)
 	x = 0
 	y = offset
 	i = 1
-	while y < #scrd do
+	while i < #scrd do
 		sprn = scrd[i]
 		if sprn == bg then
 		 i += 1
