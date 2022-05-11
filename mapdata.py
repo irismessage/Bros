@@ -1,7 +1,9 @@
+import json
 import re
 import sys
 
 
+BG = 24
 CART_PATH = 'cart/bros.p8'
 OFFSET = 2
 ROWS = 13
@@ -9,18 +11,28 @@ WIDTH = 32
 Lines = list[str]
 
 
+def get_p8scii() -> Lines:
+    with open('p8scii.json', encoding='utf-8') as file:
+        p8scii = json.load(file)
+    return p8scii
+
+
+P8SCII = get_p8scii()
+BG_P8 = P8SCII[BG]
+
+
 def compress(mapdata: str) -> str:
     def compress_repl(matchobj: re.Match):
-        repeats = len(matchobj[0])//2
-        return f'24{repeats:02x}'
-    return re.sub('(24){1,255}', compress_repl, mapdata)
+        repeats = P8SCII[len(matchobj[0])]
+        return f'{BG_P8}{repeats}'
+    return re.sub(f'({BG_P8}){{1,255}}', compress_repl, mapdata)
 
 
 def decompress(mapdata: str) -> str:
     def decompress_repl(matchobj: re.Match):
-        repeats = int(matchobj[1], 16)
-        return "24" * repeats
-    return re.sub('24([0-9a-f]{2})', decompress_repl, mapdata)
+        repeats = P8SCII.index(matchobj[1])
+        return BG_P8 * repeats
+    return re.sub(BG_P8+'([0-9a-f]{2})', decompress_repl, mapdata)
 
 
 def process(maplines: Lines) -> str:

@@ -600,11 +600,8 @@ function levelscreenplay()
 end
 
 function decodescreen(scrn)
-	hexscreen = screens[scrn]
-	scrd = split(hexscreen,2,false)
-	for i=1,#scrd do
-		scrd[i] = tonum(scrd[i],0x1)
-	end
+	scrchrs = screens[scrn]
+	scrd = {ord(scrchrs,1,#scrchrs)}
 	x = 0
 	y = offset
 	i = 1
