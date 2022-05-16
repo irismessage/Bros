@@ -1,4 +1,7 @@
+import struct
 import sys
+
+import mapdata
 
 
 SPRITES_P8 = {
@@ -58,9 +61,49 @@ SPRITES_AT = {
 }
 
 
-def mine() -> bytes:
-    world_path = f'datamined/WORLD{sys.argv[1]}.DAT'
+def mine(world_file_num: str) -> bytes:
+    world_path = f'datamined/WORLD{world_file_num}.DAT'
     with open(world_path, 'rb') as file:
         world_bytes = file.read()
     return world_bytes
+
+
+def split_screens(level: bytes) -> list[bytes]:
+    screens = [level[:16]]
+    for i in range(16, 2216, 440):
+        screens.append(level[i:i+440])
+    return screens
+
+
+def dat_to_pico(screen_bytes: bytes) -> mapdata.Lines:
+    maplines = []
+    tiles = struct.iter_unpack('>H', screen_bytes)
+    i = 0
+    for y in range(11):
+        l = []
+        for x in range(20):
+            p8spr = SPRITES_P8_R[SPRITES_AT[tiles[i]]]
+            l.append('{:02x}'.format(p8spr))
+            i += 1
+        maplines.append(''.join(l))
+
+    return maplines
+
+
+def main():
+    screen = int(sys.argv[1])
+    screen, world = divmod(screen, 8)
+    screen, stage = divmod(screen, 4)
+
+    world_bytes = mine(f'{world}{stage}')
+    screens_bytes = split_screens(world_bytes)
+    maplines = dat_to_pico(screens_bytes[screen])
+
+    cart = mapdata.peekcart()
+    mapdata.writemap(maplines, cart)
+    mapdata.pokecart(cart)
+
+
+if __name__ == '__main__':
+    main()
 
