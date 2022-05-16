@@ -12,11 +12,11 @@ SPRITES_P8 = {
     17: 'fguy',
     19: '👀',
     21: 'mothralite',
-    25: 'plant_L',
-    26: 'plant_R',
+    26: 'plant_L',
+    27: 'plant_R',
     # flr tiles
     32: 'cobble',
-    35: 'brick',
+    33: 'brick',
     34: 'gangway',
     48: 'fragile',
     # udLR, up down Left Right
