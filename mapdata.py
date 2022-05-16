@@ -139,11 +139,12 @@ def readencoded(scrn: int, cart: Lines) -> str:
         return screen
 
 
-def writemap(maplines: Lines, cart: Lines):
+def writemap(maplines: Lines, cart: Lines, offset: int = 0):
     """Insert map lines into cart lines"""
     index = mapindex(cart)
     for i, line in enumerate(maplines):
-        cart[index+i] = line + cart[index+i][WIDTH:]
+        li = index + i + offset
+        cart[li] = line + cart[li][len(line):]
 
 
 def reload_all():
