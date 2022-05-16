@@ -25,14 +25,21 @@ SPRITES_P8 = {
     40: 'fragile_L',
     41: 'gangway',
     # pipes
-    48: 'pipe_tL',
-    49: 'pipe_tR',
-    50: 'pipe_bL',
-    51: 'pipe_bR',
-    52: 'pipe_tL9',
-    53: 'pipe_tR9',
-    54: 'pipe_bL9',
-    55: 'pipe_bR9',
+    # udLR, up down Left Right
+    # vh, vertical horizontal
+    50: 'pipe_vL',
+    51: 'pipe_vR',
+    48: 'pipe_uL',
+    49: 'pipe_uR',
+    # todo pipe placeholders
+    0xf0: 'pipe_dL',
+    0xf1: 'pipe_dR',
+    54: 'pipe_hL',
+    55: 'pipe_hR',
+    52: 'pipe_LL',
+    53: 'pipe_LR',
+    0xf2: 'pipe_RL',
+    0xf3: 'pipe_RR',
     # tiles with items
     27: 'block_empty',
     42: 'block_coin',
@@ -49,23 +56,32 @@ SPRITES_AT = {
     # entities
     0x0000: 'bg',
     0xA1A2: 'fguy',
+    0xA3A4: '👀',
+    0xA5A5: 'mothralite',
+    # todo plant halves
+    0x00F5: 'plant',
+    0xF600: 'plant',
     # flr tiles
     0x6162: 'cobble_full',
     0x6364: 'brick_full',
+    0x0606: 'gangway',
     # pipes
-    0x6D6E: 'pipe_tL',
-    0x6F70: 'pipe_tR',
-    0x7172: 'pipe_bL',
-    0x7374: 'pipe_bR',
-    0x2E2A: 'pipe_tL9',
-    0x2D29: 'pipe_tR9',
-    0x2C2C: 'pipe_bL9',
-    0x2B2B: 'pipe_bR9',
+    0x7172: 'pipe_vL',
+    0x7374: 'pipe_vR',
+    0x6D6E: 'pipe_uL',
+    0x6F70: 'pipe_uR',
+    0x2C2C: 'pipe_hL',
+    0x2B2B: 'pipe_hR',
+    0x2E2A: 'pipe_LL',
+    0x2D29: 'pipe_LR',
+    0x2F2D: 'pipe_RL',
+    0x302E: 'pipe_RR',
     # tiles with items
     0x6768: 'block_empty',
     0x696A: 'block_coin',
     0x6966: 'block_shroom',
-    0X6365: 'brick_coin',
+    0x6365: 'brick_coin',
+    0x631f: 'brick_shroom',
     0x6B6C: 'coin',
 }
 
