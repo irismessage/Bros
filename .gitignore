@@ -1,4 +1,5 @@
 *.lnk
+.vscode/
 __pycache__/
 
 *.p8.png

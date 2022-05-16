@@ -14,8 +14,8 @@ __lua__
 -- 7 encoded
 
 -- notes
--- bros is 120x169px
--- 15x21 sprites
+-- bros is 120x160px
+-- 15x20 sprites
 -- 8 worlds
 -- 4 levels per world
 -- 32 levels
