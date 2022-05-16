@@ -14,6 +14,7 @@ P8SCII = [
 
 
 def p8scii_encode(text: str) -> bytearray:
+    """Convert a python string to p8scii bytes."""
     i = 0
     binary = bytearray()
     while i < len(text) - 1:
@@ -31,11 +32,13 @@ def p8scii_encode(text: str) -> bytearray:
 
 
 def p8scii_decode(binary: bytearray) -> str:
+    """Convert p8scii bytes to a python string."""
     text = ''.join(P8SCII[b] for b in binary)
     return text
 
 
 def compress(mapdata: str) -> str:
+    """Convert map from a string of 2-digit hex to a compressed pico-8 string literal"""
     mapdata_bytes = bytearray.fromhex(mapdata)
     length = 0
     for i in range(len(mapdata_bytes) - 1, -1, -1):
@@ -52,6 +55,7 @@ def compress(mapdata: str) -> str:
 
 
 def decompress(mapdata: str) -> str:
+    """Convert map from a compressed pico-8 string literal to a string of 2-digit hex."""
     mapdata_bytes = p8scii_encode(mapdata)
     for i in range(len(mapdata_bytes) - 1, -1, -1):
         if mapdata_bytes[i] == BG:
@@ -62,6 +66,7 @@ def decompress(mapdata: str) -> str:
 
 
 def process(maplines: Lines) -> str:
+    """Take a list of rows in p8 cart format and join them into a single string"""
     processed_lines = []
     for line in maplines:
         processed_lines.append(line[:WIDTH])
@@ -71,6 +76,7 @@ def process(maplines: Lines) -> str:
 
 
 def deprocess(mapdata: str) -> Lines:
+    """Split a single string map into a list of rows"""
     mapdata_decompressed = decompress(mapdata)
     deprocessed = []
     for i in range(0,ROWS*WIDTH,WIDTH):
@@ -79,17 +85,20 @@ def deprocess(mapdata: str) -> Lines:
 
 
 def peekcart() -> Lines:
+    """Return lines from p8 file"""
     with open(CART_PATH, encoding='utf-8') as file:
         cart = file.readlines()
     return cart
 
 
 def pokecart(cart: Lines):
+    """Write lines to p8 file"""
     with open(CART_PATH, 'w', encoding='utf-8', newline='\n') as file:
         file.writelines(cart)
 
 
 def screensindex(cart: Lines):
+    """Get start, end, and length of encoded screens in cart"""
     index = cart.index('screens = {\n')
     indexend = cart.index('}\n', index)
     lenscreens = indexend - index - 1
@@ -97,10 +106,12 @@ def screensindex(cart: Lines):
 
 
 def mapindex(cart: Lines):
+    """Get line index of the start of the map data"""
     return cart.index('__map__\n') + OFFSET + 1
 
 
 def readmap(cart: Lines) -> Lines:
+    """Return lines of map from cart"""
     maplines = []
     index = mapindex(cart)
     maplines = cart[index:index + ROWS]
@@ -108,6 +119,7 @@ def readmap(cart: Lines) -> Lines:
 
 
 def writeencoded(mapdata: str, scrn: int, cart: Lines):
+    """Write encoded map data to the lua block of the cart lines"""
     index, indexend, lenscreens = screensindex(cart)
     mapdata = f'\t"{mapdata}",\n'
     if lenscreens < scrn:
@@ -117,6 +129,7 @@ def writeencoded(mapdata: str, scrn: int, cart: Lines):
 
 
 def readencoded(scrn: int, cart: Lines) -> str:
+    """Get encoded map data of screen at index scrn from cart lines"""
     index, indexend, lenscreens = screensindex(cart)
     if lenscreens < scrn:
         raise IndexError(f'Screen index out of range: {scrn}')
@@ -127,12 +140,14 @@ def readencoded(scrn: int, cart: Lines) -> str:
 
 
 def writemap(maplines: Lines, cart: Lines):
+    """Insert map lines into cart lines"""
     index = mapindex(cart)
     for i, line in enumerate(maplines):
         cart[index+i] = line + cart[index+i][WIDTH:]
 
 
 def reload_all():
+    """Load all encoded screen data then write it back"""
     # for when I change the codec
     cart = peekcart()
     for i in range(1,121):
@@ -149,7 +164,7 @@ def main():
         scrn = sys.argv[2]
     except IndexError:
         option = input('a: map to encoded, b: encoded to map\n')
-        scrn = input('Screen number (1 to 81)\n')
+        scrn = input('Screen number (1 to 120)\n')
     scrn = int(scrn)
 
     cart = peekcart()

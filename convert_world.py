@@ -46,45 +46,48 @@ SPRITES_P8 = {
 SPRITES_P8_R = {v: k for k,v in SPRITES_P8.items()}
 
 SPRITES_AT = {
-    0X0000: "bg",
-    0XA1A2: "fguy",
-    0X6D6E: "pipe_tL",
-    0X6F70: "pipe_tR",
-    0X7172: "pipe_bL",
-    0X7374: "pipe_bR",
-    0X6364: "brick_full",
-    0X6768: "block_empty",
-    0X696A: "block_coin",
-    0X6966: "block_shroom",
-    0X6162: "cobble_full",
-    0X6B6C: "coin",
+    0x0000: "bg",
+    0xA1A2: "fguy",
+    0x6D6E: "pipe_tL",
+    0x6F70: "pipe_tR",
+    0x7172: "pipe_bL",
+    0x7374: "pipe_bR",
+    0x6364: "brick_full",
+    0x6768: "block_empty",
+    0x696A: "block_coin",
+    0x6966: "block_shroom",
+    0x6162: "cobble_full",
+    0x6B6C: "coin",
 }
 
 
 def mine(world_file_num: str) -> bytes:
+    """Return bytes from WORLD??.DAT file"""
     world_path = f'datamined/WORLD{world_file_num}.DAT'
+    print(world_path)
     with open(world_path, 'rb') as file:
         world_bytes = file.read()
     return world_bytes
 
 
 def split_screens(level: bytes) -> list[bytes]:
-    screens = [level[:16]]
-    for i in range(16, 2216, 440):
+    """Split bytes from a world file into [palette, 1, 2, 3, 4, 5]"""
+    screens = [level[:15]]
+    for i in range(15, 2216, 440):
         screens.append(level[i:i+440])
     return screens
 
 
 def dat_to_pico(screen_bytes: bytes) -> mapdata.Lines:
+    """Convert a screen from  .DAT file into pick-8 2-byte hex strings"""
     maplines = []
     tiles = struct.iter_unpack('>H', screen_bytes)
-    i = 0
     for y in range(11):
         l = []
         for x in range(20):
-            p8spr = SPRITES_P8_R[SPRITES_AT[tiles[i]]]
+            atspr = next(tiles)[0]
+            p8spr = SPRITES_P8_R[SPRITES_AT[atspr]]
             l.append('{:02x}'.format(p8spr))
-            i += 1
         maplines.append(''.join(l))
 
     return maplines
@@ -92,8 +95,10 @@ def dat_to_pico(screen_bytes: bytes) -> mapdata.Lines:
 
 def main():
     screen = int(sys.argv[1])
-    screen, world = divmod(screen, 8)
-    screen, stage = divmod(screen, 4)
+    world, screen = divmod(screen, 8)
+    stage, screen = divmod(screen, 4)
+    world += 1
+    stage += 1
 
     world_bytes = mine(f'{world}{stage}')
     screens_bytes = split_screens(world_bytes)
@@ -102,6 +107,7 @@ def main():
     cart = mapdata.peekcart()
     mapdata.writemap(maplines, cart)
     mapdata.pokecart(cart)
+    print('Saved to map')
 
 
 if __name__ == '__main__':

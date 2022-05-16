@@ -82,7 +82,8 @@ for pitch, note, octave in noteslist:
 #print(notes)
 
 
-def closest(target_pitch):
+def closest(target_pitch: int):
+    """Return the closest SPN note to the Atari BASIC pitch value, as a tuple"""
     if target_pitch == 00:
         # indicates pause
         return '00 '
@@ -121,6 +122,7 @@ def unpack(sfx: str):
 
 
 def musik_number():
+    """Get number from args or stdin"""
     try:
         musik = sys.argv[1]
     except IndexError:
@@ -129,6 +131,7 @@ def musik_number():
 
 
 def mine():
+    """Datamine .DAT file and return a list of tuple notes"""
     path = f'datamined/MUSIK{musik_number()}.DAT'
     print(path)
     with open(path, 'rb') as file:
@@ -139,6 +142,7 @@ def mine():
 
 
 def printconv(conv):
+    """Print a list of notes sorted into bars for readability."""
     bars = [conv[i:i+8] for i in range(0, len(conv), 8)]
     print(len(bars))
     print("Press enter for each bar")
