@@ -40,7 +40,7 @@ Bevor es mit harter Theorie losgeht, etwas Praxis :
 
 Der Screen :
 
-![Der Screen](soundn-1.png)
+![Der Screen](manual-1.png)
 
 Titel & Copyright
 
@@ -91,7 +91,7 @@ Bereich hinter den Zielpointer kopiert:
 
 blinken  Ziel  Ende
 
-![Duplicate](soundn-2.png)
+![Duplicate](manual-2.png)
 
 (2 4)(5 ?)  kopiert
 
@@ -142,7 +142,7 @@ WENN SIE NICHTS HOREN !!!   CHECKLISTE :
   - AMPT-CTRL flackert ein wenig & etwas knacken im Lautsprecher ? Dann Knopt nach rechts drehen. - Wenn das nicht hilft, dann kommt hochstwahrscheinlich zu wenig Spannung am Modul an : andere Tonquelle und/oder anderes Kabel versuchen
   - Falsches uberspielkabel ? Es gibt 2 Typene :
 
-![Parallelkabel](soundn-3.png)
+![Parallelkabel](manual-3.png)
 
  1. (Parallelkabel)      2.
 

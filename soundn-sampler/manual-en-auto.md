@@ -43,7 +43,7 @@ Before we start with hard theory, some practice:
 
 The screen :
 
-![Der Screen](soundn-1.png)
+![Der Screen](manual-1.png)
 
 Title & Copyright
 
@@ -94,6 +94,8 @@ Area copied behind the target pointer:
 
 flash destination end
 
+![Duplicate](manual-2.png)
+
 (2 4)(5 ?) copied
 
 The end position of the target area (?) is at (E).
@@ -143,7 +145,7 @@ IF YOU HEAR NOTHING!!! CHECKLIST :
   - AMPT-CTRL flickers a little & something cracks in the speaker? Then turn the knob to the right. - If that doesn't help, then most likely there is not enough voltage at the module: try another sound source and/or another cable
   - Wrong transfer cable? There are 2 types:
 
-![Parallelkabel](soundn-3.png)
+![Parallelkabel](manual-3.png)
 
  1. (parallel cable) 2.
 
