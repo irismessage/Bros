@@ -6,36 +6,47 @@ https://atari800.github.io/
 https://github.com/atari800/atari800
 - standalone datamining tool    
 https://github.com/rossumur/esp_8_bit/blob/master/atr_image_explorer.htm
-- old emulator, needed to get OS ROM files if you want them    
+- old emulator, has original firmware files if you want them    
 https://sourceforge.net/projects/atari800/files/ROM/Original%20XL%20ROM/xf25.zip    
 http://www.emulators.com/xformer.htm
 - best emulator for windows, with datamining tools    
 https://www.virtualdub.org/altirra.html
 
-## relevant sites
+## atari 800 info
 https://en.wikipedia.org/wiki/Atari_8-bit_family    
 http://www.atarimania.com/
 - atari game datamining    
 http://bringerp.free.fr/RE/
 - general atari intro thread    
 https://atariage.com/forums/topic/176545-topic-for-newbies-or-veterans-returning-to-atari/
+- turbo-DOS    
+https://atariwiki.org/wiki/Wiki.jsp?page=Turbo-DOS
+
+## how it's BROS
 - BASIC variant it was programmed in    
 https://en.wikipedia.org/wiki/Turbo-BASIC_XL    
 https://atariwiki.org/wiki/Wiki.jsp?page=Turbo-BASIC%20XL
 - joystick it was made for    
 https://en.wikipedia.org/wiki/Atari_CX40_joystick
+- Atari manuals
+http://www.atarimania.com/documents-atari-400-800-xl-xe-manuals_2_8.html
 - Atari BASIC manual with music note table    
-http://www.atarimania.com/documents-atari-400-800-xl-xe-manuals_2_8.html    
 http://www.atarimania.com/documents/Atari-Basic-Reference-Manual-Rev-C.pdf
+- assembly programming manual    
+https://www.atariarchives.org/alp/
+- SPN    
+https://en.wikipedia.org/wiki/Scientific_pitch_notation
+- disk error codes    
+https://page6.org/archive/issue_22/page_10.htm
+
+# sound sampler - UNGH
 - sampler software atrs    
 https://atariage.com/forums/topic/205965-sample-cartridge/#comments
-- turbo-DOS    
-https://atariwiki.org/wiki/Wiki.jsp?page=Turbo-DOS
 - list of sample software    
 http://www.atarimania.com/faq-atari-400-800-xl-xe-what-sound-digitizers-samplers-were-produced-for-the-atari_65.html
 - more sample software information    
 https://atari-owner.com/club/articles/audio-solutions-for-the-atari-8-bit-home-computer.32/
-- sound n sampler 2: COULD BE IT
+- sound n sampler 2
 http://forum.atarimania.com/viewtopic.php?f=2&t=18563&p=35093&sid=bfee8ded313d3674a9c11f1aad50496d#p35093
 - sound n sampler demo    
 https://youtu.be/E0nDiNJkJlc
@@ -47,20 +58,10 @@ http://asma.atari.org/
 https://atariwiki.org/wiki/Wiki.jsp?page=File%20Suffix
 - atarimania entry for sound n sampler, missing stuff    
 http://www.atarimania.com/utility-atari-400-800-xl-xe-sound-n-sampler_15982.html
-- assembly programming manual    
-https://www.atariarchives.org/alp/
-- SPN    
-https://en.wikipedia.org/wiki/Scientific_pitch_notation
-- disk error codes    
-https://page6.org/archive/issue_22/page_10.htm
 - square wave    
 https://en.wikipedia.org/wiki/Square_wave
 - sampler    
 https://demozoo.org/productions/145427/
-- computronic magazine - nothing
-https://archive.org/details/computronic_magazine
-- ZONG pdfs    
-http://www.atarimania.com/atari-magazine-zong_38.html
 - SAMPLER MANUAL!    
 https://de.wikipedia.org/wiki/Atari_800XL#cite_note-170    
 https://de-m-wikipedia-org.translate.goog/wiki/Atari_800XL?_x_tr_sl=de&_x_tr_tl=en&_x_tr_hl=en-US&_x_tr_pto=wapp    
@@ -69,8 +70,10 @@ https://www.strotmann.de/~cas/Infothek/SoundNSampler/soundn.pdf
 https://www.lexaloffle.com/bbs/?tid=33309
 
 ## ke-soft
-- ZONG magazine archive with sound editor rom    
+- ZONG magazine archive
 https://web.archive.org/web/20160322024937/http://www.kemalsatariarchiv.gmxhome.de/von1989.html
+- ZONG pdfs    
+http://www.atarimania.com/atari-magazine-zong_38.html
 - mobygames listing    
 https://www.mobygames.com/company/ke-soft
 - german wikipedia article    
@@ -80,7 +83,7 @@ https://de-m-wikipedia-org.translate.goog/wiki/KE-SOFT?_x_tr_sl=de&_x_tr_tl=en&_
 ## the developer
 - forum post by them    
 https://atariage.com/forums/topic/233511-ke-soft-kemal-ezcan-zong-atari-8-bit-games-and-music/
-- their website    
+- their websites    
 https://www.yodasvideoarcade.com/    
 https://yodagames.de/
 - an interview    

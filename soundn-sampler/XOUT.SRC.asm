@@ -87,7 +87,7 @@
 018600          ;
 018700 OUTPUT
 018800          ;
-018900          LDA #0 NO INTERRUPTS
+018900          LDA #0    ; NO INTERRUPTS
 019000          STA $D40E
 019100          SEI
 019200          LDA #$FE NO ROM
