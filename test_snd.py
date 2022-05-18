@@ -1,55 +1,79 @@
-import sys
 import numpy as np
 import scipy.io.wavfile
 import scipy.signal
 
 
 # hehe ratte
-SAMPLE_RAT = 3000
-# SAMPLE_RAT = int(sys.argv[1])
+# (target output sample rate)
+SAMPLE_RAT = 5512
+# frequency of POKEY square wave
 SQUARE_FREQ = 196.7
+# length of 6502 cpu cycle in seconds
+CYCLE = 560e-9
+# sound n sampler args
+# F0 F1 F2 F3
+# AMPLITUDE = [0x0, 0x1, 0x2, 0x3]
+AMPLITUDE = [0x2, 0x1, 0x0, 0x3]
+SYNCRES = 1
+# length of a sample in seconds
+# todo figure out exact equation from XOUT.SRC
+SAMPLE_SECONDS = (80 + 200 * SYNCRES) * CYCLE
+
 Samples = list[int]
 
-
-def mine() -> tuple[int, Samples]:
+def mine() -> Samples:
     path = 'datamined/BROS.SND'
     print(path)
+    print('reading..')
     with open(path, 'rb') as file:
-        speed = file.read(1)[0]
         data = file.read()
+    print(len(data), 'bytes')
+
+    print('amplifying..')
     samples = []
     for b in data:
-        samples.append((b>>4)&0x0F)
-        samples.append(b&0x0F)
-    return speed, samples
+        for i in range(4):
+            half_nibble = (b >> 2*i) & 0b00000011
+            amplified = AMPLITUDE[half_nibble]
+            samples.append(amplified)
+    print(len(samples), 'samples')
+
+    return samples
 
 
-def process_samples(speed: int, samples: Samples) -> np.ndarray:
-    s_array = np.array(samples, dtype=np.int16)
-    # 4 bit sample to 16 bit PCM
-    s_array = np.multiply(s_array, 1024, dtype=np.int16)
-    s_count = len(s_array)
-    s_array = np.repeat(s_array, speed)
+def process_samples(samples: Samples) -> np.ndarray:
+    s_array = np.array(samples)
+
+    # superimpose square wave to emulate POKEY
     # https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.square.html
-    s_seconds = s_count // SAMPLE_RAT
-    t = np.linspace(0, s_seconds, s_count * speed, endpoint=False)
+    print('superimposing square wave..')
+    s_count = len(s_array)
+    snd_seconds = s_count * SAMPLE_SECONDS
+    t = np.linspace(0, snd_seconds, num=s_count, endpoint=False)
     sqwv = scipy.signal.square(2 * np.pi * SQUARE_FREQ * t)
-    sqwv = sqwv.astype(int)
-    s_array = np.multiply(s_array, sqwv, dtype=np.int16)
-    print(s_array[:100])
+    sqwv = sqwv.astype(np.int8)
+    s_array = np.multiply(s_array, sqwv, dtype=np.int8)
+
+    print('interpolating..')
+    # stretch to desired sample rate
+    samples_needed = int(snd_seconds * SAMPLE_RAT)
+    x = np.linspace(0, snd_seconds, num=samples_needed)
+    s_array = np.interp(x, t, s_array)
+
     return s_array
 
 
-def save_wav(speed:int, s_array: np.ndarray, filename: str):
-    print(filename)
+def save_wav(s_array: np.ndarray, filename: str):
+    print('saving..')
     # https://docs.scipy.org/doc/scipy/reference/generated/scipy.io.wavfile.write.html#scipy.io.wavfile.write
-    scipy.io.wavfile.write(filename, SAMPLE_RAT*speed, s_array)
+    scipy.io.wavfile.write(filename, SAMPLE_RAT, s_array)
+    print(filename)
 
 
 def main():
-    speed, samples = mine()
-    s_array = process_samples(speed, samples)
-    save_wav(speed, s_array, 'music/BROS.SND.wav')
+    samples = mine()
+    s_array = process_samples(samples)
+    save_wav(s_array, 'music/BROS.SND.wav')
 
 
 if __name__ == '__main__':

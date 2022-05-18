@@ -67,7 +67,9 @@ https://de.wikipedia.org/wiki/Atari_800XL#cite_note-170
 https://de-m-wikipedia-org.translate.goog/wiki/Atari_800XL?_x_tr_sl=de&_x_tr_tl=en&_x_tr_hl=en-US&_x_tr_pto=wapp    
 https://www.strotmann.de/~cas/Infothek/SoundNSampler/soundn.pdf
 - PICO-8 sampling discussion    
-https://www.lexaloffle.com/bbs/?tid=33309
+https://www.lexaloffle.com/bbs/?tid=33309    
+https://www.lexaloffle.com/bbs/?pid=88937    
+https://www.lexaloffle.com/bbs/?tid=42809
 
 ## ke-soft
 - ZONG magazine archive

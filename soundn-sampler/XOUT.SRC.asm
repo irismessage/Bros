@@ -139,7 +139,7 @@
 023800           STA BYTE
 023900           ;
 024000           LDX SPEED           ; SPEED LOOP
-024100           DX2 DEX
+024100 DX2       DEX
 024200           BNE DX2
 024300           ;
 024400           CLC                 ; => JMP DAC.LOOP
@@ -153,10 +153,10 @@
 025200           LDY #1
 025300           ; WAIT FOR RIGHT SCANLINE
 025400 YADC.LOOP
-025500           LDA $D40B
-025600           CMP WORK.ADR
+025500           LDA $D40B           ; VCOUNT line being drawn/2
+025600           CMP WORK.ADR        ; loop until line matches WORK.ADR
 025700           BEQ YADC.LOOP
-025800           TAX
+025800           TAX                 ; save vcount to X
 025900           ;
 026000           CMP #255            ; AN INTERRUPT ?
 026100           BEQ SERVICE.MCP
@@ -172,21 +172,21 @@
 027100           AND #3
 027200           TAX
 027300           LDA FUNCTION.TAB,X
-027400           STA 53761
+027400           STA 53761           ; loudness
 027500           LDA BYTE
 027600           ASL A
 027700           ASL A
 027800           STA BYTE
 027900           ;
 028000           DEY
-028100           BNE YADC.LOOP
+028100           BNE YADC.LOOP       ; loop for high and low nibble
 028200           ;
 028300           LDA (START.ADR),Y
 028400           STA BYTE
 028500           LDY #4
 028600           ;
 028700 YINC      INC START.ADR       ; NEXT BYTE
-028800           BNE YCMP
+028800           BNE YCMP            ; branch when start.adr != 0
 028900           INC START.ADR+1
 029000           LDA START.ADR+1
 029100           CMP #$D0
