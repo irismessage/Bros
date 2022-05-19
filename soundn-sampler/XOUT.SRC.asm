@@ -8,7 +8,7 @@
 010700           ; X=USR(ADR,SSS,SYNCRES,SPEED,
 010800           ;       F0,F1,F2,F3,START,END)
 010900           ;
-011000           *= 20000
+011000           *= 20000            ; $4e20
 011100           ;
 011200           ;
 011300           SSS.MODE = 212
@@ -154,9 +154,9 @@
 025300           ; WAIT FOR RIGHT SCANLINE
 025400 YADC.LOOP
 025500           LDA $D40B           ; VCOUNT line being drawn/2
-025600           CMP WORK.ADR        ; loop until line matches WORK.ADR
-025700           BEQ YADC.LOOP
-025800           TAX                 ; save vcount to X
+025600           CMP WORK.ADR
+025700           BEQ YADC.LOOP       ; loop until line != WORK.ADR
+025800           TAX                 ; save VCOUNT to X
 025900           ;
 026000           CMP #255            ; AN INTERRUPT ?
 026100           BEQ SERVICE.MCP

@@ -38,6 +38,8 @@ https://www.atariarchives.org/alp/
 https://en.wikipedia.org/wiki/Scientific_pitch_notation
 - disk error codes    
 https://page6.org/archive/issue_22/page_10.htm
+- USR function info    
+https://www.page6.org/archive/issue_11/page_24.htm
 
 # sound sampler - UNGH
 - sampler software atrs    
