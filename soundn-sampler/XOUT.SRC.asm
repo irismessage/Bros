@@ -14,7 +14,7 @@
 011300           SSS.MODE = 212
 011400           SYNCRES = 213
 011500           SPEED = 214
-011600           FUNCTION.TAB = 215 ; 216/6/8
+011600           FUNCTION.TAB = 215  ; 216/6/8
 011700           START.ADR = 219
 011800           END.ADR = 221
 011900           WORK.ADR = 223
