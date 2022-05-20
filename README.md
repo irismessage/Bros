@@ -28,7 +28,8 @@ Individual files can be extracted from Bros.atr with tool like Altirra or the HT
 
 AUTORUN.CTB is Compiled Turbo BASIC loaded by AUTORUN.SYS. Sadly I don't believe a Turbo BASIC decompiler exists, and making one is beyond my knowledge at the moment.
 
-BROS.SND contains audio from a microphone, sampled using the 1980s German Sound'n'Sampler by Ralf David. The sound is 2bit at ~7778Hz (half the vertical scan rate of the Atari 800). Each byte is made up of four samples, big-endian in reverse order. You can see a demo decoder which converts to WAV in test_snd.py.
+BROS.SND contains audio from a microphone, sampled using the 1980s German Sound'n'Sampler by Ralf David. The sound is 2bit at ~7778Hz (half the vertical scan rate of the Atari 800). Each byte is made up of four samples, big-endian in reverse order. You can see a demo decoder which converts to WAV in test_snd.py. This info was gained from soundn-sampler/XOUT.SRC.asm.    
+The offsets of each sfx can be found by setting a breakpoint in Altirra at $7a5f, where the play routine is. Enable CPU history and activate a sound in the game. Then, in the history tab, search for the PHA operation. This will reveal the arguments, in the A register.
 
 BROS?.CHR contain the typeface, I believe. I manually recreated it (as well as the sprites, which don't seem to have their own file, so must be contained somewhere in AUTORUN.CTB) and you can find it in cart/spritesheet.png.
 
