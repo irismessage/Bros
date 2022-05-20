@@ -11,22 +11,32 @@ This is a remake of the game in PICO-8, complete with custom font, accurate data
 ## Files
 - sources.md -- useful links to more information, emulators, ROMs, etc.
 - Bros.atr -- original game ROM
-- convert-musik.py -- python script to convert the datamined .DAT files into SPN music notes
+- convert_musik.py -- python script to convert the datamined .DAT files into SPN music notes
+- convert_world.py -- load levels from world files into cart
 - convert_snd.py -- wip python script to convert datamind .SND file into usable format
 - mapdata.py -- python script to move levels between PICO-8 map block, and text encoded format
+- view_world_hex.py -- used to view the world files in correct heigh, useful for datamining
 
 ## Folders
 - cart/ -- PICO-8 cartridge.
-- assets/ -- assets ripped from the original game
 - datamined/ -- files datamined from the original game
 - manual/ -- images, transcription, and translation of the original game manual. German to english translation courtesy of Wbubbler
+- soundn-sampler/ -- files related to the sampler used to make the sfx in the game. UNGH
 
 ## Datamining details
 Individual files can be extracted from Bros.atr with tool like Altirra or the HTML image explorer.
 
-The MUSIK*.DAT files from the game are a stream of bytes, where each byte is a pitch number used in the SOUND statement in Atari BASIC. 0 means skip a notes. convert_musik.py converts them into music notes using the values from the Atari BASIC manual. The music notes need to be arranged appropriately, as in the PICO-8 cartridge.
+AUTORUN.CTB is Compiled Turbo BASIC loaded by AUTORUN.SYS. Sadly I don't believe a Turbo BASIC decompiler exists, and making one is beyond my knowledge at the moment.
 
-Datamining the BROS.SND file is a work in progress.
+BROS.SND contains audio from a microphone, sampled using the 1980s German Sound'n'Sampler by Ralf David. The sound is 2bit at ~7778Hz (half the vertical scan rate of the Atari 800). Each byte is made up of four samples, big-endian in reverse order. You can see a demo decoder which converts to WAV in test_snd.py.
+
+BROS?.CHR contain the typeface, I believe. I manually recreated it (as well as the sprites, which don't seem to have their own file, so must be contained somewhere in AUTORUN.CTB) and you can find it in cart/spritesheet.png.
+
+MUSIK?.DAT are a stream of bytes, where each byte is a pitch number used in the SOUND statement in Atari BASIC. A 00 means one note of silence. convert_musik.py converts them into music notes using the values from the Atari BASIC manual. The music notes need to be arranged appropriately, as I have done in cart/bros.p8.
+
+WORLD??.DAT contain the levels. Each file starts with 16 bytes for the colour palette, and then contains five levels, each 20 horizontal x 11 vertical. Each tile is two bytes and you can find them in convert_world.py.
 
 ## License
-Usually I put my stuff under GPL/CC BY-NC-SA, but public domain seems more in the spirit of things since the original game is in public domain, and PICO-8 with splore and stuff doesn't really handle licenses
+Usually I put my stuff under GPL/CC BY-NC-SA, but public domain seems more in the spirit of things since the original game is in public domain, and PICO-8 with splore and stuff doesn't really handle licenses.
+
+The public domain declaration in LICENSE covers everything except the directory soundn-sampler/ which is copyrighted I believe.
