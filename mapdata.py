@@ -98,11 +98,9 @@ def pokecart(cart: Lines):
 
 
 def screensindex(cart: Lines):
-    """Get start, end, and length of encoded screens in cart"""
+    """Get start index of encoded screens in cart"""
     index = cart.index('screens = {\n')
-    indexend = cart.index('}\n', index)
-    lenscreens = indexend - index - 1
-    return index, indexend, lenscreens
+    return index
 
 
 def mapindex(cart: Lines):
@@ -120,23 +118,17 @@ def readmap(cart: Lines) -> Lines:
 
 def writeencoded(mapdata: str, scrn: int, cart: Lines):
     """Write encoded map data to the lua block of the cart lines"""
-    index, indexend, lenscreens = screensindex(cart)
-    mapdata = f'\t"{mapdata}",\n'
-    if lenscreens < scrn:
-        cart.insert(indexend, mapdata)
-    else:
-        cart[index + scrn] = mapdata
+    index = screensindex(cart)
+    cart[index + scrn] = mapdata
 
 
 def readencoded(scrn: int, cart: Lines) -> str:
     """Get encoded map data of screen at index scrn from cart lines"""
-    index, indexend, lenscreens = screensindex(cart)
-    if lenscreens < scrn:
-        raise IndexError(f'Screen index out of range: {scrn}')
-    else:
-        screen = cart[index + scrn]
-        screen = screen.removeprefix('\t"').removesuffix('",')
-        return screen
+    index = screensindex(cart)
+    screen = cart[index + scrn]
+    screen = screen.removeprefix('\t"')
+    screen = screen.removesuffix('",')
+    return screen
 
 
 def writemap(maplines: Lines, cart: Lines, offset: int = 0):
@@ -167,6 +159,9 @@ def main():
         option = input('a: map to encoded, b: encoded to map\n')
         scrn = input('Screen number (1 to 120)\n')
     scrn = int(scrn)
+    if not (1 <= scrn <= 120):
+        raise ValueError('Bad scrn')
+
 
     cart = peekcart()
     if option == 'a':
