@@ -157,9 +157,8 @@ def main():
         screen = int(arg1)
     
     maplines = convert(screen)
-
     cart = mapdata.peekcart()
-    mapdata.writemap(maplines, cart, offset=1)
+    mapdata.writemap(maplines, cart, offset=mapdata.OFFSET)
     mapdata.pokecart(cart)
     print('Saved to map')
 

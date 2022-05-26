@@ -1,16 +1,21 @@
-import json
 import sys
 
 
+# background sprite
 BG = 1
 CART_PATH = 'cart/bros.p8'
+# rows to skip at the top
 OFFSET = 2
+# size of the relevant map section
 ROWS = 13
-WIDTH = 32
-Lines = list[str]
+COLUMNS = 16
+# length of the hex string in the cart __map__ block
+WIDTH = 2 * COLUMNS
 P8SCII = [
     r"\0", r"\*", r"\#", r"\-", r"\|", r"\+", r"\^", r"\a", r"\b", r"\t", r"\n", r"\v", r"\f", r"\r", r"\014", r"\015", "▮", "■", "□", "⁙", "⁘", "‖", "◀", "▶", "「", "」", "¥", "•", "、", "。", "゛", "゜", " ", "!", r'\"', "#", "$", "%", "&", "'", "(", ")", "*", "+", ",", "-", ".", "/", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ":", ";", "<", "=", ">", "?", "@", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "[", r"\\", "]", "^", "_", "`", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "{", "|", "}", "~", "○", "█", "▒", "🐱", "⬇️", "░", "✽", "●", "♥", "☉", "웃", "⌂", "⬅️", "😐", "♪", "🅾️", "◆", "…", "➡️", "★", "⧗", "⬆️", "ˇ", "∧", "❎", "▤", "▥", "あ", "い", "う", "え", "お", "か", "き", "く", "け", "こ", "さ", "し", "す", "せ", "そ", "た", "ち", "つ", "て", "と", "な", "に", "ぬ", "ね", "の", "は", "ひ", "ふ", "へ", "ほ", "ま", "み", "む", "め", "も", "や", "ゆ", "よ", "ら", "り", "る", "れ", "ろ", "わ", "を", "ん", "っ", "ゃ", "ゅ", "ょ", "ア", "イ", "ウ", "エ", "オ", "カ", "キ", "ク", "ケ", "コ", "サ", "シ", "ス", "セ", "ソ", "タ", "チ", "ツ", "テ", "ト", "ナ", "ニ", "ヌ", "ネ", "ノ", "ハ", "ヒ", "フ", "ヘ", "ホ", "マ", "ミ", "ム", "メ", "モ", "ヤ", "ユ", "ヨ", "ラ", "リ", "ル", "レ", "ロ", "ワ", "ヲ", "ン", "ッ", "ャ", "ュ", "ョ", "◜", "◝"
 ]
+
+Lines = list[str]
 
 
 def p8scii_encode(text: str) -> bytearray:
@@ -119,7 +124,7 @@ def readmap(cart: Lines) -> Lines:
 def writeencoded(mapdata: str, scrn: int, cart: Lines):
     """Write encoded map data to the lua block of the cart lines"""
     index = screensindex(cart)
-    cart[index + scrn] = mapdata
+    cart[index + scrn] = f'\t"{mapdata}",\n'
 
 
 def readencoded(scrn: int, cart: Lines) -> str:
@@ -127,16 +132,17 @@ def readencoded(scrn: int, cart: Lines) -> str:
     index = screensindex(cart)
     screen = cart[index + scrn]
     screen = screen.removeprefix('\t"')
-    screen = screen.removesuffix('",')
+    screen = screen.removesuffix('",\n')
     return screen
 
 
 def writemap(maplines: Lines, cart: Lines, offset: int = 0):
     """Insert map lines into cart lines"""
     index = mapindex(cart)
+    width = len(maplines[0])
     for i, line in enumerate(maplines):
         li = index + i + offset
-        cart[li] = line + cart[li][len(line):]
+        cart[li] = line + cart[li][width:]
 
 
 def reload_all():
