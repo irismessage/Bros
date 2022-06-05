@@ -228,18 +228,12 @@ function drawtopbar()
 end
 
 function updatemainscreen()
-	if mtick == 0 then
-		mtick = 2*tick
-		mspr += 1
-		mspr %= 2
-	else
-		mtick -= 1
-	end
+	enticki(2)
 end
 
 function drawmainscreen()
-	spr(25+3*mspr,8,48,1,1)
-	spr(19+mspr,104,72,1,1,mspr==1)
+	spr(25+3*enspr,8,48,1,1)
+	spr(19+enspr,104,72,1,1,enspr==1)
 end
 
 function mainscreen()
@@ -473,7 +467,19 @@ fguy={
 	sprn=17,
 }
 
+enspr = 0
+entick = 0
 emptyblock = 42
+
+function enticki(freq)
+	if entick == 0 then
+		entick = freq * tick
+		enspr += 1
+		enspr %= 2
+	else
+		entick -= 1
+	end
+end
 
 function coinup()
 	g.score += 10
@@ -601,12 +607,17 @@ end
 function drawentities()
 	for en in all({coin,fungus,fguy}) do
 		if en.show then
-			spr(en.sprn,en.x,en.y,1,1,en.l)
+			local sprn = en.sprn
+			if en != coin then
+				sprn += enspr
+			end
+			spr(sprn,en.x,en.y,1,1,en.l)
 		end
 	end
 end
 
 function updateentities()
+	enticki(4)
 	updatecoin()
 	updatefungus()
 	updatefguy()
