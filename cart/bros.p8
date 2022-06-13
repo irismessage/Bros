@@ -48,6 +48,8 @@ s = {
 	entry=false,
 	play=false,
 }
+staupdate = nil
+stadraw = nil
 
 wait = {
 	f=0,
@@ -73,7 +75,7 @@ amp = {
 function _init()
 	bbs = false
 	if not bbs then
-		title = "\66\82\79\83"
+		title = "BROS"
 		extcmd("set_title",title)
 	end
 	palt(0,false)
@@ -87,29 +89,12 @@ end
 function _update60()
 --	debugstats()
 	if (updatewait()) return
-	updatestate()
 	updatecode()
-
-	if s.play then
-		updatelevel()
-		if btnp(❎) then
-			die()
-		end
-	elseif s.entry then
-		updatenameentry()
-	elseif s.main then
-		updatemainscreen()
-	end
+	staupdate()
 end
 
 function _draw()
-	if s.play then
-		drawlevel()
-	elseif s.entry then
-		drawnameentry()
-	elseif s.main then
-		drawmainscreen()
-	end
+	stadraw()
 end
 
 function debugstats()
@@ -119,32 +104,6 @@ function debugstats()
 	printh("p.y"..pad(p.y,3))
 	printh("p.jump"..p.jump)
 	printh("p.jtick"..p.jtick)
-end
-
-function updatestate()
-	if s.main then
-		if btnp(🅾️) then
-			s.main = false
-			levelscreen()
-		elseif btnp(❎) then
-			s.main = false
-			scorescreen()
-		end
-	elseif s.hi then
-		if btnp(❎) or btnp(🅾️) then
-			s.hi = false
-			mainscreen()
-			g.score = 0
-		end
-	elseif s.entry then
-		if btnp(🅾️) then
-			savescore()
-		end
-		if btnp(❎) or btnp(🅾️) then
-			s.entry = false
-			scorescreen()
-		end
-	end
 end
 
 function updatewait()
@@ -229,6 +188,11 @@ end
 
 function updatemainscreen()
 	enticki(2)
+	if btnp(🅾️) then
+		levelscreen()
+	elseif btnp(❎) then
+		scorescreen()
+	end
 end
 
 function drawmainscreen()
@@ -237,7 +201,8 @@ function drawmainscreen()
 end
 
 function mainscreen()
-	s.main = true
+	staupdate = updatemainscreen
+	stadraw = drawmainscreen
 	cls(bc)
 	map(0,16)
 	music(24)
@@ -652,7 +617,8 @@ function levelscreen()
 end
 
 function levelscreenplay()
-	s.play = true
+	staupdate = updatelevel
+	stadraw = drawlevel
 	drawtopbar()
 end
 
@@ -874,7 +840,8 @@ function savescore()
 end
 
 function askname()
-	s.entry = true
+	staupdate = updatenameentry
+	stadraw = drawnameentry
 	cls(bc)
 	drawtopbar()
 	print("great score",42,40)
@@ -891,6 +858,13 @@ function drawnameentry()
 end
 
 function updatenameentry()
+	if btnp(🅾️) then
+		savescore()
+	end
+	if btnp(❎) or btnp(🅾️) then
+		scorescreen()
+	end
+
 	-- cursor
 	c = h.curs
 	if btnp(➡️) and c < 3 then
@@ -927,8 +901,16 @@ function scorescol(x,rank)
 	end
 end
 
+function updatescorescreen()
+	if btnp(❎) or btnp(🅾️) then
+		mainscreen()
+		g.score = 0
+	end
+end
+
 function scorescreen()
-	s.hi = true
+	staupdate = updatescorescreen
+	stadraw = function() end
 	cls(bc)
 	drawtopbar()
 	print("00",90,8)
