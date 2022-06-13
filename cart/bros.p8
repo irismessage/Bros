@@ -41,13 +41,15 @@ g = {
 	wep=0,
 }
 
--- state
+-- sprite codes
 s = {
-	main=false,
-	hi=false,
-	entry=false,
-	play=false,
+	bbro=7,
+	timer=14,
+	shroom=61,
+	coin=59,
 }
+
+-- state
 staupdate = nil
 stadraw = nil
 
@@ -171,16 +173,16 @@ function drawtopbar()
 	rectfill(0,8,127,15,bc)
 	color(tc)
 	print(pad(g.score,5),2,8)
-	spr(59,22,8)
+	spr(s.coin,22,8)
 	print(pad(g.coins,2),32,8)
-	spr(7,40,8)
+	spr(s.bbro,40,8)
 	print(g.lives,50,8)
 	print("lvl",56,8)
 	print(l.world..l.stage,68,8)
-	spr(14,76,8)
+	spr(s.timer,76,8)
 	drawtimer()
 	if g.fungus then
-		spr(60,100,8)
+		spr(s.shroom,100,8)
 	end
 	spr(62,110,8)
 	print(pad(g.wep,2),118,8)
@@ -570,12 +572,16 @@ function updatefguy()
 end
 
 function drawentities()
-	for en in all({coin,fungus,fguy}) do
+	for en in all({coin,fungus}) do
+		if en.show then
+			spr(en.sprn,en.x,en.y)
+		end
+	end
+
+	for en in all({fguy}) do
 		if en.show then
 			local sprn = en.sprn
-			if en != coin then
-				sprn += enspr
-			end
+			sprn += enspr
 			spr(sprn,en.x,en.y,1,1,en.l)
 		end
 	end
