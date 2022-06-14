@@ -53,6 +53,7 @@ sndp = {
 	adr=usrdta,
 	done=false,
 	play=false,
+	stime=0,
 }
 
 wait = {
@@ -194,6 +195,7 @@ function psnd(snd)
 	sndp.sam = 1
 	sndp.adr = usrdta
 	sndp.play = true
+	sndp.stime = time()
 end
 
 -- help screen
@@ -895,7 +897,8 @@ function gameover()
 	stadraw = function() end
 	map(20,22,32,40,9,5)
 	print("game  over",44,56)
-	dieforever()
+	wait.f = 60 * tick
+	wait.call = dieforever
 end
 
 function dieforever()
