@@ -13,23 +13,15 @@ __lua__
 -- 6 swap
 -- 7 encoded
 
--- notes
--- bros is 120x160px
--- 15x20 sprites
--- 8 worlds
--- 4 levels per world
--- 32 levels
--- 5 screens per level
--- 20 screens per world
--- 160 screens
-
 -- sprite flags
--- 0 collision
--- 1 breaks with mushroom
--- 4 bonk sfx
--- 5 coin
--- 6 mushroom
--- 7 wep
+f = {
+	coll=0,
+	brks=1,
+	bonk=4,
+	coin=5,
+	mush=6,
+	swep=7,
+}
 
 -- game
 g = {
@@ -43,10 +35,12 @@ g = {
 
 -- sprite codes
 s = {
+	bg=1,
 	bbro=7,
 	timer=14,
-	shroom=61,
+	emptyblock=42,
 	coin=59,
+	shroom=61,
 }
 
 -- state
@@ -170,7 +164,7 @@ function helpscreen()
 	wait.f = 15 * tick
 	wait.call = drawhelpscreen
 end
-	
+
 function drawhelpscreen()
 	map(32,16)
 	helptext = {
@@ -340,7 +334,8 @@ function updatejump()
 	p.y += 8
 
 	p.jtick = dtickl
-	if dcol() then
+	dl,m,r = ycol(p.x,p.y)
+	if ft(dl,m,r) then
 		p.y -= 8
 		p.coyote = coyotemax
 		if p.jump == 1 then
@@ -364,11 +359,12 @@ function updatejump()
 				p.wtick = 0
 			end
 			p.jump -= 1
-			if ucol() then
+			dl,m,r = ycol(p.x,p.y)
+			if ft(dl,m,r) then
 				p.y += 8
 				p.jump = 1
 				p.jtick = btickl
-				bonk()
+				bonk(dl,m,r)
 			end
 		elseif p.jump < jumpmax then
 			p.jump = 1
@@ -396,26 +392,25 @@ function ccollide(x,y)
 	return mget(x/8,y/8)
 end
 
-function ft(sprn)
-	return fget(sprn,0)
+function ft(...)
+	for sprn in all(...) do
+		if sprn!=nil and fget(sprn,f.coll) then
+			return true
+		end
+	end
+	return false
 end
 
 function ycol(x,y)
+	-- returns left,middle,right
 	if x % 8 == 0 then
-		return ccollide(x,y),bg
+		local m = ccollide(x,y)
+		return nil,m,nil
 	else
-		a = ccollide(x-4,y)
-		b = ccollide(x+4,y)
-		return a,b
+		local cl = ccollide(x-4,y)
+		local r = ccollide(x+4,y)
+		return cl,nil,r
 	end
-end
-function ucol()
-	a,b = ycol(p.x,p.y)
-	return ft(a) or ft(b)
-end
-function dcol()
-	a,b = ycol(p.x,p.y)
-	return ft(a) or ft(b)
 end
 
 function xcol(x,y)
@@ -475,7 +470,6 @@ fguy={
 
 enspr = 0
 entick = 0
-emptyblock = 42
 
 function enticki(freq)
 	if entick == 0 then
@@ -497,31 +491,50 @@ function coinup()
 	drawtopbar()
 end
 
-function bonk()
+function bonk(cl,m,r)
 	-- called in updatejump()
-	mx = p.x/8
-	my = p.y/8-1
-	sprn = mget(mx,my)
-	if fget(sprn,5) then
+	local cachedjump = p.jump
+	p.jump = 0
+	
+	if m == nil then
+		if fget(m,f.bonk) then
+			psnd(snd.bonk)
+		end
+		return
+	end
+
+	if ft(cl) then
+		sprn = cl
+	elseif ft(r) then
+		sprn = r
+	end
+	
+	local x = p.x
+	local y = p.y - 16
+	local mx = x / 8
+	local my = y / 8
+	
+	if fget(sprn,f.coin) then
 		psnd(snd.coin)
 		coin.x = p.x
 		coin.y = p.y-16
 		coin.show = true
 		coin.lifet = 5*tick
-		mset(mx,my,emptyblock)
-	elseif fget(sprn,6) then
+		mset(mx,my,s.emptyblock)
+	elseif fget(sprn,f.mush) then
+		psnd(snd.bonk)
 		fungus.x = p.x
 		fungus.y = p.y-16
 		fungus.show = true
 		g.score += 100
 		drawtopbar()
-		mset(mx,my,emptyblock)
-	elseif g.fungus and fget(sprn,1) then
+		mset(mx,my,s.emptyblock)
+	elseif g.fungus
+			and fget(sprn,s.brks) then
+		p.jump = cachedjump
 		psnd(snd.brks)
 		g.score += 25
-		mset(mx,my,bg)
-	elseif fget(sprn,4) then
-		psnd(snd.bonk)
+		mset(mx,my,s.bg)
 	end
 end
 
@@ -548,8 +561,8 @@ function updatefungus()
 end
 
 function fguydcol()
-	a,b = ycol(fguy.x,fguy.y+8)
-	return ft(a) or ft(b)
+	cl,m,r = ycol(fguy.x,fguy.y+8)
+	return ft(cl,m,r)
 end
 
 function updatefguy()
@@ -700,10 +713,8 @@ function nextm()
 end
 
 function mbtnp(...)
-	for b in all(arg) do
-		if btnp(b) then
-			return true
-		end
+	for b in all(...) do
+		if (btnp(b)) return true
 	end
 	return false
 end
