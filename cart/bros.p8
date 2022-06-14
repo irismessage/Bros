@@ -46,6 +46,15 @@ s = {
 staupdate = nil
 stadraw = nil
 
+sndp = {
+	snd=nil,
+	len=0,
+	sam=1,
+	adr=usrdta,
+	done=false,
+	play=false,
+}
+
 wait = {
 	f=0,
 	call=nil,
@@ -73,7 +82,11 @@ function _init()
 		end
 	palt(0,false)
 	color(tc)
-	menuitem(1,"😐 bros tutorial",helpscreen)
+	menuitem(
+		1,
+		"😐 bros tutorial",
+		helpscreen
+	)
 	loadfont()
 	initscores()
 	unpacksnds()
@@ -82,7 +95,10 @@ end
 
 function _update60()
 --	debugstats()
-	if (updatewait()) return
+	if updatewait()
+			or sndplaying() then
+		return
+	end
 	updatecode()
 	staupdate()
 end
@@ -130,20 +146,54 @@ function unpacksnds()
 	end
 end
 
-function psnd(snd)
-	adr = usrdta
-	for sam in all(snd) do
-		poke(adr,sam)
-		adr += 1
-		if adr == dtaend then
+function sndplaying()
+	-- no sound active
+	if not sndp.play then
+		return false
+	end
+	-- skip sound
+	if btnp(❎) then
+		sndp.play = false
+		return false
+	end
+
+	-- wait for buffer
+	if stat(108) != 0 then
+		return true
+	end
+	
+	if sndp.done then
+		sndp.done = false
+		sndp.play = false
+		return false
+	end
+	
+	-- fill memory
+	while sndp.sam < sndp.len do
+		local sam = sndp.snd[sndp.sam]
+		poke(sndp.adr,sam)
+		sndp.adr += 1
+		sndp.sam += 1
+		if sndp.adr == dtaend then
+			sndp.adr = usrdta
+			-- play if full
 			serial(0x808,usrdta,dtalen)
-			while stat(108)!=0 do end
-			adr = usrdta
+			return true
 		end
 	end
-	remains = adr-usrdta
+	
+	local remains = sndp.adr-usrdta
+	sndp.done = true
 	serial(0x808,usrdta,remains)
-	while stat(108)!=0 do end
+	return true
+end
+
+function psnd(snd)
+	sndp.snd = snd
+	sndp.len = #snd
+	sndp.sam = 1
+	sndp.adr = usrdta
+	sndp.play = true
 end
 
 -- help screen
@@ -802,7 +852,7 @@ function loadlevel()
 	p.x = l.px
 end
 
-function checkforlevelup()
+function checklevelup()
 	if btn(➡️) and p.wtick==0 then
 		if 114 < p.x then
 			levelup()
@@ -814,9 +864,7 @@ function resetp()
 	p.x = l.px
 	p.y = l.py
 	p.l = false
-	if g.timer == 0 then
-		g.timer = 999
-	end
+	g.timer = 999
 end
 
 function die()
@@ -835,11 +883,10 @@ function die()
 end
 
 function gameover()
-	s.play = false
+	stadraw = function() end
 	map(20,22,32,40,9,5)
 	print("game  over",44,56)
-	wait.f = 120
-	wait.call = dieforever
+	dieforever()
 end
 
 function dieforever()
@@ -859,9 +906,14 @@ function updatetimer()
 	end
 end
 
+function debugdie()
+	if (btnp(❎)) die()
+end
+
 function updatelevel()
+	debugdie()  -- todo remove
+	checklevelup()
 	updatetimer()
-	checkforlevelup()
 	updatemovement()
 	updateentities()
 end
@@ -1634,3 +1686,4 @@ __music__
 01 3c424344
 00 3d424344
 02 3e7f4344
+
