@@ -423,15 +423,6 @@ function rcol()
 	return xft(xcol(p.x+8,p.y))
 end
 
-function checkcoin()
-	if xcol(p.x,p.y) == 32 then
-		psnd(snd.coin)
-		mset(p.x/8,p.y/8,s.bg)
-		wait.f = 10
-		wait.call = coinup
-	end
-end
-
 function checkfall()
 	if (p.y > 104) die()
 end
@@ -440,7 +431,6 @@ function updatemovement()
 	updatewalk()
 	updatejump()
 	checkfall()
-	checkcoin()
 end
 
 -->8
@@ -648,8 +638,17 @@ function drawentities()
 	end
 end
 
+function checkcoin()
+	if xcol(p.x,p.y) == 32 then
+		psnd(snd.coin)
+		mset(p.x/8,p.y/8,s.bg)
+		coinup()
+	end
+end
+
 function updateentities()
 	enticki(4)
+	checkcoin()
 	updatecoin()
 	updatefungus()
 	updatefguy()
@@ -1635,4 +1634,3 @@ __music__
 01 3c424344
 00 3d424344
 02 3e7f4344
-
