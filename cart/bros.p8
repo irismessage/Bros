@@ -378,7 +378,7 @@ function updatejump()
 		end
 	end
 
-	if p.y > 108 then
+	if p.y > 104 then
 		die()
 	end
 end
@@ -676,6 +676,7 @@ function levelscreen()
 	l.world = 1
 	l.stage = 1
 	l.screen = 1
+	l.scrn = 1
 	loadlevel()
 	resetp()
 	wait.f = 5 * tick
