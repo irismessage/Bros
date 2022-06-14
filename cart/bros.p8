@@ -325,6 +325,7 @@ p = {
 	x=0,
 	y=0,
 	l=false,
+	wspr=0,
 	wtick=0,
 	jtick=0,
 	jump=jumpmax,
@@ -334,13 +335,13 @@ p = {
 
 function drawbro()
 	local sprn = 2
-	if btn(⬆️) or btn(🅾️) then
+	if 0 < p.jump
+			and p.jump < jumpmax then
 		sprn = 5
-	elseif p.wtick==1 then
-		sprn = 3
+	elseif p.wspr != -1 then
+		sprn = 3 + p.wspr
 	end
-	y = p.y
-	spr(sprn,p.x,y,1,1,p.l)
+	spr(sprn,p.x,p.y,1,1,p.l)
 end
 
 function updatewalk()
@@ -349,11 +350,19 @@ function updatewalk()
 		return
 	end
 
-	if btn(⬅️) and btn(➡️) then
+	local lb = btn(⬅️)
+	local rb = btn(➡️)
+
+	if lb and rb
+			or not (lb or rb) then
+		p.wspr = -1
 		return
 	end
 
-	if btn(⬅️) then
+	p.wspr += 1
+	p.wspr %= 2
+
+	if lb then
 		p.l = true
 		if lcol() or p.x<4 then
 			p.wtick = stickl
@@ -362,7 +371,7 @@ function updatewalk()
 			p.x -= 4
 		end
 	end
-	if btn(➡️) then
+	if rb then
 		p.l = false
 		if rcol() or 124<p.x then
 		 p.wtick = stickl
