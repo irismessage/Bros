@@ -377,10 +377,6 @@ function updatejump()
 			p.jump = 1
 		end
 	end
-
-	if p.y > 104 then
-		die()
-	end
 end
 
 -- collision
@@ -427,7 +423,7 @@ function rcol()
 	return xft(xcol(p.x+8,p.y))
 end
 
-function checkforcoin()
+function checkcoin()
 	if xcol(p.x,p.y) == 32 then
 		psnd(snd.coin)
 		mset(p.x/8,p.y/8,s.bg)
@@ -436,10 +432,15 @@ function checkforcoin()
 	end
 end
 
+function checkfall()
+	if (p.y > 104) die()
+end
+
 function updatemovement()
-	updatejump()
 	updatewalk()
-	checkforcoin()
+	updatejump()
+	checkfall()
+	checkcoin()
 end
 
 -->8
