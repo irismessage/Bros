@@ -1,1 +1,2 @@
 *.p8 eol=lf
+**/*.md  -whitespace
