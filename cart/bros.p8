@@ -19,8 +19,7 @@ f = {
 	brks=1,
 	bonk=4,
 	coin=5,
-	mush=6,
-	swep=7,
+	powr=6,
 }
 
 -- game
@@ -51,8 +50,6 @@ wait = {
 	f=0,
 	call=nil,
 }
--- bg sprite number
-bg = 1
 -- bg colour
 bc = 12
 -- text colour
@@ -286,7 +283,7 @@ p = {
 
 
 function drawbro()
-	sprn = 2
+	local sprn = 2
 	if btn(⬆️) or btn(🅾️) then
 		sprn = 5
 	elseif p.wtick==1 then
@@ -334,8 +331,8 @@ function updatejump()
 	p.y += 8
 
 	p.jtick = dtickl
-	dl,m,r = ycol(p.x,p.y)
-	if ft(dl,m,r) then
+	dl,dm,dr = ycol(p.x,p.y)
+	if yft(dl,dm,dr) then
 		p.y -= 8
 		p.coyote = coyotemax
 		if p.jump == 1 then
@@ -359,12 +356,11 @@ function updatejump()
 				p.wtick = 0
 			end
 			p.jump -= 1
-			dl,m,r = ycol(p.x,p.y)
-			if ft(dl,m,r) then
+			ul,um,ur = ycol(p.x,p.y)
+			if yft(ul,um,ur) then
 				p.y += 8
-				p.jump = 1
 				p.jtick = btickl
-				bonk(dl,m,r)
+				bonk(ul,um,ur)
 			end
 		elseif p.jump < jumpmax then
 			p.jump = 1
@@ -392,45 +388,49 @@ function ccollide(x,y)
 	return mget(x/8,y/8)
 end
 
-function ft(...)
-	for sprn in all(...) do
-		if sprn!=nil and fget(sprn,f.coll) then
-			return true
-		end
+function yft(cl,cm,cr)
+	if cm != nil then
+		return fget(cm,f.coll)
+	else
+		return fget(cl,f.coll)
+			or fget(cr,f.coll)
 	end
-	return false
+end
+
+function xft(cx)
+	return fget(cx,f.coll)
 end
 
 function ycol(x,y)
 	-- returns left,middle,right
 	if x % 8 == 0 then
-		local m = ccollide(x,y)
-		return nil,m,nil
+		local cm = ccollide(x,y)
+		return nil,cm,nil
 	else
 		local cl = ccollide(x-4,y)
-		local r = ccollide(x+4,y)
-		return cl,nil,r
+		local cr = ccollide(x+4,y)
+		return cl,nil,cr
 	end
 end
 
 function xcol(x,y)
 	if x % 8 != 0 then
-		return bg
+		return s.bg
 	else
 		return ccollide(x,y)
 	end
 end
 function lcol()
-	return ft(xcol(p.x-8,p.y))
+	return xft(xcol(p.x-8,p.y))
 end
 function rcol()
-	return ft(xcol(p.x+8,p.y))
+	return xft(xcol(p.x+8,p.y))
 end
 
 function checkforcoin()
 	if xcol(p.x,p.y) == 32 then
 		psnd(snd.coin)
-		mset(p.x/8,p.y/8,bg)
+		mset(p.x/8,p.y/8,s.bg)
 		wait.f = 10
 		wait.call = coinup
 	end
@@ -491,29 +491,32 @@ function coinup()
 	drawtopbar()
 end
 
-function bonk(cl,m,r)
+function bonk(ul,um,ur)
 	-- called in updatejump()
 	local cachedjump = p.jump
-	p.jump = 0
-	
-	if m == nil then
-		if fget(m,f.bonk) then
+	p.jump = 1
+
+	-- between two blocks
+	-- no bonk interaction
+	if um == nil then
+		if xft(ul) then
+			sprn = ul
+		elseif xft(ur) then
+			sprn = ur
+		end
+
+		if fget(sprn,f.bonk) then
 			psnd(snd.bonk)
 		end
 		return
 	end
 
-	if ft(cl) then
-		sprn = cl
-	elseif ft(r) then
-		sprn = r
-	end
-	
+	sprn = um
 	local x = p.x
-	local y = p.y - 16
+	local y = p.y - 8
 	local mx = x / 8
 	local my = y / 8
-	
+
 	if fget(sprn,f.coin) then
 		psnd(snd.coin)
 		coin.x = p.x
@@ -521,7 +524,7 @@ function bonk(cl,m,r)
 		coin.show = true
 		coin.lifet = 5*tick
 		mset(mx,my,s.emptyblock)
-	elseif fget(sprn,f.mush) then
+	elseif fget(sprn,f.powr) then
 		psnd(snd.bonk)
 		fungus.x = p.x
 		fungus.y = p.y-16
@@ -530,11 +533,13 @@ function bonk(cl,m,r)
 		drawtopbar()
 		mset(mx,my,s.emptyblock)
 	elseif g.fungus
-			and fget(sprn,s.brks) then
+			and fget(sprn,f.brks) then
 		p.jump = cachedjump
 		psnd(snd.brks)
 		g.score += 25
 		mset(mx,my,s.bg)
+	elseif fget(sprn,f.bonk) then
+		psnd(snd.bonk)
 	end
 end
 
@@ -561,8 +566,10 @@ function updatefungus()
 end
 
 function fguydcol()
-	cl,m,r = ycol(fguy.x,fguy.y+8)
-	return ft(cl,m,r)
+	dl,dm,dr = ycol(
+		fguy.x,fguy.y+8
+	)
+	return yft(dl,dm,dr)
 end
 
 function updatefguy()
@@ -571,7 +578,6 @@ function updatefguy()
 	-- player interaction
 	if abs(p.x-fguy.x) <= 8 then
 		sep = p.y - fguy.y
-		printh(sep)
 		if sep==0 or sep==8 then
 			die()
 		elseif sep == -8 then
@@ -604,14 +610,16 @@ function updatefguy()
 	if fguy.wtick == 0 then
 		fguy.wtick = 8*tick
 		if fguy.l then
-			if not ft(xcol(fguy.x-8,fguy.y)) then
+			cl = xcol(fguy.x-8,fguy.y)
+			if not xft(cl) then
 				fguy.x -= 4
 			else
 				fguy.l = false
 				fguy.x += 4
 			end
 		else
-			if not ft(xcol(fguy.x+8,fguy.y)) then
+			cr = xcol(fguy.x+8,fguy.y)
+			if not xft(cr) then
 				fguy.x += 4
 			else
 				fguy.l = true
@@ -688,11 +696,11 @@ function decodescreen(scrn)
 	i = 1
 	while i < #scrd do
 		sprn = scrd[i]
-		if sprn == bg then
+		if sprn == s.bg then
 		 i += 1
 			reps = scrd[i]
 			for j=1,reps do
-				mset(x,y,bg)
+				mset(x,y,s.bg)
 				nextm()
 			end
 		else
@@ -713,7 +721,7 @@ function nextm()
 end
 
 function mbtnp(...)
-	for b in all(...) do
+	for b in all({...}) do
 		if (btnp(b)) return true
 	end
 	return false
@@ -748,11 +756,11 @@ end
 
 function submtile(sprn,x,y)
 	if sprn == 2 then
-		sprn = bg
+		sprn = s.bg
 		l.px = 8*x
 		l.py = 8*y
 	elseif sprn == 17 then
-		sprn = bg
+		sprn = s.bg
 		fguy.x = 8*x
 		fguy.y = 8*y
 		fguy.l = true
@@ -1114,7 +1122,7 @@ pachinko = {2,2,3,3,0,1,0,1,5,4}
 codestep = 1
 function updatecode()
 	if (btn()==0) return
-	
+
 	req = pachinko[codestep]
 	for btnid=0,5 do
 		if btnp(btnid) then
@@ -1461,7 +1469,7 @@ cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
 
 __gff__
-0100000000000000000000000000000000000000000000111100000000000000131111001111111111001131315151001111110011111111110000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+0100000000000000000000000000000000000000000000111100000000000000131311001111111111001131315151001111110011111111110000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 __map__
 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000

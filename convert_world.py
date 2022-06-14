@@ -155,7 +155,7 @@ def main():
             verify_sprite_index()
             sys.exit(0)
         screen = int(arg1)
-    
+
     maplines = convert(screen)
     cart = mapdata.peekcart()
     mapdata.writemap(maplines, cart, offset=mapdata.OFFSET)
@@ -165,4 +165,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
