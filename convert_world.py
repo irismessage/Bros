@@ -28,10 +28,10 @@ SPRITES_P8 = {
     55: 'pipe_dL',
     56: 'pipe_dR',
     # horizontal pipes
-    36: 'pipe_LL',
-    52: 'pipe_LR',
-    37: 'pipe_hL',
-    53: 'pipe_hR',
+    52: 'pipe_LL',
+    36: 'pipe_LR',
+    53: 'pipe_hL',
+    37: 'pipe_hR',
     38: 'pipe_RL',
     54: 'pipe_RR',
     # tiles with items
