@@ -85,7 +85,7 @@ function _init()
 	color(tc)
 	menuitem(
 		1,
-		"😐 bros tutorial",
+		"? bros tutorial",
 		helpscreen
 	)
 	loadfont()
@@ -96,8 +96,8 @@ end
 
 function _update60()
 --	debugstats()
-	if updatewait()
-			or sndplaying() then
+	if sndplaying()
+			or updatewait() then
 		return
 	end
 	updatecode()
@@ -162,13 +162,13 @@ function sndplaying()
 	if stat(108) != 0 then
 		return true
 	end
-	
+
 	if sndp.done then
 		sndp.done = false
 		sndp.play = false
 		return false
 	end
-	
+
 	-- fill memory
 	while sndp.sam < sndp.len do
 		local sam = sndp.snd[sndp.sam]
@@ -182,7 +182,7 @@ function sndplaying()
 			return true
 		end
 	end
-	
+
 	local remains = sndp.adr-usrdta
 	sndp.done = true
 	serial(0x808,usrdta,remains)
@@ -616,29 +616,20 @@ function updatefungus()
 	end
 end
 
-function fguydcol()
-	dl,dm,dr = ycol(
-		fguy.x,fguy.y+8
-	)
-	return yft(dl,dm,dr)
-end
-
 function updatefguy()
 	if (not fguy.show) return
 
 	-- player interaction
-	if abs(p.x-fguy.x) <= 8 then
-		sep = p.y - fguy.y
-		if sep==0 or sep==8 then
-			die()
-		elseif sep == -8 then
-			if p.jump != 1 then
-				die()
-			else
+	if abs(p.x-fguy.x) <= 4 then
+		if p.y - fguy.y == 0 then
+			if p.jump == 1 then
+				--stomped on
 				fguy.show = false
 				g.score += 100
 				drawtopbar()
 				psnd(snd.kill)
+			else
+				die()
 			end
 		end
 	end
@@ -647,7 +638,10 @@ function updatefguy()
 	if fguy.y > 108 then
 		fguy.show = false
 	end
-	if not fguydcol() then
+	dl,dm,dr = ycol(
+		fguy.x,fguy.y+8
+	)
+	if not yft(dl,dm,dr) then
 		if fguy.jtick == 0 then
 			fguy.jtick = tick
 			fguy.y += 8
@@ -879,22 +873,28 @@ function resetp()
 end
 
 function die()
-	_draw()
+	stadraw()
+	stadraw = function() end
 	spr(6,p.x,p.y)
 	flip()
 	psnd(snd.dies)
 	g.lives -= 1
 	g.fungus = false
 	drawtopbar()
+	wait.f = 1
+	wait.call = respawn
+end
+
+function respawn()
 	if g.lives == 0 then
 		gameover()
 	else
-		resetp()
+		stadraw = drawlevel
+	 resetp()
 	end
 end
 
 function gameover()
-	stadraw = function() end
 	map(20,22,32,40,9,5)
 	print("game  over",44,56)
 	wait.f = 60 * tick
