@@ -170,18 +170,7 @@ def test():
     decoded = p8scii_decode(encoded)
     print(decoded)
 
-def main():
-    try:
-        option = sys.argv[1]
-        scrn = sys.argv[2]
-    except IndexError:
-        option = input('a: map to encoded, b: encoded to map\n')
-        scrn = input('Screen number (1 to 120)\n')
-    scrn = int(scrn)
-    if not (1 <= scrn <= 120):
-        raise ValueError('Bad scrn')
-
-
+def mapdata(option: str, scrn: int):
     cart = peekcart()
     if option == 'a':
         maplines = readmap(cart)
@@ -197,6 +186,20 @@ def main():
         print('Wrong')
         return
     pokecart(cart)
+
+
+def main():
+    try:
+        option = sys.argv[1]
+        scrn = sys.argv[2]
+    except IndexError:
+        option = input('a: map to encoded, b: encoded to map\n')
+        scrn = input('Screen number (1 to 120)\n')
+    scrn = int(scrn)
+    if not (1 <= scrn <= 120):
+        raise ValueError('Bad scrn')
+
+    mapdata(option, scrn)
 
 
 if __name__ == '__main__':

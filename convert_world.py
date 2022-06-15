@@ -145,6 +145,14 @@ def convert(screen: int) -> mapdata.Lines:
     return maplines
 
 
+def convert_save(screen: int):
+    maplines = convert(screen)
+    cart = mapdata.peekcart()
+    mapdata.writemap(maplines, cart, offset=mapdata.OFFSET)
+    mapdata.pokecart(cart)
+    print('Saved to map')
+
+
 def main():
     try:
         arg1 = sys.argv[1]
@@ -156,11 +164,7 @@ def main():
             sys.exit(0)
         screen = int(arg1)
 
-    maplines = convert(screen)
-    cart = mapdata.peekcart()
-    mapdata.writemap(maplines, cart, offset=mapdata.OFFSET)
-    mapdata.pokecart(cart)
-    print('Saved to map')
+    convert_save(screen)
 
 
 if __name__ == '__main__':
