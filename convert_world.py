@@ -138,14 +138,14 @@ def convert(screen: int) -> mapdata.Lines:
     screen += 1
 
     world_bytes = mine(f'{world}{stage}')
-    print('Screen', screen)
+    print(f'World {world}-{stage} ({screen})')
     screens_bytes = split_screens(world_bytes)
     maplines = dat_to_pico(screens_bytes[screen])
 
     return maplines
 
 
-def convert_save(screen: int):
+def convert_world(screen: int):
     maplines = convert(screen)
     cart = mapdata.peekcart()
     mapdata.writemap(maplines, cart, offset=mapdata.OFFSET)
