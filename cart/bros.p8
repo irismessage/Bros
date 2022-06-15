@@ -637,7 +637,7 @@ function updatefguy()
 	-- player interaction
 	if abs(p.x-fguy.x) <= 4 then
 		if p.y - fguy.y == 0 then
-			if p.jump == 1 then
+			if p.jump==1 or p.coyote!=0 then
 				--stomped on
 				fguy.show = false
 				g.score += 100
