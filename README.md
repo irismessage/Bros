@@ -21,6 +21,7 @@ This is a remake of the game in PICO-8, complete with custom font, accurate data
 - cart/ -- PICO-8 cartridge.
 - datamined/ -- files datamined from the original game
 - manual/ -- images, transcription, and translation of the original game manual. German to english translation courtesy of Wbubbler
+- scripts/ -- python scripts used for datamining and development
 - soundn-sampler/ -- files related to the sampler used to make the sfx in the game. UNGH
 
 ## Datamining details

@@ -214,8 +214,7 @@ end
 
 -- help screen
 function updatehelpscreen()
-	if btnp(🅾️) or btnp(x) then
-		-- todo proper resuming
+	if mbtnp(🅾️,❎) then
 		mainscreen()
 	end
 end
@@ -224,12 +223,14 @@ function helpscreen()
 	staupdate = updatehelpscreen
 	stadraw = function() end
 	map(0,16)
+	music(-1)
 	wait.f = 15 * tick
 	wait.call = drawhelpscreen
 end
 
 function drawhelpscreen()
 	map(32,16)
+	music(24)
 	helptext = {
 		{"gameplay",44},
 		{"⬅️➡️ : move",36},
