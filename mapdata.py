@@ -49,7 +49,7 @@ def p8scii_decode(binary: bytearray) -> str:
 
 
 def compress(mapdata: str) -> str:
-    """Convert map from a string of 2-digit hex to a compressed pico-8 string literal"""
+    """Convert map from a string of 2-digit hex to a compressed pico-8 string literal."""
     mapdata_bytes = bytearray.fromhex(mapdata)
     length = 0
     for i in range(len(mapdata_bytes)-1, -1, -1):
