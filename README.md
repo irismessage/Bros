@@ -8,6 +8,22 @@ This is a remake of the game in PICO-8, complete with custom font, accurate data
 - Music on youtube https://youtu.be/oAwkf06aJ-Q
 - Hollow https://youtu.be/QSFgMCD7zUU
 
+## Play the original
+Download the ROM from Bros.atr. The best emulator is Altirra. It's only for windows but it works fine on wine too.
+
+See sources.md for more emulators and firmware roms if you want them.
+
+## History
+BROS is a 1990 video game for the Atari 800 XL. It was developed by a one-person team, Yoda Zhang, called Kemal Ezcan at the time. He ran a company called KE-SOFT, and made an Atari 800 magazine called ZONG, released on floppy disks with demo programs and games, and in limited print. The company has a small wikipedia article on the German language wikipedia, and you can find archives of the magazine online. All relevant links in sources.md.
+
+The game was made for the Atari 800XL home computer, the most popular of the Atari 8-bit computer family. The game also ran on the Atari XE, the cross-compatible and more games-oriented counterpart to the 800XL. The 800XL was ultimately most popular in East Germany and the Soviet Bloc. Toowards the end of its lifespan, most programs, games, and demos were made in Europe. KE-SOFT was based in Frankfurt. The sound sampler used was made near Dortmund. 
+
+For a date point of reference, the 800XL was released in 1983, the same year as the NES, and about one year after the more similar BBC Micro, Commodore 64 and ZX Spectrum. Speaking of the NES, the original Mario Bros came out in 1983 as well. There is a "port" of the official mario that came out for Atari 8-bit, but it's a different game, more like donkey kong kinda.
+
+BROS was released on floppy disk as a two-game bundle with a cool looking platformer with procedural generation called TOBOT.
+
+The iconic sounds were made with an incredibly bitcrushed sound sampler - either recorded with a microphone or ripped from a tape. They're literally 2-bit.
+
 ## Files
 - sources.md -- useful links to more information, emulators, ROMs, etc.
 - Bros.atr -- original game ROM
