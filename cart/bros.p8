@@ -549,7 +549,7 @@ end
 function coinup()
 	g.score += 10
 	g.coins += 1
-	if g.coins > 99 then
+	if g.coins >= 11 then
 		g.lives += 1
 		g.coins = 0
 	end
@@ -637,7 +637,8 @@ function updatefguy()
 	-- player interaction
 	if abs(p.x-fguy.x) <= 4 then
 		if p.y - fguy.y == 0 then
-			if p.jump==1 or p.coyote!=0 then
+			if p.jump==1
+					or (p.coyote!=0 and not yft(ycol(p.x,p.y))) then
 				--stomped on
 				fguy.show = false
 				g.score += 100
@@ -786,6 +787,9 @@ function decodescreen(scrn)
 		end
 		i += 1
 	end
+
+	-- default if no spawn point
+	if (l.py == 0) l.py = 96
 end
 
 function submtile(sprn,x,y)
@@ -1013,6 +1017,7 @@ function initscores()
 		for i=1,10 do
 			savename(i,"   ")
 		end
+		resetgame()
 		savegame()
 	end
 end
