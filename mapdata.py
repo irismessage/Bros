@@ -51,33 +51,45 @@ def p8scii_decode(binary: bytearray) -> str:
 def compress(mapdata: str) -> str:
     """Convert map from a string of 2-digit hex to a compressed pico-8 string literal."""
     mapdata_bytes = bytearray.fromhex(mapdata)
-    length = 0
-    for i in range(len(mapdata_bytes)-1, -1, -1):
-        mb = mapdata_bytes[i]
-        if (length and mb != BG) or length == 255:
-            mapdata_bytes[i+1:i+length+1] = [BG, length]
-            length = 0
-            continue
-        if mb == BG:
-            length += 1
-    mapdata_bytes[i:i+length] = [BG, length]
-    mapdata = p8scii_decode(mapdata_bytes)
+    compressed = bytearray()
+
+    run = 0
+    for tile in mapdata_bytes:
+        if tile == BG and run < 255:
+            run += 1
+        elif run:
+            compressed.append(BG)
+            compressed.append(run)
+            run = 0
+        else:
+            compressed.append(tile)
+
+    mapdata = p8scii_decode(compressed)
     return mapdata
 
 
 def decompress(mapdata: str) -> str:
     """Convert map from a compressed pico-8 string literal to a string of 2-digit hex."""
     mapdata_bytes = p8scii_encode(mapdata)
-    for i in range(len(mapdata_bytes) - 1, -1, -1):
-        if mapdata_bytes[i] == BG:
-            repeats = mapdata_bytes[i+1]
-            mapdata_bytes[i:i+2] = [BG] * repeats
-    mapdata = mapdata_bytes.hex()
-    return mapdata
+    decompressed = bytearray()
+
+    i = 0
+    while i < len(mapdata_bytes):
+        tile = mapdata_bytes[i]
+        if  tile == BG:
+            i += 1
+            repeats = mapdata_bytes[i]
+            decompressed.extend([BG] * repeats)
+        else:
+            decompressed.append(tile)
+        i += 1
+
+    mapdata_hex = decompressed.hex()
+    return mapdata_hex
 
 
 def process(maplines: Lines) -> str:
-    """Take a list of rows in p8 cart format and join them into a single string"""
+    """Take a list of rows in p8 cart format and join them into a single string."""
     processed_lines = []
     for line in maplines:
         processed_lines.append(line[:WIDTH])
@@ -176,12 +188,12 @@ def mapdata(option: str, scrn: int):
         maplines = readmap(cart)
         mapdata = process(maplines)
         writeencoded(mapdata, scrn, cart)
-        print(f'Saved map to screen {scrn}')
+        print(f'Saved map to screens[{scrn}]')
     elif option == 'b':
         mapdata = readencoded(scrn, cart)
         maplines = deprocess(mapdata)
         writemap(maplines, cart)
-        print(f'Loaded map from screen {scrn}')
+        print(f'Loaded map from screens[{scrn}]')
     else:
         print('Wrong')
         return
