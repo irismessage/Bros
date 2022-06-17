@@ -31,10 +31,10 @@ def p8scii_encode(text: str) -> bytearray:
         char = text[i]
         # escape codes (weird)
         if char == '\\':
-            escape3 = text[i:i+4]
-            if escape3 in (r'\014', r'\015'):
-                match = escape3
-                i += 3
+            escape4 = text[i:i+4]
+            if escape4 in (r'\014', r'\015'):
+                match = escape4
+                i += 4
             else:
                 match = text[i:i+2]
                 i += 2
