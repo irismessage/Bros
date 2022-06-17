@@ -767,8 +767,9 @@ function levelstart()
 end
 
 function decodescreen(scrn)
+	-- spawn defaults
 	l.px = 0
-	l.py = 0
+	l.py = 96
 
 	scrc = screens[scrn]
 	scrd = {ord(scrc,1,#scrc)}
@@ -791,9 +792,6 @@ function decodescreen(scrn)
 		end
 		i += 1
 	end
-
-	-- default if no spawn point
-	if (l.py == 0) l.py = 96
 end
 
 function submtile(sprn,x,y)
