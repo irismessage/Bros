@@ -1,6 +1,9 @@
 import sys
+from itertools import repeat
 
 
+COMMAND_SAVE = 'save'
+COMMAND_LOAD = 'load'
 # background sprite
 BG = 1
 CART_PATH = 'cart/bros.p8'
@@ -15,7 +18,9 @@ P8SCII = [
     r'\0', r'\*', r'\#', r'\-', r'\|', r'\+', r'\^', r'\a', r'\b', r'\t', r'\n', r'\v', r'\f', r'\r', r'\014', r'\015', '▮', '■', '□', '⁙', '⁘', '‖', '◀', '▶', '「', '」', '¥', '•', '、', '。', '゛', '゜', ' ', '!', r'\"', '#', '$', '%', '&', "'", '(', ')', '*', '+', ',', '-', '.', '/', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ':', ';', '<', '=', '>', '?', '@', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '[', r'\\', ']', '^', '_', '`', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '{', '|', '}', '~', '○', '█', '▒', '🐱', '⬇️', '░', '✽', '●', '♥', '☉', '웃', '⌂', '⬅️', '😐', '♪', '🅾️', '◆', '…', '➡️', '★', '⧗', '⬆️', 'ˇ', '∧', '❎', '▤', '▥', 'あ', 'い', 'う', 'え', 'お', 'か', 'き', 'く', 'け', 'こ', 'さ', 'し', 'す', 'せ', 'そ', 'た', 'ち', 'つ', 'て', 'と', 'な', 'に', 'ぬ', 'ね', 'の', 'は', 'ひ', 'ふ', 'へ', 'ほ', 'ま', 'み', 'む', 'め', 'も', 'や', 'ゆ', 'よ', 'ら', 'り', 'る', 'れ', 'ろ', 'わ', 'を', 'ん', 'っ', 'ゃ', 'ゅ', 'ょ', 'ア', 'イ', 'ウ', 'エ', 'オ', 'カ', 'キ', 'ク', 'ケ', 'コ', 'サ', 'シ', 'ス', 'セ', 'ソ', 'タ', 'チ', 'ツ', 'テ', 'ト', 'ナ', 'ニ', 'ヌ', 'ネ', 'ノ', 'ハ', 'ヒ', 'フ', 'ヘ', 'ホ', 'マ', 'ミ', 'ム', 'メ', 'モ', 'ヤ', 'ユ', 'ヨ', 'ラ', 'リ', 'ル', 'レ', 'ロ', 'ワ', 'ヲ', 'ン', 'ッ', 'ャ', 'ュ', 'ョ', '◜', '◝',
 ]
 
-Lines = list[str]
+Mapdata = str
+Hex = str
+Lines = list[Hex]
 
 
 def p8scii_encode(text: str) -> bytearray:
@@ -48,7 +53,7 @@ def p8scii_decode(binary: bytearray) -> str:
     return text
 
 
-def compress(mapdata: str) -> str:
+def compress(mapdata: Hex) -> Mapdata:
     """Convert map from a string of 2-digit hex to a compressed pico-8 string literal."""
     mapdata_bytes = bytearray.fromhex(mapdata)
     compressed = bytearray()
@@ -57,18 +62,18 @@ def compress(mapdata: str) -> str:
     for tile in mapdata_bytes:
         if tile == BG and run < 255:
             run += 1
-        elif run:
-            compressed.append(BG)
-            compressed.append(run)
-            run = 0
         else:
+            if run:
+                compressed.append(BG)
+                compressed.append(run)
+                run = 0
             compressed.append(tile)
 
     mapdata = p8scii_decode(compressed)
     return mapdata
 
 
-def decompress(mapdata: str) -> str:
+def decompress(mapdata: Mapdata) -> Hex:
     """Convert map from a compressed pico-8 string literal to a string of 2-digit hex."""
     mapdata_bytes = p8scii_encode(mapdata)
     decompressed = bytearray()
@@ -79,7 +84,7 @@ def decompress(mapdata: str) -> str:
         if  tile == BG:
             i += 1
             repeats = mapdata_bytes[i]
-            decompressed.extend([BG] * repeats)
+            decompressed.extend(repeat(BG, repeats))
         else:
             decompressed.append(tile)
         i += 1
@@ -88,7 +93,7 @@ def decompress(mapdata: str) -> str:
     return mapdata_hex
 
 
-def process(maplines: Lines) -> str:
+def process(maplines: Lines) -> Hex:
     """Take a list of rows in p8 cart format and join them into a single string."""
     processed_lines = []
     for line in maplines:
@@ -98,7 +103,7 @@ def process(maplines: Lines) -> str:
     return processed
 
 
-def deprocess(mapdata: str) -> Lines:
+def deprocess(mapdata: Hex) -> Lines:
     """Split a single string map into a list of rows"""
     mapdata_decompressed = decompress(mapdata)
     deprocessed = []
@@ -139,13 +144,13 @@ def readmap(cart: Lines) -> Lines:
     return maplines
 
 
-def writeencoded(mapdata: str, scrn: int, cart: Lines):
+def writeencoded(mapdata: Mapdata, scrn: int, cart: Lines):
     """Write encoded map data to the lua block of the cart lines"""
     index = screensindex(cart)
     cart[index + scrn] = f'\t"{mapdata}",\n'
 
 
-def readencoded(scrn: int, cart: Lines) -> str:
+def readencoded(scrn: int, cart: Lines) -> Mapdata:
     """Get encoded map data of screen at index scrn from cart lines"""
     index = screensindex(cart)
     screen = cart[index + scrn]
@@ -184,12 +189,12 @@ def test():
 
 def mapdata(option: str, scrn: int):
     cart = peekcart()
-    if option == 'a':
+    if option == COMMAND_SAVE:
         maplines = readmap(cart)
         mapdata = process(maplines)
         writeencoded(mapdata, scrn, cart)
         print(f'Saved map to screens[{scrn}]')
-    elif option == 'b':
+    elif option == COMMAND_LOAD:
         mapdata = readencoded(scrn, cart)
         maplines = deprocess(mapdata)
         writemap(maplines, cart)
@@ -205,7 +210,10 @@ def main():
         option = sys.argv[1]
         scrn = sys.argv[2]
     except IndexError:
-        option = input('a: map to encoded, b: encoded to map\n')
+        option = input(
+            f'{COMMAND_SAVE}: map to encoded, '
+            f'{COMMAND_LOAD}: encoded to map\n'
+        )
         scrn = input('Screen number (1 to 120)\n')
     scrn = int(scrn)
     if not (1 <= scrn <= 120):
