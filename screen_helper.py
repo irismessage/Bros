@@ -3,7 +3,7 @@ import sys
 # import pyautogui
 # import pydirectinput
 from convert_world import convert_world
-from mapdata import mapdata
+from mapdata import mapdata, COMMAND_SAVE
 
 
 # def reload():
@@ -28,7 +28,8 @@ def main():
             convert_world(i)
             # reload()
             input('Press enter to save and contiue\n')
-            mapdata('a', i)
+            mapdata(COMMAND_SAVE, i)
+            print('\n')
     except KeyboardInterrupt:
         print('\n^C')
         print(i)

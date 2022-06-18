@@ -150,7 +150,7 @@ def convert_world(screen: int):
     cart = mapdata.peekcart()
     mapdata.writemap(maplines, cart, offset=mapdata.OFFSET)
     mapdata.pokecart(cart)
-    print('Saved to map')
+    print('Loaded map from dat file')
 
 
 def main():
