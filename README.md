@@ -9,7 +9,7 @@ This is a remake of the game in PICO-8, complete with custom font, accurate data
 - Hollow https://youtu.be/QSFgMCD7zUU
 
 ## Play the original
-Download the ROM from Bros.atr. The best emulator is Altirra. It's only for windows but it works fine on wine too.
+Download the ROM from Bros.atr. The best emulator is Altirra. It's only for windows but it works fine on wine too (I put it [on the aur](https://aur.archlinux.org/packages/altirra) - `yay -S altirra`).
 
 See sources.md for more emulators and firmware roms if you want them.
 
