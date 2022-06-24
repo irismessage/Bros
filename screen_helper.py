@@ -27,7 +27,7 @@ def main():
             print('Screen', i)
             convert_world(i)
             # reload()
-            input('Press enter to save and contiue\n')
+            input('Press enter to save and continue\n')
             mapdata(COMMAND_SAVE, i)
             print('\n')
     except KeyboardInterrupt:
