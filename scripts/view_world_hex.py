@@ -1,4 +1,5 @@
-import sys
+from sys import argv
+from _common import get_workdir
 
 
 # 2215b per world
@@ -7,9 +8,11 @@ import sys
 # 440b per screen
 
 
-world_path = f'datamined/WORLD{sys.argv[1]}.DAT'
-with open(world_path, 'rb') as file:
-    file.seek(15)
+filename = f'datamined/WORLD{argv[1]}.DAT'
+workdir = get_workdir()
+path = workdir / filename
+with open(path, 'rb') as file:
+    file.seek(15)  # skip colour palette
     world_bytes = file.read()
 
 
