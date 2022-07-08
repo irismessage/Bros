@@ -84,8 +84,8 @@ def arg_musik_number() -> str:
     return musik
 
 
-def mine() -> list[str]:
-    """Datamine .DAT file and return a list of tuple notes"""
+def mine() -> bytes:
+    """Datamine .DAT file and return bytes"""
     filename = f'datamined/MUSIK{arg_musik_number()}.DAT'
     workdir = get_workdir()
     path = workdir / filename
