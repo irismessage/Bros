@@ -1,5 +1,5 @@
 from sys import argv
-from _common import get_workdir
+from _common import mine
 
 
 # 2215b per world
@@ -8,12 +8,8 @@ from _common import get_workdir
 # 440b per screen
 
 
-filename = f'datamined/WORLD{argv[1]}.DAT'
-workdir = get_workdir()
-path = workdir / filename
-with open(path, 'rb') as file:
-    file.seek(15)  # skip colour palette
-    world_bytes = file.read()
+# offset is colour palette
+world_bytes = mine(f'datamined/WORLD{argv[1]}.DAT', offset=15)
 
 
 i = 0

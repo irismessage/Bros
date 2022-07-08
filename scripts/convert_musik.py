@@ -1,5 +1,5 @@
 from sys import argv
-from _common import get_workdir
+from _common import mine
 
 
 # PICO-8 bumps the octave by this amount
@@ -84,18 +84,6 @@ def arg_musik_number() -> str:
     return musik
 
 
-def mine() -> bytes:
-    """Datamine .DAT file and return bytes"""
-    filename = f'datamined/MUSIK{arg_musik_number()}.DAT'
-    workdir = get_workdir()
-    path = workdir / filename
-    print(path)
-    with open(path, 'rb') as file:
-        file.seek(48)  # skip header
-        data = file.read()
-    return data
-
-
 def printconv(conv: list[str]):
     """Print a list of notes sorted into bars for readability."""
     bars = [conv[i:i+8] for i in range(0, len(conv), 8)]
@@ -112,7 +100,8 @@ def printconv(conv: list[str]):
 
 
 def main():
-    data = mine()
+    musik_path = f'datamined/MUSIK{arg_musik_number()}.DAT'
+    data = mine(musik_path, offset=48)
     notes = parse_notes(SPN_TABLE_STR)
     converted = [closest(num, notes) for num in data]
     printconv(converted)

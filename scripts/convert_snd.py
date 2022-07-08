@@ -1,5 +1,5 @@
 import p8scii
-from _common import get_workdir
+from _common import mine
 
 
 # hehe ratte
@@ -33,16 +33,6 @@ OFFSETS = {
 }
 
 
-def mine() -> bytes:
-    workdir = get_workdir()
-    path = workdir / 'datamined/BROS.SND'
-    # commented out so you can use `python convert_snd.py | xclip -i`
-    # print(path)
-    with open(path, 'rb') as file:
-        data = file.read()
-
-    return data
-
 def convert_pico(data: bytes) -> list[str]:
     converted = []
     for name, adrs in OFFSETS.items():
@@ -54,7 +44,8 @@ def convert_pico(data: bytes) -> list[str]:
 
 
 def main():
-    data = mine()
+    # no echo so you can use `python convert_snd.py | xclip -i`
+    data = mine('datamined/BROS.SND', echo=False)
     converted = convert_pico(data)
     print(''.join(converted))
 
