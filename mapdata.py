@@ -1,5 +1,7 @@
-import sys
+from sys import argv
 from itertools import repeat
+
+from scripts import p8scii
 
 
 COMMAND_SAVE = 'save'
@@ -14,43 +16,10 @@ ROWS = 13
 COLUMNS = 16
 # length of the hex string in the cart __map__ block
 WIDTH = 2 * COLUMNS
-P8SCII = [
-    r'\0', r'\*', r'\#', r'\-', r'\|', r'\+', r'\^', r'\a', r'\b', r'\t', r'\n', r'\v', r'\f', r'\r', r'\014', r'\015', '▮', '■', '□', '⁙', '⁘', '‖', '◀', '▶', '「', '」', '¥', '•', '、', '。', '゛', '゜', ' ', '!', r'\"', '#', '$', '%', '&', "'", '(', ')', '*', '+', ',', '-', '.', '/', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ':', ';', '<', '=', '>', '?', '@', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '[', r'\\', ']', '^', '_', '`', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '{', '|', '}', '~', '○', '█', '▒', '🐱', '⬇️', '░', '✽', '●', '♥', '☉', '웃', '⌂', '⬅️', '😐', '♪', '🅾️', '◆', '…', '➡️', '★', '⧗', '⬆️', 'ˇ', '∧', '❎', '▤', '▥', 'あ', 'い', 'う', 'え', 'お', 'か', 'き', 'く', 'け', 'こ', 'さ', 'し', 'す', 'せ', 'そ', 'た', 'ち', 'つ', 'て', 'と', 'な', 'に', 'ぬ', 'ね', 'の', 'は', 'ひ', 'ふ', 'へ', 'ほ', 'ま', 'み', 'む', 'め', 'も', 'や', 'ゆ', 'よ', 'ら', 'り', 'る', 'れ', 'ろ', 'わ', 'を', 'ん', 'っ', 'ゃ', 'ゅ', 'ょ', 'ア', 'イ', 'ウ', 'エ', 'オ', 'カ', 'キ', 'ク', 'ケ', 'コ', 'サ', 'シ', 'ス', 'セ', 'ソ', 'タ', 'チ', 'ツ', 'テ', 'ト', 'ナ', 'ニ', 'ヌ', 'ネ', 'ノ', 'ハ', 'ヒ', 'フ', 'ヘ', 'ホ', 'マ', 'ミ', 'ム', 'メ', 'モ', 'ヤ', 'ユ', 'ヨ', 'ラ', 'リ', 'ル', 'レ', 'ロ', 'ワ', 'ヲ', 'ン', 'ッ', 'ャ', 'ュ', 'ョ', '◜', '◝',
-]
 
 Mapdata = str
 Hex = str
 Lines = list[Hex]
-
-
-def p8scii_encode(text: str) -> bytearray:
-    """Convert a python string to p8scii bytes."""
-    binary = bytearray()
-    i = 0
-    while i < len(text):
-        char = text[i]
-        # escape codes (weird)
-        if char == '\\':
-            escape4 = text[i:i+4]
-            if escape4 in (r'\014', r'\015'):
-                match = escape4
-                i += 4
-            else:
-                match = text[i:i+2]
-                i += 2
-        # no escape code
-        else:
-            match = char
-            i += 1
-        binary.append(P8SCII.index(match))
-
-    return binary
-
-
-def p8scii_decode(binary: bytearray) -> str:
-    """Convert p8scii bytes to a python string."""
-    text = ''.join(P8SCII[b] for b in binary)
-    return text
 
 
 def compress(mapdata: Hex) -> Mapdata:
@@ -69,13 +38,13 @@ def compress(mapdata: Hex) -> Mapdata:
                 run = 0
             compressed.append(tile)
 
-    mapdata = p8scii_decode(compressed)
+    mapdata = p8scii.decode(compressed)
     return mapdata
 
 
 def decompress(mapdata: Mapdata) -> Hex:
     """Convert map from a compressed pico-8 string literal to a string of 2-digit hex."""
-    mapdata_bytes = p8scii_encode(mapdata)
+    mapdata_bytes = p8scii.encode(mapdata)
     decompressed = bytearray()
 
     i = 0
@@ -182,9 +151,9 @@ def reload_all():
 def test():
     text = r'ab\0\*\014◝\"'
     print(text)
-    encoded = p8scii_encode(text)
+    encoded = p8scii.encode(text)
     print(encoded)
-    decoded = p8scii_decode(encoded)
+    decoded = p8scii.decode(encoded)
     print(decoded)
 
 def mapdata(option: str, scrn: int):

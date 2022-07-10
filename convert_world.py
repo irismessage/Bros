@@ -2,6 +2,7 @@ import struct
 import sys
 
 import mapdata
+from scripts._common import mine
 
 
 SPRITES_P8 = {
@@ -84,15 +85,6 @@ SPRITES_AT = {
 }
 
 
-def mine(world_file_num: str) -> bytes:
-    """Return bytes from WORLD??.DAT file"""
-    world_path = f'datamined/WORLD{world_file_num}.DAT'
-    print(world_path)
-    with open(world_path, 'rb') as file:
-        world_bytes = file.read()
-    return world_bytes
-
-
 def split_screens(level: bytes) -> list[bytes]:
     """Split bytes from a world file into [palette, 1, 2, 3, 4, 5]"""
     screens = [level[:15]]
@@ -137,7 +129,8 @@ def convert(screen: int) -> mapdata.Lines:
     stage += 1
     screen += 1
 
-    world_bytes = mine(f'{world}{stage}')
+    world_path = f'datamined/WORLD{world}{stage}.DAT'
+    world_bytes = mine(world_path)
     print(f'World {world}-{stage} ({screen})')
     screens_bytes = split_screens(world_bytes)
     maplines = dat_to_pico(screens_bytes[screen])

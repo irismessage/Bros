@@ -1,34 +1,10 @@
-import sys
+from sys import argv
+from _common import mine
 
 
+# PICO-8 bumps the octave by this amount
 PICO_8_OFFSET = -2
-
-
-# 1, 2, 4 are 42 bars
-# 3 is 38 bars
-# musik PICO-8 index
-# 1     00
-# 2     11
-# 3     22
-# 4     32
-# end   43
-# new:
-# mus start end
-# 1.0 00 04.5
-# 1.5 05 11.0
-# 2.0 12 16.5
-# 2.5 17 22.0
-# 3.0 22 26.0
-# 3.5 26 31.5
-# 4.0 32 36.5
-# 4.5 37 42.0
-
-# level 00
-# main3 11
-# main4 21
-
-
-thing = """\
+SPN_TABLE_STR = """\
 243 C 3
 230 C# 3
 217 D 3
@@ -68,22 +44,24 @@ thing = """\
 29 C 6
 """
 
-noteslist = [l.split() for l in thing.splitlines()]
-for note in noteslist:
-    note[0] = int(note[0])
-    note[2] = int(note[2]) + PICO_8_OFFSET
 
-notes = {}
-for pitch, note, octave in noteslist:
-    unpadded = note + str(octave)
-    padded = unpadded.ljust(3)
-    notes[pitch] = padded
+def parse_notes(notes_table: str) -> dict[float, str]:
+    noteslist = [l.split() for l in notes_table.splitlines()]
+    for note in noteslist:
+        note[0] = int(note[0])
+        note[2] = int(note[2]) + PICO_8_OFFSET
 
-#print(notes)
+    notes = {}
+    for pitch, note, octave in noteslist:
+        unpadded = note + str(octave)
+        padded = unpadded.ljust(3)
+        notes[pitch] = padded
+
+    return notes
 
 
-def closest(target_pitch: int):
-    """Return the closest SPN note to the Atari BASIC pitch value, as a tuple"""
+def closest(target_pitch: float, notes: dict[float, str]) -> str:
+    """Return the closest SPN note to the Atari BASIC pitch value"""
     if target_pitch == 00:
         # indicates pause
         return '00 '
@@ -97,54 +75,19 @@ def closest(target_pitch: int):
     return result
 
 
-# 11000011000100000000
-# ------note
-#       ---instrument
-#          ---volume
-#             ---effect
-#                -----octave
-
-
-def packconverted(conv):
-    prefix = '01100000'
-    instrument = 3
-    volume = 3
-    effect = 0
-
-
-def unpack(sfx: str):
-    sfx_bin = f'{int(sfx, 16):b}'
-    for i in range(0, 640, 20):
-        note = sfx_bin[i:i+20]
-        frequency = int(note[0:6], 2)
-        octave = int(note[15:20], 2)
-        print(frequency, octave)
-
-
-def musik_number():
+def arg_musik_number() -> str:
     """Get number from args or stdin"""
     try:
-        musik = sys.argv[1]
+        musik = argv[1]
     except IndexError:
         musik = input('Musik number (1 to 4): ')
     return musik
 
 
-def mine():
-    """Datamine .DAT file and return a list of tuple notes"""
-    path = f'datamined/MUSIK{musik_number()}.DAT'
-    print(path)
-    with open(path, 'rb') as file:
-        file.seek(48)
-        data = file.read()
-    converted = [closest(num) for num in data]
-    return converted
-
-
-def printconv(conv):
+def printconv(conv: list[str]):
     """Print a list of notes sorted into bars for readability."""
     bars = [conv[i:i+8] for i in range(0, len(conv), 8)]
-    print(len(bars))
+    print(len(bars), 'bars')
     print("Press enter for each bar")
     try:
         for i, bar in enumerate(bars):
@@ -156,10 +99,13 @@ def printconv(conv):
         print('\n^C', end='')
 
 
+def main():
+    musik_path = f'datamined/MUSIK{arg_musik_number()}.DAT'
+    data = mine(musik_path, offset=48)
+    notes = parse_notes(SPN_TABLE_STR)
+    converted = [closest(num, notes) for num in data]
+    printconv(converted)
+
+
 if __name__ == '__main__':
-    printconv(mine())
-    # unpack(
-    #         '0c3100d3100e3100f310103101131012310133101431015310163101731018310193101a3101b3101c3101d3101e3101f310203102131022310233100000000000000000000000000000000000000000'
-    # )
-# 011000000c3100d3100e3100f310103101131012310133101431015310163101731018310193101a3101b3101c3101d3101e3101f310203102131022310233100000000000000000000000000000000000000000
-# 00010001000000000000000000000000110000110001000000001101001100010000000011100011000100000000111100110001000000010000001100010000000100010011000100000001001000110001000000010011001100010000000101000011000100000001010100110001000000010110001100010000000101110011000100000001100000110001000000011001001100010000000110100011000100000001101100110001000000011100001100010000000111010011000100000001111000110001000000011111001100010000001000000011000100000010000100110001000000100010001100010000001000110011000100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+    main()

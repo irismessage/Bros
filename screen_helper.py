@@ -6,6 +6,9 @@ from convert_world import convert_world
 from mapdata import mapdata, COMMAND_SAVE
 
 
+LEVEL_COUNT = 150
+
+
 # def reload():
 #     a = {'interval': 1}
 #     handler = pydirectinput
@@ -20,7 +23,10 @@ def main():
     try:
         stop = int(sys.argv[2])
     except IndexError:
-        stop = 120
+        stop = LEVEL_COUNT
+
+    if not (1 <= start < stop <= LEVEL_COUNT):
+        raise ValueError(F'Range must be between 1 and {LEVEL_COUNT}')
 
     try:
         for i in range(start, stop+1):

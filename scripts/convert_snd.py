@@ -1,4 +1,5 @@
-import mapdata
+import p8scii
+from _common import mine
 
 
 # hehe ratte
@@ -32,32 +33,21 @@ OFFSETS = {
 }
 
 
-def mine() -> bytes:
-    path = 'datamined/BROS.SND'
-    print(path)
-    with open(path, 'rb') as file:
-        data = file.read()
-
-    return data
-
 def convert_pico(data: bytes) -> list[str]:
     converted = []
     for name, adrs in OFFSETS.items():
         start = adrs[0] - LOAD_LOCATION
         end = adrs[1] - LOAD_LOCATION
-        p8scii = mapdata.p8scii_decode(data[start:end])
-        converted.append(f'\t{name}="{p8scii}",\n')
+        data_p8scii = p8scii.decode(data[start:end])
+        converted.append(f'\t{name}="{data_p8scii}",\n')
     return converted
 
 
 def main():
-    data = mine()
+    # no echo so you can use `python convert_snd.py | xclip -i`
+    data = mine('datamined/BROS.SND', echo=False)
     converted = convert_pico(data)
-    cart = mapdata.peekcart()
-    index = cart.index('snd = {\n')
-    index += 1
-    cart[index:index + len(converted)] = converted
-    mapdata.pokecart(cart)
+    print(''.join(converted))
 
 
 if __name__ == '__main__':

@@ -1,4 +1,5 @@
-import sys
+from sys import argv
+from _common import mine
 
 
 # 2215b per world
@@ -7,10 +8,8 @@ import sys
 # 440b per screen
 
 
-world_path = f'datamined/WORLD{sys.argv[1]}.DAT'
-with open(world_path, 'rb') as file:
-    file.seek(15)
-    world_bytes = file.read()
+# offset is colour palette
+world_bytes = mine(f'datamined/WORLD{argv[1]}.DAT', offset=15)
 
 
 i = 0
