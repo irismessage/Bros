@@ -4,10 +4,15 @@ from itertools import repeat
 from scripts import p8scii
 
 
-COMMAND_SAVE = 'save'
-COMMAND_LOAD = 'load'
 # background sprite
 BG = 1
+# sprites to compress
+COMPRESS = [
+    BG,
+]
+
+COMMAND_SAVE = 'save'
+COMMAND_LOAD = 'load'
 CART_PATH = 'cart/bros.p8'
 # rows to skip at the top
 OFFSET = 2
@@ -28,12 +33,17 @@ def compress(mapdata: Hex) -> Mapdata:
     compressed = bytearray()
 
     run = 0
+    run_tile = None
     for tile in mapdata_bytes:
-        if tile == BG and run < 255:
+        # not in a run, check if need to start one
+        if (not run) and (tile in COMPRESS):
+            run_tile = tile
+            run = 1
+        elif tile == run_tile and run < 255:
             run += 1
         else:
             if run:
-                compressed.append(BG)
+                compressed.append(run_tile)
                 compressed.append(run)
                 run = 0
             compressed.append(tile)
@@ -50,10 +60,10 @@ def decompress(mapdata: Mapdata) -> Hex:
     i = 0
     while i < len(mapdata_bytes):
         tile = mapdata_bytes[i]
-        if  tile == BG:
+        if  tile in COMPRESS:
             i += 1
             repeats = mapdata_bytes[i]
-            decompressed.extend(repeat(BG, repeats))
+            decompressed.extend(repeat(tile, repeats))
         else:
             decompressed.append(tile)
         i += 1
