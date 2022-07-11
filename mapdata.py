@@ -7,9 +7,9 @@ from scripts import p8scii
 # background sprite
 BG = 1
 # sprites to compress
-COMPRESS = [
+COMPRESS = (
     BG,
-]
+)
 
 COMMAND_SAVE = 'save'
 COMMAND_LOAD = 'load'
@@ -49,6 +49,7 @@ def compress(mapdata: Hex) -> Mapdata:
             compressed.append(run)
         else:
             compressed.append(tile)
+            i += 1
 
 
     mapdata = p8scii.decode(compressed)
@@ -156,18 +157,14 @@ def reload_all():
     cart = peekcart()
     for i in range(1,LEVEL_COUNT+1):
         mapdata = readencoded(i, cart)
+        if mapdata == '\n':
+            # not all levels converted yet
+            break
         maplines = deprocess(mapdata)
         mapdata = process(maplines)
         writeencoded(mapdata, i, cart)
     pokecart(cart)
 
-def test():
-    text = r'ab\0\*\014◝\"'
-    print(text)
-    encoded = p8scii.encode(text)
-    print(encoded)
-    decoded = p8scii.decode(encoded)
-    print(decoded)
 
 def mapdata(option: str, scrn: int):
     cart = peekcart()
