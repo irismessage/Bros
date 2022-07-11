@@ -1440,9 +1440,22 @@ screens = {
 
 
 
+
+
+
+
+
+
+
+
+
+
 }
--- close bracket position to fit 150 screens with easy mapdata.py management
+-- close bracket here
+-- to fit 150 screens
+-- with easy mapdata.py use
 -- end of encoded data block
+-- end of game code
 
 __gfx__
 00000000ccccccccccc222cccc222ccccc222cccccc222ccc99cc99cccc555cccc222222cc222222cc222222cc222222c22cc22ccc555555cc000ccccc333ccc

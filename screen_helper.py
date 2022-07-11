@@ -6,7 +6,7 @@ from convert_world import convert_world
 from mapdata import mapdata, COMMAND_SAVE
 
 
-LEVEL_COUNT = 150
+LEVEL_COUNT = 160
 
 
 # def reload():
