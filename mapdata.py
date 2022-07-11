@@ -21,6 +21,7 @@ ROWS = 13
 COLUMNS = 16
 # length of the hex string in the cart __map__ block
 WIDTH = 2 * COLUMNS
+LEVEL_COUNT = 160
 
 Mapdata = str
 Hex = str
@@ -31,22 +32,24 @@ def compress(mapdata: Hex) -> Mapdata:
     """Convert map from a string of 2-digit hex to a compressed pico-8 string literal."""
     mapdata_bytes = bytearray.fromhex(mapdata)
     compressed = bytearray()
-
-    run = 0
-    run_tile = None
-    for tile in mapdata_bytes:
-        # not in a run, check if need to start one
-        if (not run) and (tile in COMPRESS):
-            run_tile = tile
-            run = 1
-        elif tile == run_tile and run < 255:
-            run += 1
-        else:
-            if run:
-                compressed.append(run_tile)
-                compressed.append(run)
-                run = 0
+    
+    i = 0
+    while i < len(mapdata_bytes):
+        tile = mapdata_bytes[i]
+        if tile in COMPRESS:
+            run = 0
+            while (
+                mapdata_bytes[i] == tile
+                and i < len(mapdata_bytes)
+                and run < 255
+            ):
+                i += 1
+                run += 1
             compressed.append(tile)
+            compressed.append(run)
+        else:
+            compressed.append(tile)
+
 
     mapdata = p8scii.decode(compressed)
     return mapdata
@@ -151,7 +154,7 @@ def reload_all():
     """Load all encoded screen data then write it back"""
     # for when I change the codec
     cart = peekcart()
-    for i in range(1,120+1):
+    for i in range(1,LEVEL_COUNT+1):
         mapdata = readencoded(i, cart)
         maplines = deprocess(mapdata)
         mapdata = process(maplines)
@@ -193,9 +196,9 @@ def main():
             f'{COMMAND_SAVE}: map to encoded, '
             f'{COMMAND_LOAD}: encoded to map\n'
         )
-        scrn = input('Screen number (1 to 120)\n')
+        scrn = input(f'Screen number (1 to {LEVEL_COUNT})\n')
     scrn = int(scrn)
-    if not (1 <= scrn <= 120):
+    if not (1 <= scrn <= LEVEL_COUNT):
         raise ValueError('Bad scrn')
 
     mapdata(option, scrn)

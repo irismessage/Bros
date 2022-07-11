@@ -3,10 +3,7 @@ import sys
 # import pyautogui
 # import pydirectinput
 from convert_world import convert_world
-from mapdata import mapdata, COMMAND_SAVE
-
-
-LEVEL_COUNT = 160
+from mapdata import mapdata, COMMAND_SAVE, LEVEL_COUNT
 
 
 # def reload():
