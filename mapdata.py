@@ -186,8 +186,8 @@ def mapdata(option: str, scrn: int):
 
 def main():
     try:
-        option = sys.argv[1]
-        scrn = sys.argv[2]
+        option = argv[1]
+        scrn = argv[2]
     except IndexError:
         option = input(
             f'{COMMAND_SAVE}: map to encoded, '

@@ -157,7 +157,7 @@ def main():
             sys.exit(0)
         screen = int(arg1)
 
-    convert_save(screen)
+    convert_world(screen)
 
 
 if __name__ == '__main__':
