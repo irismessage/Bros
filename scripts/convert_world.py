@@ -2,7 +2,7 @@ import struct
 import sys
 
 import mapdata
-from scripts._common import mine
+from _common import mine
 
 
 SPRITES_P8 = {
