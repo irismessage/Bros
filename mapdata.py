@@ -32,7 +32,7 @@ def compress(mapdata: Hex) -> Mapdata:
     """Convert map from a string of 2-digit hex to a compressed pico-8 string literal."""
     mapdata_bytes = bytearray.fromhex(mapdata)
     compressed = bytearray()
-    
+
     i = 0
     while i < len(mapdata_bytes):
         tile = mapdata_bytes[i]
