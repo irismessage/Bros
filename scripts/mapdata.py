@@ -1,7 +1,7 @@
 from sys import argv
 from itertools import repeat
 
-from scripts import p8scii
+import p8scii
 
 
 # background sprite
@@ -190,6 +190,7 @@ def main():
         scrn = argv[2]
     except IndexError:
         option = input(
+            'choose an option\n'
             f'{COMMAND_SAVE}: map to encoded, '
             f'{COMMAND_LOAD}: encoded to map\n'
         )
