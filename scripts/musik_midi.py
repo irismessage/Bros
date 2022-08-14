@@ -1,4 +1,4 @@
-"""Convert the music files to midi.
+"""Convert the music files to minimal midi.
 
 Requires mido https://github.com/mido/mido/#installing
 https://mido.readthedocs.io/en/latest/midi_files.html
@@ -14,6 +14,10 @@ SPN_TABLE = tuple(convert_musik.NOTES.values())
 # first note in table is C3
 # C3 is midi 48
 SPN_TABLE_MIDI_OFFSET = 48
+# placeholder midi tick value for each note.
+# the same one is used for each export, and you can adjust
+# the tempo in a midi editor.
+TICKS = 120
 
 
 def ataribas_to_midi_note(ataribas_note: int) -> int:
@@ -25,24 +29,19 @@ def ataribas_to_midi_note(ataribas_note: int) -> int:
 
 def convert(data: bytes) -> mido.MidiFile:
     mid = mido.MidiFile()
-    track_back = mido.MidiTrack()
-    track_front = mido.MidiTrack()
-    mid.tracks.append(track_back)
-    mid.tracks.append(track_front)
+    track = mido.MidiTrack()
+    mid.tracks.append(track)
 
-    dur = 100
-
-    # todo fill tracks
     for num in data:
         if num == 0:
-            track_front.append(mido.Message('note_off', time=dur))
+            track.append(mido.Message('note_off', time=TICKS))
             continue
 
         midi_note = ataribas_to_midi_note(num)
-        track_front.extend(
+        track.extend(
             [
-                mido.Message('note_on', note=midi_note, time=dur),
-                mido.Message('note_off', note=midi_note)
+                mido.Message('note_on', note=midi_note),
+                mido.Message('note_off', note=midi_note, time=TICKS)
             ]
         )
         pause = 0
