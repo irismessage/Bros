@@ -34,6 +34,7 @@ The iconic sounds were made with an incredibly bitcrushed sound sampler - either
 - view_world_hex.py -- used to view the world files in correct heigh, useful for datamining
 
 ## Folders
+- assets/ -- converted and usable assets, like MIDI versions of the original game's music
 - cart/ -- PICO-8 cartridge.
 - datamined/ -- files datamined from the original game
 - manual/ -- images, transcription, and translation of the original game manual. German to english translation courtesy of Wbubbler
