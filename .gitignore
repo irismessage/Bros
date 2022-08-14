@@ -1,12 +1,7 @@
-*.lnk
-.vscode/
 __pycache__/
 
-*.p8.png
-cart/*.bin/
-cart/demos/
-cart/games/
+cart/*
+!cart/bros.p8
 
-music/
-screens/
+# my stuff
 tools/
