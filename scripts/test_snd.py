@@ -1,3 +1,9 @@
+"""Convert SND files to wav, for testing sample rate etc.
+
+Requires scipy (I recommend conda).
+"""
+
+
 import scipy.io.wavfile
 import scipy.signal
 import numpy as np

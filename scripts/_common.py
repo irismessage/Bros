@@ -7,7 +7,7 @@ def get_workdir() -> Path:
     return project_dir
 
 
-def mine(filename: str, offset: int = 0, echo: bool = True):
+def mine(filename: str, offset: int = 0, echo: bool = True) -> bytes:
     workdir = get_workdir()
     path = workdir / filename
     if echo:
