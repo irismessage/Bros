@@ -1,7 +1,12 @@
 """Convert the music files to minimal midi.
 
 Requires mido https://github.com/mido/mido/#installing
-https://mido.readthedocs.io/en/latest/midi_files.html
+Mido docs: https://mido.readthedocs.io/en/latest/midi_files.html
+
+Once exported, use a midi editor like fl studio to use it.
+Use the glue tool (ctrl+g in fl studio) to combine the consecutive notes.
+Arrangement and tempo need to be adjusted, with the cart as a reference.
+See assets/ for example
 """
 
 import convert_musik
