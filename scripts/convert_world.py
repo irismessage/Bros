@@ -5,6 +5,11 @@ import mapdata
 from _common import mine
 
 
+WORLD_WIDTH = 20
+WORLD_HEIGHT = 11
+SCREENS_COUNT = 160
+
+
 SPRITES_P8 = {
     # entities
     1: 'bg',
@@ -85,6 +90,9 @@ SPRITES_AT = {
 }
 
 
+Tiles = list[int]
+
+
 def split_screens(level: bytes) -> list[bytes]:
     """Split bytes from a world file into [palette, 1, 2, 3, 4, 5]"""
     screens = [level[:15]]
@@ -93,14 +101,24 @@ def split_screens(level: bytes) -> list[bytes]:
     return screens
 
 
+def join_bytes(screen_bytes: bytes) -> Tiles:
+    """Parse bytes as 16 bit."""
+    tiles_tuples = struct.iter_unpack('>H', screen_bytes)
+    tiles = [t[0] for t in tiles_tuples]
+    return tiles
+
+
 def dat_to_pico(screen_bytes: bytes) -> mapdata.Lines:
-    """Convert a screen from  .DAT file into pick-8 2-byte hex strings"""
+    """Convert a screen from  .DAT file into pico-8 2-byte hex strings."""
+    tiles = join_bytes(screen_bytes)
+    ti = 0
+
     maplines = []
-    tiles = struct.iter_unpack('>H', screen_bytes)
-    for y in range(11):
+    for y in range(WORLD_HEIGHT):
         l = []
-        for x in range(20):
-            atspr = next(tiles)[0]
+        for x in range(WORLD_WIDTH):
+            atspr = tiles[ti]
+            ti += 1
             try:
                 sprid = SPRITES_AT[atspr]
             except KeyError as error:
@@ -113,7 +131,7 @@ def dat_to_pico(screen_bytes: bytes) -> mapdata.Lines:
 
 
 def verify_sprite_index():
-    for i in range(1, 161):
+    for i in range(1, SCREENS_COUNT + 1):
         try:
             convert(i)
         except KeyError:
@@ -121,13 +139,19 @@ def verify_sprite_index():
             raise
 
 
-def convert(screen: int) -> mapdata.Lines:
+def screen_number(screen: int) -> tuple[int, int, int]:
     screen -= 1
     world, screen = divmod(screen, 20)
     stage, screen = divmod(screen, 5)
     world += 1
     stage += 1
     screen += 1
+    return world, stage, screen
+
+
+
+def convert(screen: int) -> mapdata.Lines:
+    world, stage, screen = screen_number(screen)
 
     world_path = f'datamined/WORLD{world}{stage}.DAT'
     world_bytes = mine(world_path)
