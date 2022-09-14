@@ -1,9 +1,11 @@
 from pathlib import Path
 from typing import Iterator
 
+import PIL.ImageFilter
 from PIL import Image  # requires pillow
 
 import convert_world
+import palette
 from _common import get_workdir, mine
 
 
@@ -16,6 +18,24 @@ LEN_SHEET = 64
 WORLD_MAX_X = DIM_SPRITE * convert_world.WORLD_WIDTH
 
 Sprites = list[Image]
+
+
+class ColorSwap(PIL.ImageFilter.Filter):
+    def __init__(self, mapping: dict[str, str]):
+        self.mapping = mapping
+        self.mapping_tuples = {
+            palette.hexc_to_rgb(k): palette.hexc_to_rgb(v) for k, v in mapping.items()
+        }
+
+    def filter(self, image: Image) -> Image:
+        for x in range(image.width):
+            for y in range(image.height):
+                coords = (x, y)
+                pix = image.getpixel(coords)
+                pix = self.mapping_tuples.get(pix, default=pix)
+                image.putpixel(coords, pix)
+
+        return image
 
 
 def get_sprites(workdir: Path) -> Sprites:
