@@ -1,5 +1,5 @@
 pico-8 cartridge // http://www.pico-8.com
-version 38
+version 39
 __lua__
 -- bros
 -- je-soft
@@ -107,6 +107,8 @@ function _draw()
 end
 
 function debugstats()
+	-- print a bunch of info to
+	-- host terminal
 	printh("")
 	printh(time())
 	printh("p.x"..pad(p.x,3))
@@ -116,6 +118,7 @@ function debugstats()
 end
 
 function menuinit()
+	-- add custom menuitems
 	menuitem(
 		1,
 		"! delete save",
@@ -133,6 +136,9 @@ function menuinit()
 end
 
 function updatewait()
+	-- update sleep timeout
+	-- returns true if sleeping
+	-- ❎ or 🅾️ skips sleep
 	if wait.f > 0 then
 		if wait.f == 1 then
 			wait.f = 0
@@ -143,12 +149,18 @@ function updatewait()
 			wait.f -= 1
 		end
 		return true
+	else
+		return false
 	end
-	return false
 end
 
 -- sampled sound playing
 function unpacksnds()
+	-- unpack data in `snd`
+	-- modifies in-place
+	-- takes strings
+	-- does bitwise arithmatic prep
+	-- saves int arrays
 	for k,v in pairs(snd) do
 		bytes = {ord(v,1,#v)}
 		samples = {}
@@ -163,6 +175,11 @@ function unpacksnds()
 end
 
 function sndplaying()
+	-- update playing sample snd
+	-- returns true if snd playing
+	-- skip by pressing ❎
+	-- uses sndp table
+
 	-- no sound active
 	if not sndp.play then
 		return false
@@ -205,6 +222,10 @@ function sndplaying()
 end
 
 function psnd(snd)
+	-- initialise sndp table
+	-- to play sample sound
+	-- using sndplaying()
+	-- arg is the snd data array 
 	sndp.snd = snd
 	sndp.len = #snd
 	sndp.sam = 1
@@ -215,12 +236,18 @@ end
 
 -- help screen
 function updatehelpscreen()
+	-- pressing 🅾️^❎
+	-- calls mainscreen()
 	if mbtnp(🅾️,❎) then
 		mainscreen()
 	end
 end
 
 function helpscreen()
+	-- stop music,
+	-- set update and draw funcs,
+	-- show splash screen,
+	-- in 15 ticks calls drawhelp
 	staupdate = updatehelpscreen
 	stadraw = function() end
 	map(0,16)
@@ -230,6 +257,8 @@ function helpscreen()
 end
 
 function drawhelpscreen()
+	-- loops over helptext
+	-- prints text with x offset
 	map(32,16)
 	music(24)
 	helptext = {
@@ -254,6 +283,9 @@ end
 
 -- top bar rendering
 function pad(num, digits)
+	-- return a string of num
+	-- left-padded with zeroes
+	-- to make #padded == digits
 	padded = tostr(num)
 	for i=1,digits-#padded do
 		padded = "0"..padded
@@ -268,6 +300,8 @@ function drawtimer()
 end
 
 function drawtopbar()
+	-- reset and draw top bar
+	-- including timer
 	rectfill(0,8,127,15,bc)
 	color(tc)
 	print(pad(g.score,5),2,8)
@@ -287,6 +321,9 @@ function drawtopbar()
 end
 
 function updatemainscreen()
+ -- increment entity tick
+ -- 🅾️ goes to play game
+ -- ❎ goes to show hiscores
 	enticki(2)
 	if btnp(🅾️) then
 		levelscreen()
@@ -296,11 +333,15 @@ function updatemainscreen()
 end
 
 function drawmainscreen()
+	-- draw reverse bro
+	-- and alternating entity
 	spr(25+3*enspr,8,48,1,1)
-	spr(19+enspr,104,72,1,1,enspr==1)
+	local a = enspr==1
+	spr(19+enspr,104,72,1,1,a)
 end
 
 function mainscreen()
+	-- switch to main menu
 	staupdate = updatemainscreen
 	stadraw = drawmainscreen
 	cls(bc)
@@ -351,6 +392,9 @@ p = {
 
 
 function drawbro()
+	-- select sprite if walk 
+	-- or jump
+	-- draw at player co-ords
 	local sprn = 2
 	if 0 < p.jump
 			and p.jump < jumpmax then
@@ -362,6 +406,10 @@ function drawbro()
 end
 
 function updatewalk()
+	-- manage walk tick
+	-- then take ⬅️➡️ input
+	-- move player co-ords
+	-- check collision and bounds
 	if p.wtick > 0 then
 		p.wtick -= 1
 		return
@@ -400,6 +448,9 @@ function updatewalk()
 end
 
 function updatejump()
+	-- manage jump tick
+	-- then jumping, falling,
+	-- and input
 	if p.jtick > 0 then
 		p.jtick -= 1
 		return
@@ -457,10 +508,16 @@ end
 
 -- collision
 function ccollide(x,y)
+	-- return map tile under x,y
 	return mget(x/8,y/8)
 end
 
 function yft(cl,cm,cr)
+	-- return bool
+	-- of collision status
+	-- takes sprite ids
+	-- nil,middle,nil on one tile
+	-- left, nil, right if on two
 	if cm != nil then
 		return fget(cm,f.coll)
 	else
@@ -470,11 +527,14 @@ function yft(cl,cm,cr)
 end
 
 function xft(cx)
+	-- return whether sprite id cx
+	-- is collidable
 	return fget(cx,f.coll)
 end
 
 function ycol(x,y)
 	-- returns left,middle,right
+	-- sprite ids touching co-ords
 	if x % 8 == 0 then
 		local cm = ccollide(x,y)
 		return nil,cm,nil
@@ -486,6 +546,9 @@ function ycol(x,y)
 end
 
 function xcol(x,y)
+	-- return boolean
+	-- horizontal collision
+	-- at co-ords
 	if x % 8 != 0 then
 		return s.bg
 	else
@@ -500,6 +563,7 @@ function rcol()
 end
 
 function checkfall()
+	-- die if oob
 	if (p.y > 104) die()
 end
 
@@ -539,6 +603,9 @@ enspr = 0
 entick = 0
 
 function enticki(freq)
+	-- entity tick increment
+	-- switch out enspr
+	-- `freq` ticks per switch
 	if entick == 0 then
 		entick = freq * tick
 		enspr += 1
@@ -549,6 +616,9 @@ function enticki(freq)
 end
 
 function coinup()
+	-- increase score and coins
+	-- lives+ if enough coins
+	-- redraw top bar
 	g.score += 10
 	g.coins += 1
 	if g.coins >= 11 then
@@ -559,6 +629,8 @@ function coinup()
 end
 
 function bonk(ul,um,ur)
+	-- handle sound, item spawning
+	-- when you hit a block
 	-- called in updatejump()
 	local cachedjump = p.jump
 	p.jump = 1
@@ -612,6 +684,15 @@ function bonk(ul,um,ur)
 end
 
 function updatecoin()
+	-- handle expiring coin that
+	-- comes out of block
+	-- and calling coinup()
+	-- only one coin can onscreen
+	-- at a time
+	-- that's ok because you
+	-- shouldn't be able to hit
+	-- another block within
+	-- the coin's life ticks
 	if coin.show then
 		if coin.lifet == 0 then
 			coin.show = false
@@ -623,6 +704,8 @@ function updatecoin()
 end
 
 function updatefungus()
+	-- if player co-ord same,
+	-- eat it
 	if fungus.show then
 		if fungus.x==p.x and fungus.y==p.y then
 			g.fungus = true
@@ -634,6 +717,8 @@ function updatefungus()
 end
 
 function updatefguy()
+	-- fall guy movement
+	-- kill or be killed
 	if (not fguy.show) return
 
 	-- player interaction
@@ -695,12 +780,16 @@ function updatefguy()
 end
 
 function drawentities()
+	-- coin and mushr
+	-- don't need to be flipped
 	for en in all({coin,fungus}) do
 		if en.show then
 			spr(en.sprn,en.x,en.y)
 		end
 	end
-
+	
+	-- enemies may be flipped
+	-- travel direction
 	for en in all({fguy}) do
 		if en.show then
 			local sprn = en.sprn
@@ -711,6 +800,7 @@ function drawentities()
 end
 
 function checkcoin()
+	-- check if picking up map coin
 	if xcol(p.x,p.y)==s.coin then
 		psnd(snd.coin)
 		mset(p.x/8,p.y/8,s.bg)
@@ -744,6 +834,8 @@ compress = {}
 compress[s.bg] = true
 
 function resetgame()
+	-- set level and items
+	-- to starting values
 	g.score = 0
 	g.coins = 0
 	g.lives = 4
@@ -756,6 +848,10 @@ function resetgame()
 end
 
 function levelscreen()
+	-- load progress, start music,
+	-- decode level,
+	-- reset player position,
+	-- wait then call levelstart()
 	loadgame()
 	levelmusic()
 	loadlevel()
@@ -765,6 +861,7 @@ function levelscreen()
 end
 
 function levelstart()
+	-- set update funcs
 	staupdate = updatelevel
 	stadraw = drawlevel
 	cls(bc)
@@ -772,7 +869,13 @@ function levelstart()
 end
 
 function decodescreen(scrn)
-	-- spawn defaults
+	-- decode screen number `scrn`
+	-- from `screens` table
+	-- write to map data
+	-- also set player location
+	-- and entities
+
+	-- defaults for player spawn
 	l.px = 0
 	l.py = 96
 
@@ -800,6 +903,12 @@ function decodescreen(scrn)
 end
 
 function submtile(sprn,x,y)
+	-- substitute map tile
+	-- check if sprn is player
+	-- or entity
+	-- if so, set that actor's
+	-- position and status
+	-- return sprn to write to map
 	if sprn == s.bro then
 		sprn = s.bg
 		l.px = 8*x
@@ -815,6 +924,10 @@ function submtile(sprn,x,y)
 end
 
 function nextm(x,y)
+	-- return next x,y
+	-- traversing map tiles
+	-- top-to-bottom left-to-right
+	-- todo rewrite?
 	x += 1
 	if 15 < x then
 		x = 0
@@ -824,6 +937,9 @@ function nextm(x,y)
 end
 
 function mbtnp(...)
+	-- multi-btnp
+	-- return true if any
+	-- arg button is pressed
 	for b in all({...}) do
 		if (btnp(b)) return true
 	end
@@ -831,12 +947,17 @@ function mbtnp(...)
 end
 
 function updatewinscreen()
+	-- todo remove
+	-- now handled by wait function
 	if mbtnp(❎,🅾️) then
 		wait.f = 1
 	end
 end
 
 function win()
+	-- you win the game!
+	-- display final screen
+	-- with your bro
 	staupdate = function() end
 	stadraw = function() end
 	map(48,16)
@@ -858,6 +979,9 @@ function win()
 end
 
 function levelup()
+	-- go to next screen
+	-- next stage or world,
+	-- if applicable
 	l.scrn += 1
 	if #screens < l.scrn then
 		win()
@@ -881,10 +1005,15 @@ function levelup()
 end
 
 function levelmusic()
+	-- select and play music
+	-- based on l.stage
 	music(((l.stage-1)%3)*8)
 end
 
 function loadlevel()
+	-- reset entity visibility,
+	-- change music if applicable,
+	-- decode new screen
 	coin.show = false
 	fungus.show = false
 	fguy.show = false
@@ -896,6 +1025,9 @@ function loadlevel()
 end
 
 function checklevelup()
+	-- check if at end of screen
+	-- or at pipe
+	-- call levelup() if needed
 	if btn(➡️) and p.wtick==0 then
 		if l.screen == 5 then
 			tright = xcol(p.x+8,p.y)
@@ -909,12 +1041,16 @@ function checklevelup()
 end
 
 function resetp()
+	-- reset player co-ords
+	-- to level starting position
+	-- also reset facing direction
 	p.x = l.px
 	p.y = l.py
 	p.l = false
 end
 
 function die()
+	-- kill the player
 	stadraw()
 	stadraw = function() end
 	spr(6,p.x,p.y)
@@ -927,6 +1063,9 @@ function die()
 end
 
 function respawn()
+	-- reset timer
+	-- check for out of lives
+	-- otherwise reset screen
 	g.timer = 999
 	drawtopbar()
 	if g.lives == 0 then
@@ -938,6 +1077,8 @@ function respawn()
 end
 
 function gameover()
+	-- show game over screen
+	-- wait then dieforever()
 	map(20,22,32,40,9,5)
 	print("game  over",44,56)
 	wait.f = 60 * tick
@@ -945,6 +1086,8 @@ function gameover()
 end
 
 function dieforever()
+	-- end gameplay,
+	-- go to hiscore or menu
  h.rank = rankscore(g.score)
 	if h.rank != 11 then
 		askname()
@@ -956,6 +1099,8 @@ function dieforever()
 end
 
 function updatetimer()
+	-- decrement g.timer
+	-- die if out of time
 	if g.timer == 0 then
 		die()
 	else
@@ -998,6 +1143,8 @@ h = {
 }
 
 function loadgame()
+	-- set g and l table attributes
+	-- from persistent cart mem
 	g.score,
 	g.coins,
 	g.lives,
@@ -1011,6 +1158,7 @@ function loadgame()
 end
 
 function savegame()
+	-- inverse of loadgame()
 	poke4(
 		0x5ea0,
 		g.score,
@@ -1025,6 +1173,9 @@ function savegame()
 end
 
 function initscores()
+	-- call cartdata
+	-- if first time,
+	-- initialise scores and save
 	loaded = cartdata("bros_sorb")
 	if not loaded then
 		for i=1,10 do
@@ -1036,23 +1187,33 @@ function initscores()
 end
 
 function nameaddr(i)
+	-- return memory address
+	-- of hiscore name at index
+
 	-- 0x5e00 + 10 * 4
 	return 0x5e28 + i * 12
 end
 
 function loadname(i)
+	-- return hiscore name
+	-- number `i`
+	-- from persistent memory
 	addr = nameaddr(i)
 	name = chr(peek4(addr,3))
 	return name
 end
 
 function savename(i,name)
+	-- inverse of loadname()
 	addr = nameaddr(i)
 	n1,n2,n3 = ord(name,1,3)
 	poke4(addr,n1,n2,n3)
 end
 
 function rankscore(num)
+	-- return hiscore rating
+	-- of game score `num`
+	-- 11 if not a hiscore
 	for i=1,10 do
 		if num > dget(i) then
 			return i
@@ -1062,6 +1223,8 @@ function rankscore(num)
 end
 
 function shiftscores(rank)
+	-- shift persistent data
+	-- to fit new hiscore
 	for i=10,rank,-1 do
 		j = i-1
 		score = dget(j)
@@ -1072,6 +1235,9 @@ function shiftscores(rank)
 end
 
 function savescore()
+	-- save hiscore
+	-- from table h
+	-- and score g.score
 	hc = h.chrs
 	name = hc[1]..hc[2]..hc[3]
 	shiftscores(h.rank)
@@ -1080,6 +1246,7 @@ function savescore()
 end
 
 function askname()
+	-- switch to text input screen
 	staupdate = updatenameentry
 	stadraw = drawnameentry
 	cls(bc)
@@ -1089,6 +1256,8 @@ function askname()
 end
 
 function drawnameentry()
+	-- draw text entry field text
+	-- and cursor
 	rectfill(58,72,70,86,bc)
 	color(tc)
 	for i=1,3 do
@@ -1098,6 +1267,7 @@ function drawnameentry()
 end
 
 function updatenameentry()
+	-- text entry input handling
 	if btnp(🅾️) then
 		savescore()
 	end
@@ -1129,6 +1299,9 @@ function updatenameentry()
 end
 
 function scorescol(x,rank)
+	-- draw one column of scores
+	-- position `x`
+	-- starting with score `rank`
 	y=48
 	print("nr score name",x,y)
 	for i=rank,rank+8,2 do
@@ -1142,13 +1315,19 @@ function scorescol(x,rank)
 end
 
 function updatescorescreen()
-	if btnp(❎) or btnp(🅾️) then
+	-- go to main menu
+	-- if press ❎^🅾️
+	if mbtnp(❎,🅾️) then
 		mainscreen()
+		-- todo move to mainscreen()?
 		g.score = 0
 	end
 end
 
 function scorescreen()
+	-- draw score screen
+	-- set stadraw to dummy
+	-- uses scorescol()
 	staupdate = updatescorescreen
 	stadraw = function() end
 	cls(bc)
@@ -1217,12 +1396,16 @@ end
 -- swap
 
 function sprnxy(sprn)
+	-- return pixel x,y position
+	-- of sprite number `sprn`
 	x = (sprn%16)*8
 	y = flr(sprn/16)*8
 	return x,y
 end
 
 function getspr(sprn)
+	-- return 2d table
+	-- of pixels in sprite n
 	x,y = sprnxy(sprn)
 	sprite = {}
 	for i=0,7 do
@@ -1235,6 +1418,9 @@ function getspr(sprn)
 end
 
 function setspr(sprn,sprite)
+ -- set sprite n,
+ -- to 2d table of colours
+ -- `sprite`
 	x,y = sprnxy(sprn)
 	for i=0,7 do
 		for j=0,7 do
@@ -1244,6 +1430,7 @@ function setspr(sprn,sprite)
 end
 
 function swapspr(sprna,sprnb)
+	-- swap sprites of id a and b
 	spra = getspr(sprna)
 	sprb = getspr(sprnb)
 	setspr(sprna,sprb)
