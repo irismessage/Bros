@@ -79,10 +79,7 @@ amp = {
 }
 
 function _init()
-	bbs = false
-	if not bbs then
-		extcmd("set_title","BROS")
-	end
+	extcmd("set_title","BROS")
 	palt(0,false)
 	color(tc)
 	menuinit()
