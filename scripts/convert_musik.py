@@ -67,9 +67,14 @@ NOTES = parse_notes(SPN_TABLE_STR)
 
 def closest(target_pitch: int, notes: dict[int, str] = NOTES) -> str:
     """Return the closest SPN note to the Atari BASIC pitch value"""
-    if target_pitch == 00:
+    if target_pitch == 0:
         # indicates pause
         return '00 '
+
+    k = notes.keys()
+    if not (min(k) <= target_pitch <= max(k)):
+        raise ValueError(f'Target pitch out of bounds: {target_pitch}')
+
     closest = float('inf')
     result = ''
     for pitch, note in notes.items():
