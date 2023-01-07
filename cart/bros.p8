@@ -1025,14 +1025,16 @@ function checklevelup()
 	-- check if at end of screen
 	-- or at pipe
 	-- call levelup() if needed
+	-- todo call this in walk
+	--  handling instead
 	if btn(➡️) and p.wtick==0 then
-		if l.screen == 5 then
+		if l.screen != 5 then
+			if (120 <= p.x) levelup()
+		else
 			tright = xcol(p.x+8,p.y)
 			if fget(tright,f.pipe) then
 				levelup()
 			end
-		else
-			if (120 <= p.x) levelup()
 		end
 	end
 end
