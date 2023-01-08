@@ -1007,7 +1007,8 @@ end
 function levelmusic()
 	-- select and play music
 	-- based on l.stage
-	music(((l.stage-1)%3)*8)
+	local musikmap = {0,8,0,16}
+	music(musikmap[l.stage])
 end
 
 function loadlevel()
@@ -1052,15 +1053,16 @@ end
 
 function die()
 	-- kill the player
-	stadraw()
-	stadraw = function() end
-	spr(6,p.x,p.y)
-	flip()
-	psnd(snd.dies)
-	g.lives -= 1
-	g.fungus = false
-	wait.f = 1
-	wait.call = respawn
+	-- todo re-enable
+--	stadraw()
+--	stadraw = function() end
+--	spr(6,p.x,p.y)
+--	flip()
+--	psnd(snd.dies)
+--	g.lives -= 1
+--	g.fungus = false
+--	wait.f = 1
+--	wait.call = respawn
 end
 
 function respawn()
