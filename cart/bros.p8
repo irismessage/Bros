@@ -884,7 +884,7 @@ function decodescreen(scrn)
 	local x = 0
 	local y = offset
 	local i = 1
-	while i < #scrd do
+	while i <= #scrd do
 		sprn = scrd[i]
 		if compress[sprn] then
 		 i += 1
@@ -1007,8 +1007,9 @@ end
 function levelmusic()
 	-- select and play music
 	-- based on l.stage
-	local musikmap = {0,8,0,16}
-	music(musikmap[l.stage])
+	local mmap = {0,8,0,16}
+	local whichm = mmap[l.stage]
+	music(whichm)
 end
 
 function loadlevel()
