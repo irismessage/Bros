@@ -373,8 +373,9 @@ btickl = 4 * tick
 -- apex of jump
 atickl = 0 * tick
 
-jumpmax = 5
-coyotemax = 2
+-- todo check
+jumpmax = 6
+coyotemax = 1
 
 p = {
 	x=0,
