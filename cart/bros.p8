@@ -223,7 +223,7 @@ function psnd(snd)
 	-- initialise sndp table
 	-- to play sample sound
 	-- using sndplaying()
-	-- arg is the snd data array 
+	-- arg is the snd data array
 	sndp.snd = snd
 	sndp.len = #snd
 	sndp.sam = 1
@@ -390,7 +390,7 @@ p = {
 
 
 function drawbro()
-	-- select sprite if walk 
+	-- select sprite if walk
 	-- or jump
 	-- draw at player co-ords
 	local sprn = 2
@@ -788,7 +788,7 @@ function drawentities()
 			spr(en.sprn,en.x,en.y)
 		end
 	end
-	
+
 	-- enemies may be flipped
 	-- travel direction
 	for en in all({fguy}) do
