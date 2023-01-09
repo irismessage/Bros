@@ -16,6 +16,7 @@ pico8 "$cart_fmt" -export bros.p8.png
 # cart web player
 pico8 "$cart_fmt" -export "-f bros.html"
 # cart binaries
+# icon sprite 002, transparent colour 12
 pico8 "$cart_fmt" -export "-i 2 -c 12 bros.bin"
 
 cp bros.png "$workdir"/assets/spritesheet.png
