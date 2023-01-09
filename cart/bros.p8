@@ -1030,7 +1030,7 @@ function loadlevel()
 	if l.screen == 1 then
 		levelmusic()
 	end
-	pal(palettes[l.file])
+	pal(palettes[l.file],1)
 	decodescreen(l.scrn)
 	p.x = l.px
 end
