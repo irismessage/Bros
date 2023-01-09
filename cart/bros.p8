@@ -1075,6 +1075,7 @@ function die()
 --	psnd(snd.dies)
 --	g.lives -= 1
 --	g.fungus = false
+-- g.wep = 0
 --	wait.f = 1
 --	wait.call = respawn
 end
