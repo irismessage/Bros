@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 """Convert SND files to wav, for testing sample rate etc.
 
 Requires scipy (I recommend conda).

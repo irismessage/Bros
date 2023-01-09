@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 """Convert the music files to minimal midi.
 
 Requires mido https://github.com/mido/mido/#installing

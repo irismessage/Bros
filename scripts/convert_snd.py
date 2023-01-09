@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import p8scii
 from _common import mine
 

@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 from sys import argv
 from convert_world import convert_world
 from mapdata import mapdata, COMMAND_SAVE, LEVEL_COUNT

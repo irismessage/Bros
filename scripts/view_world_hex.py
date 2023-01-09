@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 from sys import argv
 from _common import mine
 from convert_world import WORLD_WIDTH, WORLD_HEIGHT
