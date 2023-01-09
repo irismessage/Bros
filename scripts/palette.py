@@ -126,16 +126,18 @@ def make_pal_tables() -> list[str]:
         pico_remap = [closest_pico(hexc) for hexc in orig_remap]
         table_list = []
         for i in range(5):
-            table_list.append(f'[{PICO_BASE[i]}]={pico_remap[i]}')
-        table = '{' + ','.join(table_list) + '},'
+            # table_list.append(f'[{PICO_BASE[i]}]={pico_remap[i]}')
+            table_list.append(f'{pico_remap[i]}')
+        table = '\t{' + ','.join(table_list) + '},'
         pal_tables.append(table)
 
     return pal_tables
 
 
 def main():
-    for tab in make_pal_tables():
-        print(tab)
+    tabs = make_pal_tables()
+    tabs_joined = '\n'.join(tabs)
+    print(tabs_joined)
 
 
 if __name__ == '__main__':
