@@ -600,6 +600,12 @@ fguy={
 	sprn=17,
 }
 
+lifecost = 11
+scorecoin = 10
+maxcoin = 99
+maxlife = 9
+
+-- entity sprite and tick syncs
 enspr = 0
 entick = 0
 
@@ -616,15 +622,24 @@ function enticki(freq)
 	end
 end
 
+function lifeup()
+	if g.lives < lifemax then
+		g.lives += 1
+	else
+		g.score += scorecoin
+	end
+end
+
 function coinup()
 	-- increase score and coins
 	-- lives+ if enough coins
 	-- redraw top bar
-	g.score += 10
+	-- (clip max coins)
+	g.score += scorecoin
 	g.coins += 1
-	if g.coins >= 11 then
-		g.lives += 1
-		g.coins = 0
+	if g.coins >= lifecost then
+		lifeup()
+		g.coins -= lifecost
 	end
 	drawtopbar()
 end
