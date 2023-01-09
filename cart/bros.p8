@@ -1109,12 +1109,10 @@ function dieforever()
 	-- go to hiscore or menu
  h.rank = rankscore(g.score)
 	if h.rank != 11 then
-		askname()
+		asknamescreen()
 	else
 		mainscreen()
 	end
-	resetgame()
-	savegame()
 end
 
 function updatetimer()
@@ -1128,7 +1126,7 @@ function updatetimer()
 end
 
 function debugdie()
-	if (btnp(❎)) die()
+	if (btnp(⬇️)) die()
 end
 
 function updatelevel()
@@ -1257,9 +1255,9 @@ function shiftscores(rank)
 	-- to fit new hiscore
 	for i=10,rank,-1 do
 		j = i-1
-		score = dget(j)
+		local score = dget(j)
 		dset(i,score)
-		name = loadname(j)
+		local name = loadname(j)
 		savename(i,name)
 	end
 end
@@ -1268,14 +1266,14 @@ function savescore()
 	-- save hiscore
 	-- from table h
 	-- and score g.score
-	hc = h.chrs
-	name = hc[1]..hc[2]..hc[3]
 	shiftscores(h.rank)
 	dset(h.rank,g.score)
+	local hc = h.chrs
+	name = hc[1]..hc[2]..hc[3]
 	savename(h.rank,name)
 end
 
-function askname()
+function asknamescreen()
 	-- switch to text input screen
 	staupdate = updatenameentry
 	stadraw = drawnameentry
@@ -1301,12 +1299,12 @@ function updatenameentry()
 	if btnp(🅾️) then
 		savescore()
 	end
-	if btnp(❎) or btnp(🅾️) then
+	if mbtnp(❎,🅾️) then
 		scorescreen()
 	end
 
 	-- cursor
-	c = h.curs
+	local c = h.curs
 	if btnp(➡️) and c < 3 then
 		h.curs += 1
 	end
@@ -1349,8 +1347,6 @@ function updatescorescreen()
 	-- if press ❎^🅾️
 	if mbtnp(❎,🅾️) then
 		mainscreen()
-		-- todo move to mainscreen()?
-		g.score = 0
 	end
 end
 
