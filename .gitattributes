@@ -1,2 +1,2 @@
-*.p8 eol=lf
-*.md -whitespace
+*.p8 whitespace=-blank-at-eof eol=lf
+*.md whitespace=-blank-at-eol
