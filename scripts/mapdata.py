@@ -13,8 +13,8 @@ COMPRESS = (
     BG,
 )
 
-COMMAND_SAVE = 'save'
-COMMAND_LOAD = 'load'
+COMMANDS_SAVE = ('save', 's', 'a',)
+COMMANDS_LOAD = ('load', 'l', 'b',)
 CART_PATH = 'cart/bros.p8'
 # rows to skip at the top
 OFFSET = 2
@@ -170,16 +170,16 @@ def reload_all():
 
 def mapdata(option: str, scrn: int):
     cart = peekcart()
-    if option == COMMAND_SAVE:
+    if option in COMMANDS_SAVE:
         maplines = readmap(cart)
         mapdata = process(maplines)
         writeencoded(mapdata, scrn, cart)
-        print(f'Saved map to screens[{scrn}]')
-    elif option == COMMAND_LOAD:
+        print(f'Save map screens[{scrn}]')
+    elif option in COMMANDS_LOAD:
         mapdata = readencoded(scrn, cart)
         maplines = deprocess(mapdata)
         writemap(maplines, cart)
-        print(f'Loaded map from screens[{scrn}]')
+        print(f'Load map screens[{scrn}]')
     else:
         print('Wrong')
         return
@@ -193,8 +193,8 @@ def main():
     except IndexError:
         option = input(
             'choose an option\n'
-            f'{COMMAND_SAVE}: map to encoded, '
-            f'{COMMAND_LOAD}: encoded to map\n'
+            f'{COMMANDS_SAVE}: map to encoded, '
+            f'{COMMANDS_LOAD}: encoded to map\n'
         )
         scrn = input(f'Screen number (1 to {LEVEL_COUNT})\n')
     scrn = int(scrn)
