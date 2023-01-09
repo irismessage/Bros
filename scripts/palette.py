@@ -127,7 +127,7 @@ def make_pal_tables() -> list[str]:
         table_list = []
         for i in range(5):
             table_list.append(f'[{PICO_BASE[i]}]={pico_remap[i]}')
-        table = '{' + ', '.join(table_list) + '}'
+        table = '{' + ','.join(table_list) + '},'
         pal_tables.append(table)
 
     return pal_tables
