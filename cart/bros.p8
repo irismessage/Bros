@@ -1383,11 +1383,13 @@ function sprtochar(sprn)
 	char = {}
 	x,y = sprnxy(sprn)
 	for i=0,7 do
-		a = i + 1
+		local a = i + 1
 		char[a] = 0
 		for j=0,7 do
-			if sget(x+j, y+i) == 7 then
-				char[a] |= 2^j
+			if sget(x+j,y+i) == 7 then
+				-- todo use |=
+				-- when luamin is fixed
+				char[a] = char[a] | 2^j
 			end
 		end
 	end
