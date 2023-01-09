@@ -18,10 +18,9 @@ def main():
     try:
         for i in range(start, stop+1):
             print('Screen', i)
-            convert_world(i)
-            # reload()
+            mapdata(COMMANDS_LOAD[0], i)
             input('Press enter to save and continue\n')
-            mapdata(COMMAND_SAVE, i)
+            mapdata(COMMANDS_SAVE[0], i)
             print('\n')
     except KeyboardInterrupt:
         print('\n^C')
