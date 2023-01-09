@@ -13,8 +13,10 @@ COMPRESS = (
     BG,
 )
 
-COMMANDS_SAVE = ('save', 's', 'a',)
-COMMANDS_LOAD = ('load', 'l', 'b',)
+COMMAND_SAVE = 'save'
+COMMAND_LOAD = 'load'
+COMMANDS_SAVE = (COMMAND_SAVE, 's', 'a',)
+COMMANDS_LOAD = (COMMAND_LOAD, 'l', 'b',)
 CART_PATH = 'cart/bros.p8'
 # rows to skip at the top
 OFFSET = 2
