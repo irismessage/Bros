@@ -1069,16 +1069,16 @@ end
 function die()
 	-- kill the player
 	-- todo re-enable
---	stadraw()
---	stadraw = function() end
---	spr(6,p.x,p.y)
---	flip()
---	psnd(snd.dies)
---	g.lives -= 1
---	g.fungus = false
--- g.wep = 0
---	wait.f = 1
---	wait.call = respawn
+	stadraw()
+	stadraw = function() end
+	spr(6,p.x,p.y)
+	flip()
+	psnd(snd.dies)
+	g.lives -= 1
+	g.fungus = false
+ g.wep = 0
+	wait.f = 1
+	wait.call = respawn
 end
 
 function respawn()
@@ -1151,8 +1151,15 @@ end
 
 -- data layout
 -- 01 to 10 top scores
--- 11 to 41 3 nums per name
--- 42 to 50 save game
+-- 16 to 25 names
+-- 32 to 40 save game
+
+-- cdata is 16 bits per number
+-- (2 bytes per number)
+-- poke2 write 2 bytes
+-- cdata in mem starts at:
+-- 0x5e00 (24026)
+-- 3008 bytes
 
 h = {
 	ords={32,32,32},
@@ -1160,6 +1167,10 @@ h = {
 	curs=1,
 	rank=0,
 }
+-- 24064 + 16 * 4
+cdnameoffset = 24128
+-- 24064 + 32 * 4
+cdgameoffset = 24192
 
 function loadgame()
 	-- set g and l table attributes
@@ -1172,14 +1183,14 @@ function loadgame()
 	l.stage,
 	l.screen,
 	l.scrn
-		= peek4(0x5ea0,8)
-	-- 0x5e00 + 40 * 4
+		= peek4(cdgameoffset,8)
+	-- 24064 + 40 * 4
 end
 
 function savegame()
 	-- inverse of loadgame()
 	poke4(
-		0x5ea0,
+		cdgameoffset,
 		g.score,
 		g.coins,
 		g.lives,
@@ -1208,9 +1219,9 @@ end
 function nameaddr(i)
 	-- return memory address
 	-- of hiscore name at index
-
-	-- 0x5e00 + 10 * 4
-	return 0x5e28 + i * 12
+	-- one extra byte per name
+	-- to make p8d file readable
+	return cdnameoffset+(4*(i-1))
 end
 
 function loadname(i)
@@ -1218,7 +1229,7 @@ function loadname(i)
 	-- number `i`
 	-- from persistent memory
 	addr = nameaddr(i)
-	name = chr(peek4(addr,3))
+	name = chr(peek(addr,3))
 	return name
 end
 
@@ -1226,7 +1237,7 @@ function savename(i,name)
 	-- inverse of loadname()
 	addr = nameaddr(i)
 	n1,n2,n3 = ord(name,1,3)
-	poke4(addr,n1,n2,n3)
+	poke(addr,n1,n2,n3)
 end
 
 function rankscore(num)
