@@ -224,7 +224,7 @@ function sndending()
 	return true
 end
 
-function psnd(snd)
+function psnd(snd,call)
 	-- initialise sndp table
 	-- to play sample sound
 	-- using sndplaying()
@@ -232,6 +232,12 @@ function psnd(snd)
 	sndp.snd = snd
 	sndp.len = #snd
 	sndp.sam = 1
+	-- kind of a hack
+	-- for respawning after
+	-- death sound
+	setwait(
+		0,call or function() end
+	)
 	stablock = sndplaying
 end
 
@@ -1100,8 +1106,7 @@ function die()
 	g.lives -= 1
 	g.fungus = false
  g.wep = 0
-	setwait(0,respawn)
-	psnd(snd.dies)
+	psnd(snd.dies,respawn)
 end
 
 function respawn()
