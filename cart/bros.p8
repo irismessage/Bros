@@ -224,23 +224,29 @@ end
 
 
 function pipesnditer()
-	local rate = 31960.4 / 5512
-	local secs = 5512 / 60 * 5
-	local timer = 0
+--	local rate = 31960.4 / 5512
+	local rate = 5512
 	local period = 256
+	-- 20 = number of seconds
+	-- whole thing should last for
+	local secs = 1 / (5512 / (256 / 20))
+	local timer = 0
 	local acc = 0
-	local lcn = rate / period
+	local hz = 31960.4 / period
+	local lcn = hz / rate
 	return function()
 		local sign = sgn(sin(acc))
 		local sam = sign*63 + 128
 		
 		acc += lcn
 		timer += secs
-		if timer > 1 then
+		if timer >= 1 then
 			timer %= 1
+			acc %= 1
 			period -= 1
 			if period != 0 then
-				lcn = rate / period
+				local hz = 31960.4 / period
+				lcn = hz / rate
 			else
 				return
 			end
