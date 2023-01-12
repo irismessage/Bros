@@ -48,13 +48,12 @@ s = {
 -- state
 staupdate = nil
 stadraw = nil
+stablock = nil
 
 sndp = {
 	snd=nil,
 	len=0,
 	sam=1,
-	adr=usrdta,
-	play=false,
 }
 
 wait = {
@@ -68,7 +67,6 @@ tc = 9
 -- sound memory block
 usrdta = 0x4300
 dtalen = 2048
-dtaend = usrdta+dtalen
 amp = {
 	[0]=159,
 	[1]=143,
@@ -91,9 +89,12 @@ end
 
 function _update60()
 --	debugstats()
-	if sndplaying()
-			or updatewait() then
-		return
+	if stablock then
+		if stablock() then
+			return
+		else
+			stablock = nil
+		end
 	end
 	updatecode()
 	staupdate()
@@ -135,19 +136,14 @@ end
 function updatewait()
 	-- update sleep timeout
 	-- returns true if sleeping
-	-- ❎ or 🅾️ skips sleep
-	if wait.f > 0 then
-		if wait.f == 1 then
-			wait.f = 0
-		 wait.call()
-		elseif btnp(❎) or btnp(🅾️) then
-			wait.f = 1
-		else
-			wait.f -= 1
-		end
-		return true
-	else
+	-- ❎ skips sleep
+	if wait.f == 0
+			or btnp(❎) then
+		wait.call()
 		return false
+	else
+		wait.f -= 1
+		return true
 	end
 end
 
@@ -155,6 +151,7 @@ function setwait(f,call)
 	wait.f = f
 	wait.call = call
 		or function() end
+	stablock = updatewait
 end
 
 -- sampled sound playing
@@ -186,39 +183,42 @@ function sndplaying()
 	-- skip by pressing ❎
 	-- uses sndp table
 
-	-- no sound active
-	if not sndp.play then
-		return false
-	end
 	-- skip sound
 	if btnp(❎) then
-		sndp.play = false
 		return false
 	end
 
-	-- wait for buffer
-	if stat(108) != 0 then
-		return true
+	-- calculate how much to add
+	-- to buffer for this frame
+	local freebuf =
+		stat(109) - stat(108)
+	local todo = min(
+		freebuf,
+		min(dtalen,sndp.len)
+	)
+
+	-- write samples to memory
+	local adr = usrdta
+	local endsam = sndp.sam+todo
+	for i=sndp.sam,endsam do
+		poke(adr,sndp.snd[i])
+		adr += 1
 	end
 
-	-- fill memory
-	while sndp.sam < sndp.len do
-		local sam = sndp.snd[sndp.sam]
-		poke(sndp.adr,sam)
-		sndp.adr += 1
-		sndp.sam += 1
-		if sndp.adr == dtaend then
-			sndp.adr = usrdta
-			-- play if full
-			serial(0x808,usrdta,dtalen)
-			return true
-		end
-	end
+	-- flush memory to buffer
+	serial(0x808,usrdta,todo)
 
-	local remains = sndp.adr-usrdta
-	sndp.play = false
-	serial(0x808,usrdta,remains)
+	sndp.sam = endsam
+	sndp.len -= todo
+	if sndp.len == 0 then
+		stablock = sndending
+	end
 	return true
+end
+
+function sndending()
+	return stat(108) == 0
+		and not btnp(❎)
 end
 
 function psnd(snd)
@@ -229,8 +229,7 @@ function psnd(snd)
 	sndp.snd = snd
 	sndp.len = #snd
 	sndp.sam = 1
-	sndp.adr = usrdta
-	sndp.play = true
+	stablock = sndplaying
 end
 
 -- help screen
