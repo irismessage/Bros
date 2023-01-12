@@ -198,10 +198,10 @@ function sndplaying()
 	)
 
 	-- write samples to memory
-	for adr=usrdta,usrdta+todo do
+	local endadr=usrdta+todo-1
+	for adr=usrdta,endadr do
 		poke(adr,sndp.iter())
 	end
-
 	-- flush memory to buffer
 	serial(0x808,usrdta,todo)
 
