@@ -50,11 +50,7 @@ staupdate = nil
 stadraw = nil
 stablock = nil
 
-sndp = {
-	iter=nil,
-	len=0,
-}
-
+snditer = nil
 wait = {
 	f=0,
 	call=nil,
@@ -63,9 +59,7 @@ wait = {
 bc = 12
 -- text colour
 tc = 9
--- sound memory block
-usrdta = 0x4300
-dtalen = 2048
+-- sampled sound amplifier vals
 amp = {
 	[0]=159,
 	[1]=143,
@@ -82,8 +76,10 @@ function _init()
 	loadfont()
 	initscores()
 	unpacksnds()
-	-- generatepipesnd()
 	mainscreen()
+	-- todo remove
+	music(-1)
+	pipesnd()
 end
 
 function _update60()
@@ -185,29 +181,20 @@ function sndplaying()
 	-- at end of sound
 
 	-- skip sound?
-	-- todo fix
-	if (btnp(❎)) return false
-
-	-- calculate how much to add
-	-- to buffer for this frame
-	local freebuf =
-		stat(109) - stat(108)
-	local todo = min(
-		freebuf,
-		min(dtalen,sndp.len)
-	)
-
-	-- write samples to memory
-	local endadr=usrdta+todo-1
-	for adr=usrdta,endadr do
-		poke(adr,sndp.iter())
+	if btnp(❎) then
+		stablock = updatewait
+		return true
 	end
-	-- flush memory to buffer
-	serial(0x808,usrdta,todo)
 
-	sndp.len -= todo
-	if sndp.len == 0 then
-		stablock = sndending
+	while stat(108) < stat(109) do
+		local sam = snditer()
+		if sam then
+			poke(0x4300,sam)
+			serial(0x808,0x4300,1)
+		else
+			stablock = sndending
+			break
+		end
 	end
 	return true
 end
@@ -225,8 +212,7 @@ function psnd(snd,call)
 	-- to play sample sound
 	-- using sndplaying()
 	-- arg is the snd data array
-	sndp.iter = all(snd)
-	sndp.len = #snd
+	snditer = all(snd)
 	-- kind of a hack
 	-- for respawning after
 	-- death sound
@@ -234,6 +220,32 @@ function psnd(snd,call)
 		0,call or function() end
 	)
 	stablock = sndplaying
+end
+
+
+function pipesnditer()
+	local rate = 5512
+	local period = 256
+	local i = 0
+	return function()
+		local hz = 31960.4 / period
+		local lcn = hz / rate
+		local sign = sgn(sin(lcn*i))
+		local sam = sign*63 + 128
+		i -= 1
+		if i == 0 then
+			i = 432
+			period -= 1
+		end
+		if period == 0 then return nil end
+		return sam
+	end
+end
+
+function pipesnd()
+	snditer = pipesnditer()
+	stablock = sndplaying
+	wait.call = function() end
 end
 
 -- help screen
