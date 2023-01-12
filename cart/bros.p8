@@ -322,7 +322,7 @@ function updatemainscreen()
  -- increment entity tick
  -- 🅾️ goes to play game
  -- ❎ goes to show hiscores
-	enticki(2)
+	enticki(4)
 	if btnp(🅾️) then
 		levelscreen()
 	elseif btnp(❎) then
@@ -358,21 +358,20 @@ end
 -->8
 -- movement
 
-tick = 2
 -- walk
-wtickl = 1 * tick
+wtickl = 2
 -- stop walk
-stickl = 2 * tick
+stickl = 4
 -- up jump
-utickl = 2 * tick
+utickl = 4
 -- down fall
-dtickl = 1 * tick
+dtickl = 2
 -- refill jump on floor
-rtickl = 2 * tick
+rtickl = 4
 -- bonk
-btickl = 4 * tick
+btickl = 8
 -- apex of jump
-atickl = 0 * tick
+atickl = 0
 
 jumpmax = 6
 coyotemax = 1
@@ -614,7 +613,7 @@ function enticki(freq)
 	-- switch out enspr
 	-- `freq` ticks per switch
 	if entick == 0 then
-		entick = freq * tick
+		entick = freq
 		enspr += 1
 		enspr %= 2
 	else
@@ -677,7 +676,7 @@ function bonk(ul,um,ur)
 		coin.x = p.x
 		coin.y = p.y-16
 		coin.show = true
-		coin.lifet = 5*tick
+		coin.lifet = 10
 		mset(mx,my,s.emptyblock)
 	elseif fget(sprn,f.powr) then
 		psnd(snd.coin)
@@ -772,7 +771,7 @@ function updatefguy()
 
 	-- walk
 	if fguy.wtick == 0 then
-		fguy.wtick = 8*tick
+		fguy.wtick = 16
 		if fguy.l then
 			cl = xcol(fguy.x-8,fguy.y)
 			if not xft(cl) then
@@ -825,7 +824,7 @@ function checkcoin()
 end
 
 function updateentities()
-	enticki(4)
+	enticki(8)
 	checkcoin()
 	updatecoin()
 	updatefungus()
