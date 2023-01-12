@@ -51,9 +51,8 @@ stadraw = nil
 stablock = nil
 
 sndp = {
-	snd=nil,
+	iter=nil,
 	len=0,
-	sam=1,
 }
 
 wait = {
@@ -186,6 +185,7 @@ function sndplaying()
 	-- at end of sound
 
 	-- skip sound?
+	-- todo fix
 	if (btnp(❎)) return false
 
 	-- calculate how much to add
@@ -198,17 +198,13 @@ function sndplaying()
 	)
 
 	-- write samples to memory
-	local adr = usrdta
-	local endsam = sndp.sam+todo
-	for i=sndp.sam,endsam do
-		poke(adr,sndp.snd[i])
-		adr += 1
+	for adr=usrdta,usrdta+todo do
+		poke(adr,sndp.iter())
 	end
 
 	-- flush memory to buffer
 	serial(0x808,usrdta,todo)
 
-	sndp.sam = endsam
 	sndp.len -= todo
 	if sndp.len == 0 then
 		stablock = sndending
@@ -229,9 +225,8 @@ function psnd(snd,call)
 	-- to play sample sound
 	-- using sndplaying()
 	-- arg is the snd data array
-	sndp.snd = snd
+	sndp.iter = all(snd)
 	sndp.len = #snd
-	sndp.sam = 1
 	-- kind of a hack
 	-- for respawning after
 	-- death sound
