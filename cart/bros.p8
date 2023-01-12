@@ -225,7 +225,7 @@ end
 
 function pipesnditer()
 	local rate = 31960.4 / 5512
-	local secs = 1 / 5512
+	local secs = 5512 / 60 * 5
 	local timer = 0
 	local period = 256
 	local acc = 0
@@ -236,8 +236,8 @@ function pipesnditer()
 		
 		acc += lcn
 		timer += secs
-		if timer > 5 then
-			timer %= 5
+		if timer > 1 then
+			timer %= 1
 			period -= 1
 			if period != 0 then
 				lcn = rate / period
