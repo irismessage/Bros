@@ -15,7 +15,6 @@ i = 1
 duration = 400
 
 usrdta = 0x4300
-adr = usrdta
 dtalen = 2048
 dtaend = usrdta+dtalen
 done = false

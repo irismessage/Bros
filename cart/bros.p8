@@ -151,6 +151,12 @@ function updatewait()
 	end
 end
 
+function setwait(f,call)
+	wait.f = f
+	wait.call = call
+		or function() end
+end
+
 -- sampled sound playing
 function unpacksnds()
 	-- unpack data in `snd`
@@ -245,8 +251,7 @@ function helpscreen()
 	stadraw = function() end
 	map(0,16)
 	music(-1)
-	wait.f = 15 * tick
-	wait.call = drawhelpscreen
+	setwait(15*tick,drawhelpscreen)
 end
 
 function drawhelpscreen()
@@ -885,8 +890,7 @@ function levelscreen()
 	levelpalette()
 	loadlevel()
 	resetp()
-	wait.f = 5 * tick
-	wait.call = levelstart
+	setwait(5*tick,levelstart)
 end
 
 function levelstart()
@@ -994,8 +998,7 @@ function win()
 	t = "but your \015bros\014 is still"
 	print(t,16,y+16)
 	print("in development!")
-	wait.f = 120 * tick
-	wait.call = mainscreen
+	setwait(120*tick,mainscreen)
 end
 
 function levelup()
@@ -1097,8 +1100,7 @@ function die()
 	g.lives -= 1
 	g.fungus = false
  g.wep = 0
-	wait.f = 1
-	wait.call = respawn
+	setwait(1,respawn)
 end
 
 function respawn()
@@ -1120,8 +1122,7 @@ function gameover()
 	-- wait then dieforever()
 	map(20,22,32,40,9,5)
 	print("game  over",44,56)
-	wait.f = 60 * tick
-	wait.call = dieforever
+	setwait(60*tick,dieforever)
 end
 
 function dieforever()
