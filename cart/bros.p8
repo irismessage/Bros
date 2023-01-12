@@ -182,11 +182,11 @@ function sndplaying()
 	-- returns true if snd playing
 	-- skip by pressing ❎
 	-- uses sndp table
+	-- sets stablock to sndending
+	-- at end of sound
 
-	-- skip sound
-	if btnp(❎) then
-		return false
-	end
+	-- skip sound?
+	if (btnp(❎)) return false
 
 	-- calculate how much to add
 	-- to buffer for this frame
@@ -217,8 +217,11 @@ function sndplaying()
 end
 
 function sndending()
-	return stat(108) == 0
-		and not btnp(❎)
+	if stat(108) == 0
+			or btnp(❎) then
+		stablock = updatewait
+	end
+	return true
 end
 
 function psnd(snd)
@@ -1094,11 +1097,11 @@ function die()
 	stadraw = function() end
 	spr(6,p.x,p.y)
 	flip()
-	psnd(snd.dies)
 	g.lives -= 1
 	g.fungus = false
  g.wep = 0
-	setwait(1,respawn)
+	setwait(0,respawn)
+	psnd(snd.dies)
 end
 
 function respawn()
