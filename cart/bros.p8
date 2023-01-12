@@ -246,12 +246,12 @@ function helpscreen()
 	-- stop music,
 	-- set update and draw funcs,
 	-- show splash screen,
-	-- in 15 ticks calls drawhelp
+	-- in 30 frames calls drawhelp
 	staupdate = updatehelpscreen
 	stadraw = function() end
 	map(0,16)
 	music(-1)
-	setwait(15*tick,drawhelpscreen)
+	setwait(30,drawhelpscreen)
 end
 
 function drawhelpscreen()
@@ -761,7 +761,7 @@ function updatefguy()
 	)
 	if not yft(dl,dm,dr) then
 		if fguy.jtick == 0 then
-			fguy.jtick = tick
+			fguy.jtick = 2
 			fguy.y += 8
 		else
 			fguy.jtick -= 1
@@ -889,7 +889,7 @@ function levelscreen()
 	levelpalette()
 	loadlevel()
 	resetp()
-	setwait(5*tick,levelstart)
+	setwait(10,levelstart)
 end
 
 function levelstart()
@@ -997,7 +997,7 @@ function win()
 	t = "but your \015bros\014 is still"
 	print(t,16,y+16)
 	print("in development!")
-	setwait(120*tick,mainscreen)
+	setwait(240,mainscreen)
 end
 
 function levelup()
@@ -1121,7 +1121,7 @@ function gameover()
 	-- wait then dieforever()
 	map(20,22,32,40,9,5)
 	print("game  over",44,56)
-	setwait(60*tick,dieforever)
+	setwait(120,dieforever)
 end
 
 function dieforever()
@@ -1141,7 +1141,7 @@ function updatetimer()
 	if g.timer == 0 then
 		die()
 	else
-		g.timer -= 0.5/tick
+		g.timer -= 1
 	end
 end
 
