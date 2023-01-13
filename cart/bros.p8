@@ -76,7 +76,7 @@ function _init()
 	loadfont()
 	initscores()
 	unpacksnds()
-	mainscreen()
+	mainscreen()z
 end
 
 function _update60()
@@ -219,44 +219,30 @@ function psnd(snd,call)
 	stablock = sndplaying
 end
 
-
-function pipesnditer()
---	local rate = 31960.4 / 5512
-	local rate = 5512
-	local period = 256
-	-- 20 = number of seconds
-	-- whole thing should last for
-	local secs = 1 / (5512 / (256 / 20))
-	local timer = 0
-	local acc = 0
-	local hz = 31960.4 / period
-	local lcn = hz / rate
-	return function()
-		local sign = sgn(sin(acc))
-		local sam = sign*63 + 128
-		
-		acc += lcn
-		timer += secs
-		if timer >= 1 then
-			timer %= 1
-			acc %= 1
-			period -= 1
-			if period != 0 then
-				local hz = 31960.4 / period
-				lcn = hz / rate
-			else
-				return
-			end
+pipesnd = {
+	sfxn=55,
+	f=127,
+}
+function updpipesnd()
+	local sfxnotes = 32
+	local noteframes = 4
+	local sfxframes
+		= sfxnotes * noteframes
+	local finalsfx = 60
+	
+	if pipesnd.f == sfxframes-1 then
+		pipesnd.f = 0
+		pipesnd.sfxn += 1
+		if pipesnd.sfxn == finalsfx then
+			return false
+		else
+			sfx(pipesnd.sfxn,2)
 		end
-		
-		return sam
+	else
+		pipesnd.f += 1
 	end
-end
-
-function pipesnd()
-	snditer = pipesnditer()
-	stablock = sndplaying
-	wait.call = function() end
+	
+	return true
 end
 
 -- help screen
