@@ -1,10 +1,15 @@
 #!/usr/bin/env python3
 
+
+"""Use sprite sheet and world files to make images of levels."""
+
+
 RGB = tuple[int]
 
 
 # https://pico-8.fandom.com/wiki/Graphics
 # https://pico-8.fandom.com/wiki/Palette
+# key is pico-8 colour ID
 palette_pico8 = {
     0: '000000',
     1: '1D2B53',
@@ -40,6 +45,10 @@ palette_pico8 = {
     143: 'FF9D81',
 }
 
+# p8 ids used for sprite editor etc.
+PICO_BASE = (0, 9, 4, 2, 12)
+PICO_BASE_HEX = tuple(palette_pico8[x] for x in PICO_BASE)
+
 
 dark_grey_shade = '252525'
 lorange_text = 'be7917'
@@ -53,11 +62,14 @@ red_but_scary = '6f0a00'
 kooky_violet = '4563ef'
 yay_gray = '6a6a6a'
 
+# tuple reference:
 # 0 black shading, clock
 # 1 light orange, text
 # 2 dark orange, bricks
 # 3 red, clothes, mushroom
 # 4 dark blue, background
+
+# key is bros level ID
 palette_orig = {
     11: (dark_grey_shade, lorange_text, dorange_bricks, red, dark_blue_bg),
     12: (dark_grey_shade, lorange_text, '005f88', red, black),
@@ -118,8 +130,6 @@ def closest_pico(hexc: str) -> int:
 
 
 def make_pal_tables() -> list[str]:
-    PICO_BASE = (0, 9, 4, 2, 12)
-
     pal_tables = []
     for orig_remap in palette_orig.values():
         if isinstance(orig_remap, int):

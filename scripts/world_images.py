@@ -22,19 +22,20 @@ WORLD_MAX_X = DIM_SPRITE * convert_world.WORLD_WIDTH
 Sprites = list[Image]
 
 
-class ColorSwap(PIL.ImageFilter.Filter):
+class ColorSwap(PIL.ImageFilter.MultibandFilter):
     def __init__(self, mapping: dict[str, str]):
         self.mapping = mapping
         self.mapping_tuples = {
             palette.hexc_to_rgb(k): palette.hexc_to_rgb(v) for k, v in mapping.items()
         }
 
-    def filter(self, image: Image) -> Image:
-        for x in range(image.width):
-            for y in range(image.height):
+    def filter(self, image: Image.Image) -> Image.Image:
+        width, height = image.size
+        for x in range(width):
+            for y in range(height):
                 coords = (x, y)
                 pix = image.getpixel(coords)
-                pix = self.mapping_tuples.get(pix, default=pix)
+                pix = self.mapping_tuples.get(pix, pix)
                 image.putpixel(coords, pix)
 
         return image
@@ -59,7 +60,7 @@ def get_sprites(workdir: Path) -> Sprites:
     return sprites
 
 
-def make_image(tiles: convert_world.Tiles, sprites: Sprites) -> Image:
+def make_image(tiles: convert_world.Tiles, sprites: Sprites) -> Image.Image:
     image = Image.new('RGB',
         (
             DIM_SPRITE * convert_world.WORLD_WIDTH,
@@ -90,6 +91,15 @@ def make_image(tiles: convert_world.Tiles, sprites: Sprites) -> Image:
 
     return image
 
+
+def do_filter(image: Image.Image) -> Image.Image:
+    pal_orig = palette.palette_orig[11]
+    pal_pico = palette.PICO_BASE_HEX
+    mapping = {pal_pico[i]: pal_orig[i] for i in range(len(pal_orig))}
+    filter_ = ColorSwap(mapping)
+
+    image = image.filter(filter_)
+    return image
 
 
 def main():

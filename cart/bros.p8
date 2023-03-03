@@ -51,10 +51,8 @@ stadraw = nil
 stablock = nil
 
 snditer = nil
-wait = {
-	f=0,
-	call=nil,
-}
+waitf = 0
+callback = nil
 -- bg colour
 bc = 12
 -- text colour
@@ -76,7 +74,7 @@ function _init()
 	loadfont()
 	initscores()
 	unpacksnds()
-	mainscreen()z
+	mainscreen()
 end
 
 function _update60()
@@ -85,6 +83,7 @@ function _update60()
 		if stablock() then
 			return
 		else
+			callback()
 			stablock = nil
 		end
 	end
@@ -129,20 +128,22 @@ function updatewait()
 	-- update sleep timeout
 	-- returns true if sleeping
 	-- ❎ skips sleep
-	if wait.f == 0
+	if waitf == 0
 			or btnp(❎) then
-		wait.call()
 		return false
 	else
-		wait.f -= 1
+		waitf -= 1
 		return true
 	end
 end
 
+function setcallback(call)
+	callback = call or function() end
+end
+
 function setwait(f,call)
-	wait.f = f
-	wait.call = call
-		or function() end
+	waitf = f
+	setcallback(call)
 	stablock = updatewait
 end
 
@@ -210,25 +211,28 @@ function psnd(snd,call)
 	-- using sndplaying()
 	-- arg is the snd data array
 	snditer = all(snd)
-	-- kind of a hack
-	-- for respawning after
-	-- death sound
-	setwait(
-		0,call or function() end
-	)
 	stablock = sndplaying
+	setcallback(call)
 end
 
 pipesnd = {
 	sfxn=55,
 	f=127,
+	channel=2,
 }
 function updpipesnd()
-	local sfxnotes = 32
-	local noteframes = 4
-	local sfxframes
-		= sfxnotes * noteframes
+	local sfxframes = 32 * 4
 	local finalsfx = 60
+	local scoredec = 2
+	local timerscore = 5 * scoredec
+	
+	if g.timer > 0 then
+		g.timer -= scoredec
+		g.score += timerscore
+		drawtopbar()
+	else
+		return false
+	end
 	
 	if pipesnd.f == sfxframes-1 then
 		pipesnd.f = 0
@@ -236,13 +240,21 @@ function updpipesnd()
 		if pipesnd.sfxn == finalsfx then
 			return false
 		else
-			sfx(pipesnd.sfxn,2)
+			sfx(pipesnd.sfxn,pipesnd.channel)
 		end
 	else
 		pipesnd.f += 1
 	end
 	
 	return true
+end
+
+function ppipesnd()
+	local startsfx = 56
+	pipesnd.sfxn = startsfx
+	pipesnd.f = 0
+	stablock = updpipesnd
+	sfx(startsfx,pipesnd.channel)
 end
 
 -- help screen
@@ -1028,6 +1040,7 @@ function levelup()
 		l.stage += 1
 		l.file += 1
 		g.timer = 999
+		ppipesnd()
 	end
 	if l.stage > 4 then
 		l.stage = 1
@@ -1035,6 +1048,10 @@ function levelup()
 	end
 
 	savegame()
+	setcallback(afterlevelup)
+end
+
+function afterlevelup()
 	drawtopbar()
 	loadlevel()
 end
