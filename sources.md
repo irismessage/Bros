@@ -107,7 +107,7 @@ https://therubberfruit.tumblr.com/post/166757423277/i-tried-to-see-if-i-could-pl
 https://archive.org/details/a8b_Bros_1989_KE_Soft_DE_en_a3
 - atari8.info page    
 https://gury.atari8.info/detail.php?id=873&src=2&c=ch=b
-- dead spritersresource page    
-https://www.spriters-resource.com/atari/bros/
+- spritersresource page    
+https://www.spriters-resource.com/atari/bros/sheet/55358/
 - rivals of aether mod lmao    
 https://steamcommunity.com/sharedfiles/filedetails/?id=2021255136
