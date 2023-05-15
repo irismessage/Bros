@@ -1,7 +1,7 @@
 __pycache__/
 
-cart/*
-!cart/bros.p8
+carts/*
+!carts/bros.p8
 
 # my stuff
 tools/
