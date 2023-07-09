@@ -1,5 +1,5 @@
 pico-8 cartridge // http://www.pico-8.com
-version 39
+version 41
 __lua__
 -- bros
 -- je-soft
@@ -218,6 +218,8 @@ end
 pipesnd = {
 	sfxn=55,
 	f=127,
+	-- third channel
+	-- to play alongside music
 	channel=2,
 }
 function updpipesnd()
@@ -225,7 +227,7 @@ function updpipesnd()
 	local finalsfx = 60
 	local scoredec = 2
 	local timerscore = 5 * scoredec
-	
+
 	if g.timer > 0 then
 		g.timer -= scoredec
 		g.score += timerscore
@@ -233,7 +235,7 @@ function updpipesnd()
 	else
 		return false
 	end
-	
+
 	if pipesnd.f == sfxframes-1 then
 		pipesnd.f = 0
 		pipesnd.sfxn += 1
@@ -245,7 +247,7 @@ function updpipesnd()
 	else
 		pipesnd.f += 1
 	end
-	
+
 	return true
 end
 
@@ -1024,10 +1026,19 @@ function win()
 	setwait(240,mainscreen)
 end
 
+function printlevel(msg)
+	printh(msg)
+	printh(l.scrn)
+	printh(l.screen)
+	printh(l.stage)
+	printh(l.world)
+end
+
 function levelup()
 	-- go to next screen
 	-- next stage or world,
 	-- if applicable
+	printlevel("start")
 	l.scrn += 1
 	if #screens < l.scrn then
 		win()
@@ -1035,23 +1046,33 @@ function levelup()
 	end
 
 	l.screen += 1
+	-- check for stage up
 	if l.screen > 5 then
 		l.screen = 1
 		l.stage += 1
+		-- check for world up
+		if l.stage > 4 then
+			l.stage = 1
+			l.world += 1
+		end
+
 		l.file += 1
-		g.timer = 999
 		ppipesnd()
 	end
-	if l.stage > 4 then
-		l.stage = 1
-		l.world += 1
-	end
+
 
 	savegame()
+	-- bug:
+	-- callback isn't getting call
+	-- unless ppipesend is
+	-- cause there's no stablock.
 	setcallback(afterlevelup)
+	printlevel("end")
 end
 
 function afterlevelup()
+	printlevel("after")
+	g.timer = 999
 	drawtopbar()
 	loadlevel()
 end
