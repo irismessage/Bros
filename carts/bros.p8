@@ -1028,19 +1028,10 @@ function win()
 	setwait(240,mainscreen)
 end
 
-function printlevel(msg)
-	printh(msg)
-	printh(l.scrn)
-	printh(l.screen)
-	printh(l.stage)
-	printh(l.world)
-end
-
 function levelup()
 	-- go to next screen
 	-- next stage or world,
 	-- if applicable
-	printlevel("start")
 	l.scrn += 1
 	if #screens < l.scrn then
 		win()
@@ -1050,6 +1041,7 @@ function levelup()
 	l.screen += 1
 	-- check for stage up
 	if l.screen > 5 then
+		l.file += 1
 		l.screen = 1
 		l.stage += 1
 		-- check for world up
@@ -1058,7 +1050,6 @@ function levelup()
 			l.world += 1
 		end
 
-		l.file += 1
 		ppipesnd()
 		setcallback(afterstageup)
 	else
@@ -1066,7 +1057,6 @@ function levelup()
 	end
 
 	savegame()
-	printlevel("end")
 end
 
 function afterstageup()
@@ -1075,7 +1065,6 @@ function afterstageup()
 end
 
 function afterlevelup()
-	printlevel("after")
 	drawtopbar()
 	loadlevel()
 end
