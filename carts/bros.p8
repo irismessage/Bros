@@ -252,6 +252,8 @@ function updpipesnd()
 end
 
 function ppipesnd()
+	-- todo don't start from start
+	--      start based on time left
 	local startsfx = 56
 	pipesnd.sfxn = startsfx
 	pipesnd.f = 0
@@ -1058,21 +1060,22 @@ function levelup()
 
 		l.file += 1
 		ppipesnd()
+		setcallback(afterstageup)
+	else
+		afterlevelup()
 	end
 
-
 	savegame()
-	-- bug:
-	-- callback isn't getting call
-	-- unless ppipesend is
-	-- cause there's no stablock.
-	setcallback(afterlevelup)
 	printlevel("end")
+end
+
+function afterstageup()
+	g.timer = 999
+	afterlevelup()
 end
 
 function afterlevelup()
 	printlevel("after")
-	g.timer = 999
 	drawtopbar()
 	loadlevel()
 end
@@ -1137,8 +1140,6 @@ function resetp()
 end
 
 function die()
-	-- todo remove
---	if (true) return
 	-- kill the player once
 	-- then call respawn()
 	stadraw()
