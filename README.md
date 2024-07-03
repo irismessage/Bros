@@ -25,6 +25,9 @@ BROS was released on floppy disk as a two-game bundle with a cool looking platfo
 
 The iconic sounds were made with an incredibly bitcrushed sound sampler - either recorded with a microphone or ripped from a tape. They're literally 2-bit.
 
+Update:    
+YouTube commenter @zakesters identified the music in detail as renditions of pieces from the Johann Sebastian Bach Works Catalogue, with BWV numbers 515, 114, 115, and 122. See the pinned comment on the sounds rip. https://youtu.be/RHZI6c5EqrI
+
 ## Files
 - sources.md -- useful links to more information, emulators, ROMs, etc.
 - Bros.atr -- original game ROM
